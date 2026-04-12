@@ -15,12 +15,12 @@ const Footer = ({ onNavClick }) => {
     {
       name: 'GitHub',
       icon: FaGithub,
-      href: 'https://github.com/p4rz1v4l26',
+      href: 'https://github.com/TARUN062005',
     },
     {
       name: 'LinkedIn',
       icon: FaLinkedin,
-      href: 'https://linkedin.com/in/TARUN-VEMURI',
+      href: 'https://linkedin.com/in/tarunvemuri',
     },
     {
       name: 'X',

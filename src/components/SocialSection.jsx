@@ -5,7 +5,7 @@ const socials = [
   {
     name: 'LinkedIn',
     icon: FaLinkedin,
-    url: 'https://www.linkedin.com/in/TARUN-VEMURI/',
+    url: 'https://linkedin.com/in/tarunvemuri/',
     color1: '#0A66C2',
     color2: '#004182',
     text: '#FFFFFF',
@@ -13,7 +13,7 @@ const socials = [
   {
     name: 'GitHub',
     icon: FaGithub,
-    url: 'https://github.com/p4rz1v4l26',
+    url: 'https://github.com/TARUN062005',
     color1: '#333333',
     color2: '#1a1a1a',
     text: '#FFFFFF',

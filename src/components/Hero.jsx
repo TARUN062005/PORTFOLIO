@@ -7,12 +7,12 @@ const heroSocials = [
   {
     name: 'GitHub',
     icon: FiGithub,
-    href: 'https://github.com/p4rz1v4l26',
+    href: 'https://github.com/TARUN062005',
   },
   {
     name: 'LinkedIn',
     icon: FiLinkedin,
-    href: 'https://www.linkedin.com/in/TARUN-VEMURI/',
+    href: 'https://linkedin.com/in/tarunvemuri/',
   },
   {
     name: 'X',
@@ -27,7 +27,7 @@ const heroSocials = [
   {
     name: 'Email',
     icon: FiMail,
-    href: 'mailto:TARUNVEMURI.dev@gmail.com',
+    href: 'mailto:princetarunvemuri@gmail.com',
   },
 ]
 

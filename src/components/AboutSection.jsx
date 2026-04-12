@@ -214,7 +214,7 @@ function TextCard({ mobile = false }) {
             <FiArrowRight className="transition-transform group-hover:translate-x-1" size={10} />
           </Link>
           <a
-            href="mailto:TARUNVEMURI.dev@gmail.com"
+            href="mailto:princetarunvemuri@gmail.com"
             className="inline-flex items-center gap-1.5 rounded-lg border border-slate-300 px-3 py-1.5 text-xs font-semibold text-slate-700 transition-all duration-300 hover:-translate-y-0.5 hover:border-cyan-500/40 hover:text-cyan-700 dark:border-white/10 dark:text-white/65 dark:hover:text-cyan-300"
           >
             <FiMail size={10} />

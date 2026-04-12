@@ -33,32 +33,33 @@ export const techStack = [
 
 export const projects = [
   {
-    title: 'AI vs. Human Academic Essay Authenticity',
+    title: 'ResilientSOS: Fault-Tolerant Distributed Communication System',
     description:
-      'A machine-learning based application that detects whether an academic essay is AI-generated or human-written.',
+      'An offline-first distributed platform handling zero-connectivity alerts with fault tolerance and consistency.',
     bullets: [
-      'Built a text-classification workflow for AI vs human writing.',
-      'Focused on clear inference output for usability.',
-      'Packaged as a practical project for academic integrity use-cases.',
+      'Engineered offline-first using PouchDB and background sync.',
+      'Implemented chunked data transfer with atomic reassembly.',
+      'Utilized Server-Sent Events (SSE) for real-time coordination (170+ concurrent requests).',
+      'Integrated deduplication, caching, and rate limiting for high-stress scenarios.'
     ],
-    techStack: ['Python', 'Streamlit'],
+    techStack: ['JavaScript', 'PouchDB', 'Distributed Systems'],
     image: '/projects/pulseboard.svg',
-    githubUrl: 'https://github.com/p4rz1v4l26/AI-vs.-Human-Academic-Essay-Authenticity-Challenge-',
+    githubUrl: 'https://github.com/TARUN062005',
     liveUrl: '',
   },
   {
-    title: 'JobGramm',
+    title: 'AI-Enhanced Assignment Evaluation System',
     description:
-      'A job platform where users explore listings, apply through a candidate dashboard, manage profiles, and track applications securely.',
+      'A scalable platform bridging Java workflows with Python microservices for automated academic grading.',
     bullets: [
-      'Built featured listings and detailed search flows.',
-      'Implemented secure authentication and profile management.',
-      'Added application tracking and cross-device-friendly UX.',
+      'Built with Java (Servlets) and Python microservices.',
+      'Integrated ML pipelines for plagiarism detection and context-aware evaluation.',
+      'Designed hybrid architecture separating heavy AI workloads from application logic.',
     ],
-    techStack: ['React', 'Node.js', 'MongoDB', 'HTML5', 'CSS3'],
+    techStack: ['Java', 'Python', 'Machine Learning'],
     image: '/projects/shipright.svg',
-    githubUrl: 'https://github.com/p4rz1v4l26/JobGram_local',
-    liveUrl: 'https://jobgramm.netlify.app/',
+    githubUrl: 'https://github.com/TARUN062005',
+    liveUrl: '',
   },
   {
     title: 'ChatGenius',
@@ -71,7 +72,7 @@ export const projects = [
     ],
     techStack: ['Node.js', 'APIs'],
     image: '/projects/flowsync.svg',
-    githubUrl: 'https://github.com/p4rz1v4l26/ChatGenius',
+    githubUrl: 'https://github.com/TARUN062005/ChatGenius',
     liveUrl: '',
   },
 ]

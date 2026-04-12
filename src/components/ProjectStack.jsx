@@ -231,7 +231,7 @@ const ProjectStack = ({ projects }) => {
     return () => window.removeEventListener('resize', updateViewport)
   }, [])
 
-  if (!projects || projects.length < 3) return null
+  if (!projects || projects.length < 2) return null
 
   if (isMobile) {
     return <MobileProjectStack projects={projects.slice(0, 3)} />

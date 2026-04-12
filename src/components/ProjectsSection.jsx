@@ -23,7 +23,7 @@ const ProjectsSection = ({ showAllLink = true }) => {
           --navbar-height: 88px;
           --header-height: 56px;
           --mobile-card-height: clamp(340px, 50vh, 420px);
-          --card-gap: clamp(60px, 12vh, 100px);
+          --card-gap: clamp(60px, 5vh, 100px);
           --stack-cards: 3;
           --card-step: calc(var(--mobile-card-height) + var(--card-gap));
           --header-boundary-height: calc(
@@ -31,7 +31,7 @@ const ProjectsSection = ({ showAllLink = true }) => {
             var(--mobile-card-height) +
             var(--header-height)
           );
-          --post-stack-buffer: clamp(20px, 4vh, 64px);
+          --post-stack-buffer: clamp(0px, 0vh, 10px);
           --stack-boundary-height: calc(
             var(--header-boundary-height) +
             var(--header-height) +
@@ -150,7 +150,7 @@ const ProjectsSection = ({ showAllLink = true }) => {
       </div>
 
       {showAllLink && (
-        <div className="projects-view-all-mobile flex justify-center pt-0 sm:hidden view-more">
+        <div className="projects-view-all-mobile flex justify-center pt-0 sm:hidden view-more -mt-10 relative z-50">
           <Link
             to="/projects"
             className="inline-flex items-center justify-center rounded-xl bg-cyan-500 px-7 py-3 text-sm font-semibold text-slate-950 transition duration-300 hover:-translate-y-0.5 hover:bg-cyan-400"
