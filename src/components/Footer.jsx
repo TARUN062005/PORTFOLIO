@@ -1,0 +1,388 @@
+import { motion } from 'framer-motion'
+import {
+  FiArrowUp,
+  FiMail,
+  FiMapPin,
+  FiPhone,
+} from 'react-icons/fi'
+import { FaDiscord, FaGithub, FaLinkedin } from 'react-icons/fa'
+import { FaXTwitter } from 'react-icons/fa6'
+
+const Footer = ({ onNavClick }) => {
+  const currentYear = new Date().getFullYear()
+
+  const socialLinks = [
+    {
+      name: 'GitHub',
+      icon: FaGithub,
+      href: 'https://github.com/p4rz1v4l26',
+    },
+    {
+      name: 'LinkedIn',
+      icon: FaLinkedin,
+      href: 'https://linkedin.com/in/TARUN-VEMURI',
+    },
+    {
+      name: 'X',
+      icon: FaXTwitter,
+      href: 'https://x.com/TARUNVEMURI',
+    },
+    {
+      name: 'Discord',
+      icon: FaDiscord,
+      href: 'https://discordapp.com/users/896411007797325824/',
+    },
+  ]
+
+  const quickLinks = [
+    { name: 'Home', id: 'home' },
+    { name: 'About', id: 'about' },
+    { name: 'Projects', id: 'projects' },
+    { name: 'Contact', id: 'contact' },
+  ]
+
+  const contactInfo = [
+    { icon: <FiMail size={16} />, text: 'princetarunvemuri@gmail.com', href: 'mailto:princetarunvemuri@gmail.com' },
+    { icon: <FiPhone size={16} />, text: '+91 9550186473', href: 'tel:+919550186473' },
+    { icon: <FiMapPin size={16} />, text: 'Vijayawada, India', href: '' },
+  ]
+
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.1,
+        delayChildren: 0.15,
+      },
+    },
+  }
+
+  const itemVariants = {
+    hidden: { y: 18, opacity: 0 },
+    visible: {
+      y: 0,
+      opacity: 1,
+      transition: { duration: 0.45 },
+    },
+  }
+
+  return (
+    <footer className="mt-6 pb-5 sm:mt-8 sm:pb-8">
+      <style>{`
+        .footer-social-card {
+          position: relative;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          width: 100%;
+          max-width: 260px;
+          height: 52px;
+          border-radius: 14px;
+          background: #e7e7e7;
+          overflow: hidden;
+          box-shadow:
+            0 4px 10px rgba(0, 0, 0, 0.12),
+            0 2px 4px rgba(0, 0, 0, 0.08);
+        }
+
+        /* TEXT */
+        .footer-social-label {
+          position: absolute;
+          inset: 0;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          font-size: 14px;
+          font-weight: 700;
+          color: #0f172a;
+          opacity: 1;
+          transition: opacity 0.25s ease;
+          z-index: 2;
+          pointer-events: none;
+        }
+
+        /* ICON WRAPPER */
+        .footer-social-icons {
+          position: absolute;
+          inset: 0;
+          display: flex;
+          opacity: 0;
+          transition: opacity 0.25s ease;
+          z-index: 1;
+        }
+
+        /* ICON */
+        .footer-social-link {
+          flex: 1;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          color: #0f172a;
+          text-decoration: none;
+          transition: all 0.2s ease;
+        }
+
+        .footer-social-link svg {
+          width: 18px;
+          height: 18px;
+        }
+
+        /* HOVER SWITCH */
+        .footer-social-card:hover .footer-social-label {
+          opacity: 0;
+        }
+
+        .footer-social-card:hover .footer-social-icons {
+          opacity: 1;
+        }
+
+        /* ICON INTERACTION */
+        .footer-social-link:hover {
+          background: rgba(255, 255, 255, 0.6);
+          transform: translateY(-2px);
+        }
+
+        .footer-social-link:active {
+          transform: scale(0.95);
+        }
+
+        .footer-social-link:focus-visible {
+          outline: 2px solid #0f172a;
+          outline-offset: -2px;
+        }
+
+        /* DARK MODE */
+        .dark .footer-social-card {
+          background: #162124;
+        }
+
+        .dark .footer-social-label {
+          color: #e2e8f0;
+        }
+
+        .dark .footer-social-link {
+          color: #e2e8f0;
+        }
+
+        .dark .footer-social-link:hover {
+          background: rgba(255, 255, 255, 0.08);
+        }
+
+        .dark .footer-social-link:focus-visible {
+          outline: 2px solid #e2e8f0;
+        }
+
+        @media (max-width: 420px) {
+          .footer-social-card {
+            max-width: 100%;
+            height: 48px;
+            border-radius: 12px;
+          }
+
+          .footer-social-link svg {
+            width: 16px;
+            height: 16px;
+          }
+        }
+
+        @media (max-width: 768px) {
+          .footer-social-card {
+            height: 44px;
+            border-radius: 12px;
+            max-width: 220px;
+          }
+
+          .footer-social-label {
+            font-size: 12px;
+            letter-spacing: 0.03em;
+          }
+
+          .footer-social-link svg {
+            width: 15px;
+            height: 15px;
+          }
+
+          .footer-mobile-grid {
+            display: grid;
+            grid-template-columns: minmax(0, 0.82fr) minmax(0, 1.18fr);
+            gap: 12px 8px;
+            align-items: start;
+          }
+
+          .footer-intro {
+            grid-column: 1 / -1;
+          }
+
+          .footer-nav,
+          .footer-contact {
+            min-width: 0;
+          }
+
+          .footer-contact {
+            padding-left: 0.15rem;
+          }
+
+          .footer-nav h4,
+          .footer-contact h4 {
+            margin-bottom: 0.65rem;
+          }
+
+          .footer-nav ul,
+          .footer-contact ul {
+            margin: 0;
+          }
+
+          .footer-contact li {
+            line-height: 1.3;
+          }
+
+          .footer-contact a,
+          .footer-contact span,
+          .footer-nav button {
+            word-break: break-word;
+          }
+
+          .footer-contact a {
+            white-space: nowrap;
+            font-size: 11px;
+            letter-spacing: -0.01em;
+          }
+
+          .footer-bottom-mobile {
+            margin-top: 1rem;
+            padding-top: 0.9rem;
+          }
+        }
+
+        @media (hover: none) {
+          .footer-social-label {
+            display: none;
+          }
+
+          .footer-social-icons {
+            opacity: 1;
+          }
+        }
+      `}</style>
+
+      <div className="mx-auto max-w-6xl">
+        <motion.div
+          className="overflow-hidden rounded-2xl border border-black/80 bg-white/65 p-4 shadow-xl shadow-slate-900/5 backdrop-blur-md dark:border-slate-700/70 dark:bg-slate-900/70 sm:rounded-3xl sm:p-8"
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.2 }}
+          variants={containerVariants}
+        >
+          <div className="footer-mobile-grid grid grid-cols-1 gap-5 md:grid-cols-4 md:gap-8">
+
+            {/* LEFT */}
+            <motion.div variants={itemVariants} className="footer-intro space-y-3 sm:space-y-4">
+              <h3 className="text-lg font-semibold text-slate-900 dark:text-white sm:text-xl">TARUN</h3>
+              <p className="text-sm text-slate-600 dark:text-slate-300">
+                Full Stack Developer and AI/ML Engineer creating practical, high-impact digital products.
+              </p>
+
+              {/* SOCIAL */}
+              <div className="footer-social-card">
+                <span className="footer-social-label">Follow</span>
+
+                <div className="footer-social-icons">
+                  {socialLinks.map((item) => {
+                    const Icon = item.icon
+                    return (
+                      <a
+                        key={item.name}
+                        className="footer-social-link"
+                        href={item.href}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        aria-label={item.name}
+                      >
+                        <Icon />
+                      </a>
+                    )
+                  })}
+                </div>
+              </div>
+            </motion.div>
+
+            {/* NAV */}
+            <motion.div variants={itemVariants} className="footer-nav">
+              <h4 className="small-label mb-3 sm:mb-4">
+                Navigation
+              </h4>
+              <ul className="space-y-2.5 sm:space-y-3">
+                {quickLinks.map((link) => (
+                  <motion.li key={link.name} whileHover={{ x: 2 }}>
+                    <button
+                      onClick={() => onNavClick?.(link.id)}
+                      className="text-sm text-slate-600 hover:text-cyan-700 dark:text-slate-300 dark:hover:text-cyan-300"
+                    >
+                      {link.name}
+                    </button>
+                  </motion.li>
+                ))}
+              </ul>
+            </motion.div>
+
+            {/* CONTACT */}
+            <motion.div variants={itemVariants} className="footer-contact">
+              <h4 className="small-label mb-3 sm:mb-4">
+                Contact
+              </h4>
+              <ul className="space-y-2.5 sm:space-y-3">
+                {contactInfo.map((info, index) => (
+                  <motion.li key={index} className="flex gap-2.5 text-sm sm:gap-3">
+                    <span className="mt-0.5">{info.icon}</span>
+                    {info.href ? (
+                      <a href={info.href} className="hover:text-cyan-600">
+                        {info.text}
+                      </a>
+                    ) : (
+                      <span>{info.text}</span>
+                    )}
+                  </motion.li>
+                ))}
+              </ul>
+            </motion.div>
+
+            {/* NEWSLETTER */}
+            <motion.div variants={itemVariants} className="hidden md:block">
+              <h4 className="small-label mb-4">
+                Newsletter
+              </h4>
+
+              <form className="space-y-3">
+                <input
+                  type="email"
+                  placeholder="Your email"
+                  className="w-full rounded-lg border px-3 py-2 text-sm"
+                />
+                <button className="w-full rounded-lg bg-cyan-500 py-2 text-sm font-semibold text-slate-950">
+                  Subscribe
+                </button>
+              </form>
+            </motion.div>
+
+          </div>
+
+          {/* BOTTOM */}
+          <div className="footer-bottom-mobile mt-5 flex flex-row items-center justify-between gap-3 border-t pt-4 text-sm sm:mt-10 sm:flex-row sm:gap-4 sm:pt-6">
+            <p>© {currentYear} TARUN VEMURI</p>
+
+            <motion.button
+              onClick={() => onNavClick?.('home')}
+              className="rounded-full bg-black p-1.5 text-white sm:p-2"
+              whileHover={{ y: -3 }}
+            >
+              <FiArrowUp size={12} />
+            </motion.button>
+          </div>
+        </motion.div>
+      </div>
+    </footer>
+  )
+}
+
+export default Footer
