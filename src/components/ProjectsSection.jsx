@@ -31,7 +31,7 @@ const ProjectsSection = ({ showAllLink = true }) => {
             var(--mobile-card-height) +
             var(--header-height)
           );
-          --post-stack-buffer: clamp(0px, 0vh, 10px);
+          --post-stack-buffer: clamp(20px, 4vh, 64px);
           --stack-boundary-height: calc(
             var(--header-boundary-height) +
             var(--header-height) +
@@ -141,12 +141,7 @@ const ProjectsSection = ({ showAllLink = true }) => {
             </div>
           </div>
         </div>
-
-        <div className="hidden sm:block">
-          <br />
-          <br />
-          <br />
-        </div>
+        <br/><br/><br/>
         <div className="stack-boundary">
           <div className="projects-stack-wrap mt-1 sm:mt-6 w-full">
             <ProjectStack projects={stackProjects} />
@@ -155,7 +150,7 @@ const ProjectsSection = ({ showAllLink = true }) => {
       </div>
 
       {showAllLink && (
-        <div className="projects-view-all-mobile flex justify-center pt-0 sm:hidden view-more -mt-16 sm:mt-0 relative z-50">
+        <div className="projects-view-all-mobile flex justify-center pt-0 sm:hidden view-more">
           <Link
             to="/projects"
             className="inline-flex items-center justify-center rounded-xl bg-cyan-500 px-7 py-3 text-sm font-semibold text-slate-950 transition duration-300 hover:-translate-y-0.5 hover:bg-cyan-400"
