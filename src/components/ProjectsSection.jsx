@@ -22,6 +22,7 @@ const ProjectsSection = ({ showAllLink = true }) => {
           padding-top: 2rem;
           --navbar-height: 88px;
           --header-height: 56px;
+          --header-gap: 24px;
           --mobile-card-height: clamp(340px, 50vh, 420px);
           --card-gap: clamp(60px, 5vh, 100px);
           --stack-cards: 3;
@@ -29,17 +30,19 @@ const ProjectsSection = ({ showAllLink = true }) => {
           --header-boundary-height: calc(
             ((var(--stack-cards) - 1) * var(--card-step)) +
             var(--mobile-card-height) +
-            var(--header-height)
+            var(--header-height) + 
+            var(--header-gap)
           );
           --post-stack-buffer: clamp(0px, 0vh, 10px);
           --stack-boundary-height: calc(
             var(--header-boundary-height) +
             var(--header-height) +
+            var(--header-gap) +
             var(--mobile-card-height) +
             var(--post-stack-buffer)
           );
           --header-top: var(--navbar-height);
-          --card-top: calc(var(--navbar-height) + var(--header-height));
+          --card-top: calc(var(--navbar-height) + var(--header-height) + var(--header-gap));
         }
 
         .sticky-header-wrapper {
@@ -93,10 +96,12 @@ const ProjectsSection = ({ showAllLink = true }) => {
             pointer-events: none;
           }
 
-          .sticky-header-bg {
-            background: #020617; 
-            padding: 10px 0;
-            min-height: var(--header-height);
+         .sticky-header-bg {
+  background: rgba(2, 6, 23, 0.85); /* semi-transparent instead of solid */
+  backdrop-filter: blur(6px);       /* optional, improves blending */
+  padding: 10px 0;
+}
+          .sticky-header-bg > * {
             pointer-events: auto;
           }
 
@@ -141,7 +146,7 @@ const ProjectsSection = ({ showAllLink = true }) => {
             </div>
           </div>
         </div>
-        <br/><br/><br/>
+        <br /><br /><br />
         <div className="stack-boundary">
           <div className="projects-stack-wrap mt-1 sm:mt-6 w-full">
             <ProjectStack projects={stackProjects} />

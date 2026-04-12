@@ -7,7 +7,7 @@ const MobileProjectStack = ({ projects }) => {
       <style>{`
         .mobile-stack {
             padding-bottom: 0;
-            padding-top: var(--header-height, 56px);
+            padding-top: calc(var(--header-height, 56px) + var(--header-gap, 24px));
             flex: 1;
             display: flex;
             flex-direction: column;
