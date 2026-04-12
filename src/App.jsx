@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
-import GreetingBanner from './components/GreetingBanner'
 import HomePage from './components/HomePage'
 import ProjectsPage from './components/ProjectsPage'
 import AboutPage from './components/AboutPage'
+import Loader from './components/Loader'
 
 function App() {
   const [isDarkMode, setIsDarkMode] = useState(() => {
@@ -14,6 +14,8 @@ function App() {
 
     return window.matchMedia('(prefers-color-scheme: dark)').matches
   })
+  
+  const [isAppReady, setIsAppReady] = useState(false)
 
   useEffect(() => {
     document.documentElement.classList.toggle('dark', isDarkMode)
@@ -21,18 +23,37 @@ function App() {
   }, [isDarkMode])
 
   useEffect(() => {
-    const avatar = new Image()
-    avatar.src = '/profile-avatar.svg'
-  }, [])
+    if (isAppReady) {
+      import('./data/portfolioData.js').then(({ projects }) => {
+        projects.slice(2).forEach(p => {
+          if (p.image) {
+            const img = new Image()
+            img.src = p.image
+          }
+        })
+      }).catch(console.error)
+    }
+  }, [isAppReady])
 
   return (
     <BrowserRouter>
-      <GreetingBanner />
-      <Routes>
-        <Route path="/" element={<HomePage isDarkMode={isDarkMode} onToggleTheme={() => setIsDarkMode((previous) => !previous)} />} />
-        <Route path="/projects" element={<ProjectsPage />} />
-        <Route path="/about" element={<AboutPage />} />
-      </Routes>
+      {!isAppReady && <Loader onComplete={() => setIsAppReady(true)} />}
+      
+      {isAppReady && (
+        <div className="animate-[fadeIn_0.5s_ease-out_forwards]">
+          <style>{`
+            @keyframes fadeIn {
+              from { opacity: 0; }
+              to { opacity: 1; }
+            }
+          `}</style>
+          <Routes>
+            <Route path="/" element={<HomePage isDarkMode={isDarkMode} onToggleTheme={() => setIsDarkMode((previous) => !previous)} />} />
+            <Route path="/projects" element={<ProjectsPage />} />
+            <Route path="/about" element={<AboutPage />} />
+          </Routes>
+        </div>
+      )}
     </BrowserRouter>
   )
 }
