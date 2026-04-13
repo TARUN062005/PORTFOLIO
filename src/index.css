@@ -92,28 +92,6 @@
   .section-fade {
     @apply transition-all duration-700 ease-out;
   }
-
-  .tech-slider-track {
-    display: flex;
-    width: max-content;
-    animation: scroll var(--duration, 25s) linear infinite;
-    will-change: transform;
-  }
-
-  .tech-slider-track:hover {
-    animation-play-state: paused;
-  }
-}
-
-@keyframes scroll {
-  from {
-    transform: translateX(0);
-  }
-
-  to {
-    /* Track is tripled so one full set = 33.33% */
-    transform: translateX(-33.333%);
-  }
 }
 
 @keyframes spin {

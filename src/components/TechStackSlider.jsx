@@ -1,5 +1,6 @@
 import { useMemo, useState } from 'react'
 import { techStack } from '../data/portfolioData'
+import './TechStack.css'
 
 const DEVICON_BASE = 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/'
 const CATEGORY_ORDER = ['all', 'frontend', 'backend', 'tools']
@@ -37,7 +38,7 @@ const TechStackSlider = ({ items = techStack, duration = 30 }) => {
   const rowTwoTrack = useMemo(() => [...rowTwoItems, ...rowTwoItems, ...rowTwoItems], [rowTwoItems])
 
   return (
-    <section id="tech-stack" className="space-y-10 pt-3">
+    <section id="tech-stack" className="space-y-10 pt-3 lg:-mb-8">
       {/* Heading */}
       <div className="space-y-4">
         <div className="flex justify-center">

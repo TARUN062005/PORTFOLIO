@@ -1,5 +1,6 @@
 import { techStack } from '../data/portfolioData'
 import useRevealOnScroll from '../hooks/useRevealOnScroll'
+import './TechStack.css'
 
 const TechStack = () => {
   const { elementRef, isVisible } = useRevealOnScroll()
