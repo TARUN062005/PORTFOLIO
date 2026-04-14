@@ -81,7 +81,7 @@ const AboutSection = () => {
       <div
         ref={wrapperRef}
         className="relative hidden lg:block"
-        style={{ height: '84vh' }}
+        style={{ height: '150vh' }}
       >
         <div className="sticky top-20 flex h-[64vh] items-start justify-center overflow-hidden px-8 pt-2 lg:px-12">
           <div className="relative flex items-center" style={{ gap: `${GAP}px` }}>

@@ -31,7 +31,7 @@ const Loader = ({ onComplete }) => {
         const totalTasks = imagesToPreload.length + routeModulesToPreload.length
         let completedTasks = 0
 
-        const minLoadTimePromise = new Promise(resolve => setTimeout(resolve, 2000))
+        const minLoadTimePromise = new Promise(resolve => setTimeout(resolve, 3500))
 
         const updateProgress = () => {
           if (!isMounted) return
@@ -61,7 +61,7 @@ const Loader = ({ onComplete }) => {
         // 2. NON-BLOCKING RACE CONDITION
         await Promise.race([
           Promise.all([...imagePromises, ...routePromises, minLoadTimePromise]),
-          new Promise(res => setTimeout(res, 4000))
+          new Promise(res => setTimeout(res, 5000))
         ])
 
         if (isMounted) {
@@ -106,48 +106,52 @@ const Loader = ({ onComplete }) => {
       }`}
     >
       <style>{`
-        .spinner-ring {
-          width: 50px;
-          height: 50px;
-          border-radius: 50%;
-          border: 3px solid transparent;
-          border-top-color: #06b6d4; /* cyan-500 */
-          border-right-color: #0ea5e9; /* cyan-500 adjacent */
-          animation: spin 1s linear infinite;
+        .loader-container {
+          position: relative;
+          height: 250px;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          margin-top: 2rem;
         }
 
-        .spinner-ring-inner {
-          width: 34px;
-          height: 34px;
-          border-radius: 50%;
-          border: 3px solid transparent;
-          border-left-color: #3b82f6; /* blue-500 */
-          border-bottom-color: #6366f1; /* blue-500 adjacent */
-          animation: spin-reverse 0.75s linear infinite;
+        .loader-item {
           position: absolute;
-          top: 50%;
-          left: 50%;
-          transform: translate(-50%, -50%);
+          background-color: transparent;
+          width: calc(var(--i) * 2.5vmin);
+          aspect-ratio: 1;
+          border-radius: 50%;
+          border: .9vmin solid rgb(0, 200, 255);
+          transform-style: preserve-3d;
+          transform: rotateX(70deg) translateZ(50px);
+          animation: my-move 3s ease-in-out calc(var(--i) * 0.08s) infinite;
+          box-shadow: 0px 0px 15px rgba(124, 124, 124, 0.4),
+            inset 0px 0px 15px rgba(124, 124, 124, 0.4);
         }
-        
-        @keyframes spin {
-          0% { transform: rotate(0deg); }
-          100% { transform: rotate(360deg); }
-        }
-        @keyframes spin-reverse {
-          0% { transform: translate(-50%, -50%) rotate(0deg); }
-          100% { transform: translate(-50%, -50%) rotate(-360deg); }
+
+        @keyframes my-move {
+          0%,
+          100% {
+            transform: rotateX(70deg) translateZ(50px) translateY(0px);
+            filter: hue-rotate(0deg);
+          }
+
+          50% {
+            transform: rotateX(70deg) translateZ(50px) translateY(-50vmin);
+            filter: hue-rotate(180deg);
+          }
         }
       `}</style>
       
-      <div className="w-full max-w-md px-6 flex flex-col items-center gap-10">
-        
-        <div className="relative">
-           <div className="spinner-ring"></div>
-           <div className="spinner-ring-inner"></div>
-        </div>
+      <div className="w-full max-w-md px-6 flex flex-col items-center gap-6">
 
-        <div className="text-center space-y-3">
+        <div className="loader-container">
+          {[...Array(21)].map((_, i) => (
+            <div key={i} className="loader-item" style={{ '--i': i }}></div>
+          ))}
+        </div>
+        
+        <div className="text-center space-y-3 mt-4">
           <p className="text-cyan-600 dark:text-cyan-400 font-medium tracking-wide">
             {greetingTime}, welcome to my portfolio
           </p>
@@ -159,7 +163,7 @@ const Loader = ({ onComplete }) => {
           </p>
         </div>
 
-        <div className="w-full max-w-[200px] flex flex-col gap-2 items-center">
+        <div className="w-full max-w-[200px] flex flex-col gap-2 items-center z-10 mt-2">
           <div className="w-full h-1.5 overflow-hidden bg-slate-200 dark:bg-slate-800 rounded-full relative">
             <div 
               className="absolute top-0 left-0 h-full bg-gradient-to-r from-cyan-500 to-blue-500 transition-[width] duration-300 ease-out rounded-full"

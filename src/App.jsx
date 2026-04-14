@@ -4,6 +4,7 @@ import HomePage from './components/HomePage'
 import ProjectsPage from './components/ProjectsPage'
 import AboutPage from './components/AboutPage'
 import Loader from './components/Loader'
+import NotFound from './components/NotFound'
 
 function App() {
   const [isDarkMode, setIsDarkMode] = useState(() => {
@@ -15,7 +16,10 @@ function App() {
     return window.matchMedia('(prefers-color-scheme: dark)').matches
   })
   
-  const [isAppReady, setIsAppReady] = useState(false)
+  const [isAppReady, setIsAppReady] = useState(() => {
+    const validPaths = ['/', '/projects', '/about']
+    return !validPaths.includes(window.location.pathname)
+  })
 
   useEffect(() => {
     document.documentElement.classList.toggle('dark', isDarkMode)
@@ -51,6 +55,7 @@ function App() {
             <Route path="/" element={<HomePage isDarkMode={isDarkMode} onToggleTheme={() => setIsDarkMode((previous) => !previous)} />} />
             <Route path="/projects" element={<ProjectsPage />} />
             <Route path="/about" element={<AboutPage />} />
+            <Route path="*" element={<NotFound />} />
           </Routes>
         </div>
       )}
