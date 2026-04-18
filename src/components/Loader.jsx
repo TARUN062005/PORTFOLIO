@@ -108,11 +108,11 @@ const Loader = ({ onComplete }) => {
       <style>{`
         .loader-container {
           position: relative;
-          height: 250px;
+          height: 180px;
           display: flex;
           justify-content: center;
           align-items: center;
-          margin-top: 2rem;
+          margin-top: 0;
         }
 
         .loader-item {
@@ -143,7 +143,7 @@ const Loader = ({ onComplete }) => {
         }
       `}</style>
       
-      <div className="w-full max-w-md px-6 flex flex-col items-center gap-6">
+      <div className="w-full max-w-md px-6 flex flex-col items-center gap-0">
 
         <div className="loader-container">
           {[...Array(21)].map((_, i) => (
@@ -151,7 +151,7 @@ const Loader = ({ onComplete }) => {
           ))}
         </div>
         
-        <div className="text-center space-y-3 mt-4">
+        <div className="text-center space-y-1 -mt-2">
           <p className="text-cyan-600 dark:text-cyan-400 font-medium tracking-wide">
             {greetingTime}, welcome to my portfolio
           </p>

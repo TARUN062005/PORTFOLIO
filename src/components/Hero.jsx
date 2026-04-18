@@ -172,6 +172,7 @@ const Hero = ({ onNavClick }) => {
           width: 344px;
           height: 344px;
           fill: none;
+          pointer-events: none;
           will-change: transform;
         }
 
