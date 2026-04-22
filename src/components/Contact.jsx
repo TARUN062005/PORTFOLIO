@@ -145,7 +145,7 @@ const Contact = () => {
       </div>
 
       {/* MAIN CARD */}
-      <div className="overflow-hidden rounded-3xl border border-black/80 bg-white/60 shadow-xl backdrop-blur-md dark:border-slate-700 dark:bg-slate-900/70">
+      <div className="w-full overflow-hidden rounded-3xl border border-black/80 bg-white/60 shadow-xl backdrop-blur-md dark:border-slate-700 dark:bg-slate-900/70">
         <div className="grid lg:grid-cols-[0.95fr_1.05fr]">
 
           {/* LEFT */}

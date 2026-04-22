@@ -10,7 +10,7 @@ const ProjectsPage = () => {
     <main className="bg-slate-950 text-white min-h-screen">
       
       {/* HERO */}
-      <section className="px-6 pt-28 pb-16 max-w-6xl mx-auto">
+      <section className="w-full px-6 pt-28 pb-16 lg:px-12 xl:px-16">
         <h1 className="text-4xl sm:text-6xl font-black leading-tight">
           Selected Work
         </h1>
@@ -20,7 +20,7 @@ const ProjectsPage = () => {
       </section>
 
       {/* PROJECTS */}
-      <section className="space-y-32 pb-32">
+      <section className="space-y-32 pb-32 px-6 lg:px-12 xl:px-16">
         {projects.map((project, index) => {
           const isActive = activeIndex === index
 
@@ -49,7 +49,7 @@ const ProjectsPage = () => {
               <div className="absolute inset-0 bg-black/60 backdrop-blur-[2px]" />
 
               {/* CONTENT */}
-              <div className="relative z-10 max-w-5xl mx-auto px-6 py-20">
+              <div className="relative z-10 w-full px-6 py-20 lg:px-12 xl:px-16">
 
                 <motion.h2
                   layout

@@ -223,7 +223,7 @@ const Hero = ({ onNavClick }) => {
         }
       `}</style>
 
-      <div className="w-full space-y-6 lg:w-3/5">
+      <div className="w-full space-y-6 lg:w-3/5 lg:max-w-2xl">
         <p className="section-kicker">
           Available for Full-Time Roles
         </p>

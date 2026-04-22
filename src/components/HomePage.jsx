@@ -92,7 +92,7 @@ const HomePage = ({ isDarkMode, onToggleTheme }) => {
         onToggleTheme={onToggleTheme}
       />
 
-      <main className="relative mx-auto flex w-full max-w-6xl flex-col gap-12 px-5 pb-20 pt-28 sm:px-8 lg:px-12">
+      <main className="relative flex w-full flex-col gap-12 px-5 pb-20 pt-28 sm:px-8 lg:px-12 xl:px-16">
         <Hero onNavClick={handleNavClick} />
         {/* About: sticky animation — compact spacing */}
         <div className="lg:contents">

@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import HomePage from './components/HomePage'
 import ProjectsPage from './components/ProjectsPage'
-import AboutPage from './components/AboutPage'
+import AboutSection from './components/AboutSection'
 import Loader from './components/Loader'
 import NotFound from './components/NotFound'
 
@@ -54,7 +54,7 @@ function App() {
           <Routes>
             <Route path="/" element={<HomePage isDarkMode={isDarkMode} onToggleTheme={() => setIsDarkMode((previous) => !previous)} />} />
             <Route path="/projects" element={<ProjectsPage />} />
-            <Route path="/about" element={<AboutPage />} />
+            <Route path="/about" element={<AboutSection variant="page" />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </div>

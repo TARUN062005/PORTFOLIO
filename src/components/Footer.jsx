@@ -81,12 +81,9 @@ const Footer = ({ onNavClick }) => {
           border-radius: 14px;
           background: #e7e7e7;
           overflow: hidden;
-          box-shadow:
-            0 4px 10px rgba(0, 0, 0, 0.12),
-            0 2px 4px rgba(0, 0, 0, 0.08);
+          box-shadow: 0 4px 10px rgba(0, 0, 0, 0.12), 0 2px 4px rgba(0, 0, 0, 0.08);
         }
 
-        /* TEXT */
         .footer-social-label {
           position: absolute;
           inset: 0;
@@ -102,7 +99,6 @@ const Footer = ({ onNavClick }) => {
           pointer-events: none;
         }
 
-        /* ICON WRAPPER */
         .footer-social-icons {
           position: absolute;
           inset: 0;
@@ -112,7 +108,6 @@ const Footer = ({ onNavClick }) => {
           z-index: 1;
         }
 
-        /* ICON */
         .footer-social-link {
           flex: 1;
           display: flex;
@@ -128,7 +123,6 @@ const Footer = ({ onNavClick }) => {
           height: 18px;
         }
 
-        /* HOVER SWITCH */
         .footer-social-card:hover .footer-social-label {
           opacity: 0;
         }
@@ -137,250 +131,148 @@ const Footer = ({ onNavClick }) => {
           opacity: 1;
         }
 
-        /* ICON INTERACTION */
         .footer-social-link:hover {
           background: rgba(255, 255, 255, 0.6);
           transform: translateY(-2px);
         }
 
-        .footer-social-link:active {
-          transform: scale(0.95);
-        }
-
-        .footer-social-link:focus-visible {
-          outline: 2px solid #0f172a;
-          outline-offset: -2px;
-        }
-
-        /* DARK MODE */
-        .dark .footer-social-card {
-          background: #162124;
-        }
-
-        .dark .footer-social-label {
-          color: #e2e8f0;
-        }
-
-        .dark .footer-social-link {
-          color: #e2e8f0;
-        }
-
-        .dark .footer-social-link:hover {
-          background: rgba(255, 255, 255, 0.08);
-        }
-
-        .dark .footer-social-link:focus-visible {
-          outline: 2px solid #e2e8f0;
-        }
-
-        @media (max-width: 420px) {
-          .footer-social-card {
-            max-width: 100%;
-            height: 48px;
-            border-radius: 12px;
-          }
-
-          .footer-social-link svg {
-            width: 16px;
-            height: 16px;
-          }
-        }
+        .dark .footer-social-card { background: #162124; }
+        .dark .footer-social-label { color: #e2e8f0; }
+        .dark .footer-social-link { color: #e2e8f0; }
+        .dark .footer-social-link:hover { background: rgba(255, 255, 255, 0.08); }
 
         @media (max-width: 768px) {
-          .footer-social-card {
-            height: 44px;
-            border-radius: 12px;
-            max-width: 220px;
-          }
-
-          .footer-social-label {
-            font-size: 12px;
-            letter-spacing: 0.03em;
-          }
-
-          .footer-social-link svg {
-            width: 15px;
-            height: 15px;
-          }
-
+          .footer-social-card { height: 44px; border-radius: 12px; max-width: 220px; }
+          .footer-social-label { font-size: 12px; }
           .footer-mobile-grid {
             display: grid;
             grid-template-columns: minmax(0, 0.82fr) minmax(0, 1.18fr);
             gap: 12px 8px;
-            align-items: start;
           }
-
-          .footer-intro {
-            grid-column: 1 / -1;
-          }
-
-          .footer-nav,
-          .footer-contact {
-            min-width: 0;
-          }
-
-          .footer-contact {
-            padding-left: 0.15rem;
-          }
-
-          .footer-nav h4,
-          .footer-contact h4 {
-            margin-bottom: 0.65rem;
-          }
-
-          .footer-nav ul,
-          .footer-contact ul {
-            margin: 0;
-          }
-
-          .footer-contact li {
-            line-height: 1.3;
-          }
-
-          .footer-contact a,
-          .footer-contact span,
-          .footer-nav button {
-            word-break: break-word;
-          }
-
-          .footer-contact a {
-            white-space: nowrap;
-            font-size: 11px;
-            letter-spacing: -0.01em;
-          }
-
-          .footer-bottom-mobile {
-            margin-top: 1rem;
-            padding-top: 0.9rem;
-          }
+          .footer-intro { grid-column: 1 / -1; }
+          .footer-contact a { white-space: nowrap; font-size: 11px; }
         }
 
         @media (hover: none) {
-          .footer-social-label {
-            display: none;
-          }
-
-          .footer-social-icons {
-            opacity: 1;
-          }
+          .footer-social-label { display: none; }
+          .footer-social-icons { opacity: 1; }
         }
       `}</style>
 
-      <div className="mx-auto max-w-6xl">
-        <motion.div
-          className="overflow-hidden rounded-2xl border border-black/80 bg-white/65 p-4 shadow-xl shadow-slate-900/5 backdrop-blur-md dark:border-slate-700/70 dark:bg-slate-900/70 sm:rounded-3xl sm:p-8"
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, amount: 0.2 }}
-          variants={containerVariants}
-        >
-          <div className="footer-mobile-grid grid grid-cols-1 gap-5 md:grid-cols-4 md:gap-8">
+      {/* Container class removed to match Contact box exactly. 
+          Assuming parent container handles horizontal margins.
+      */}
+      <motion.div
+        className="w-full overflow-hidden rounded-3xl border border-black/80 bg-white/60 p-6 shadow-xl backdrop-blur-md dark:border-slate-700 dark:bg-slate-900/70 sm:p-8 lg:p-10"
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, amount: 0.2 }}
+        variants={containerVariants}
+      >
+        <div className="footer-mobile-grid grid grid-cols-1 gap-5 md:grid-cols-4 md:gap-8">
+          
+          {/* INTRO */}
+          <motion.div variants={itemVariants} className="footer-intro space-y-3 sm:space-y-4">
+            <h3 className="text-lg font-semibold text-slate-900 dark:text-white sm:text-xl">TARUN</h3>
+            <p className="text-sm text-slate-600 dark:text-slate-300">
+              Full Stack Developer and AI/ML Engineer creating practical, high-impact digital products.
+            </p>
 
-            {/* LEFT */}
-            <motion.div variants={itemVariants} className="footer-intro space-y-3 sm:space-y-4">
-              <h3 className="text-lg font-semibold text-slate-900 dark:text-white sm:text-xl">TARUN</h3>
-              <p className="text-sm text-slate-600 dark:text-slate-300">
-                Full Stack Developer and AI/ML Engineer creating practical, high-impact digital products.
-              </p>
-
-              {/* SOCIAL */}
-              <div className="footer-social-card">
-                <span className="footer-social-label">Follow</span>
-
-                <div className="footer-social-icons">
-                  {socialLinks.map((item) => {
-                    const Icon = item.icon
-                    return (
-                      <a
-                        key={item.name}
-                        className="footer-social-link"
-                        href={item.href}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        aria-label={item.name}
-                      >
-                        <Icon />
-                      </a>
-                    )
-                  })}
-                </div>
-              </div>
-            </motion.div>
-
-            {/* NAV */}
-            <motion.div variants={itemVariants} className="footer-nav">
-              <h4 className="small-label mb-3 sm:mb-4">
-                Navigation
-              </h4>
-              <ul className="space-y-2.5 sm:space-y-3">
-                {quickLinks.map((link) => (
-                  <motion.li key={link.name} whileHover={{ x: 2 }}>
-                    <button
-                      onClick={() => onNavClick?.(link.id)}
-                      className="text-sm text-slate-600 hover:text-cyan-700 dark:text-slate-300 dark:hover:text-cyan-300"
+            {/* SOCIAL CARD */}
+            <div className="footer-social-card">
+              <span className="footer-social-label">Follow</span>
+              <div className="footer-social-icons">
+                {socialLinks.map((item) => {
+                  const Icon = item.icon
+                  return (
+                    <a
+                      key={item.name}
+                      className="footer-social-link"
+                      href={item.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      aria-label={item.name}
                     >
-                      {link.name}
-                    </button>
-                  </motion.li>
-                ))}
-              </ul>
-            </motion.div>
+                      <Icon />
+                    </a>
+                  )
+                })}
+              </div>
+            </div>
+          </motion.div>
 
-            {/* CONTACT */}
-            <motion.div variants={itemVariants} className="footer-contact">
-              <h4 className="small-label mb-3 sm:mb-4">
-                Contact
-              </h4>
-              <ul className="space-y-2.5 sm:space-y-3">
-                {contactInfo.map((info, index) => (
-                  <motion.li key={index} className="flex gap-2.5 text-sm sm:gap-3">
-                    <span className="mt-0.5">{info.icon}</span>
-                    {info.href ? (
-                      <a href={info.href} className="hover:text-cyan-600">
-                        {info.text}
-                      </a>
-                    ) : (
-                      <span>{info.text}</span>
-                    )}
-                  </motion.li>
-                ))}
-              </ul>
-            </motion.div>
+          {/* NAVIGATION */}
+          <motion.div variants={itemVariants} className="footer-nav">
+            <h4 className="text-xs font-bold uppercase tracking-widest text-slate-500 mb-3 sm:mb-4">
+              Navigation
+            </h4>
+            <ul className="space-y-2.5 sm:space-y-3">
+              {quickLinks.map((link) => (
+                <motion.li key={link.name} whileHover={{ x: 2 }}>
+                  <button
+                    onClick={() => onNavClick?.(link.id)}
+                    className="text-sm text-slate-600 hover:text-cyan-700 dark:text-slate-300 dark:hover:text-cyan-300"
+                  >
+                    {link.name}
+                  </button>
+                </motion.li>
+              ))}
+            </ul>
+          </motion.div>
 
-            {/* NEWSLETTER */}
-            <motion.div variants={itemVariants} className="hidden md:block">
-              <h4 className="small-label mb-4">
-                Newsletter
-              </h4>
+          {/* CONTACT INFO */}
+          <motion.div variants={itemVariants} className="footer-contact">
+            <h4 className="text-xs font-bold uppercase tracking-widest text-slate-500 mb-3 sm:mb-4">
+              Contact
+            </h4>
+            <ul className="space-y-2.5 sm:space-y-3">
+              {contactInfo.map((info, index) => (
+                <motion.li key={index} className="flex gap-2.5 text-sm sm:gap-3">
+                  <span className="mt-0.5 text-slate-500">{info.icon}</span>
+                  {info.href ? (
+                    <a href={info.href} className="text-slate-600 dark:text-slate-300 hover:text-cyan-600 transition-colors">
+                      {info.text}
+                    </a>
+                  ) : (
+                    <span className="text-slate-600 dark:text-slate-300">{info.text}</span>
+                  )}
+                </motion.li>
+              ))}
+            </ul>
+          </motion.div>
 
-              <form className="space-y-3">
-                <input
-                  type="email"
-                  placeholder="Your email"
-                  className="w-full rounded-lg border px-3 py-2 text-sm"
-                />
-                <button className="w-full rounded-lg bg-cyan-500 py-2 text-sm font-semibold text-slate-950">
-                  Subscribe
-                </button>
-              </form>
-            </motion.div>
+          {/* NEWSLETTER (Desktop only) */}
+          <motion.div variants={itemVariants} className="hidden md:block">
+            <h4 className="text-xs font-bold uppercase tracking-widest text-slate-500 mb-4">
+              Newsletter
+            </h4>
+            <form className="space-y-3" onSubmit={(e) => e.preventDefault()}>
+              <input
+                type="email"
+                placeholder="Your email"
+                className="w-full rounded-lg border border-slate-200 dark:border-slate-700 bg-white/50 dark:bg-slate-800/50 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-cyan-500"
+              />
+              <button className="w-full rounded-lg bg-cyan-500 py-2 text-sm font-semibold text-slate-950 hover:bg-cyan-400 transition-colors">
+                Subscribe
+              </button>
+            </form>
+          </motion.div>
+        </div>
 
-          </div>
+        {/* COPYRIGHT & BACK TO TOP */}
+        <div className="footer-bottom-mobile mt-5 flex flex-row items-center justify-between gap-3 border-t border-slate-200 dark:border-slate-700 pt-4 text-xs font-medium text-slate-500 sm:mt-10 sm:pt-6">
+          <p>© {currentYear} TARUN VEMURI</p>
 
-          {/* BOTTOM */}
-          <div className="footer-bottom-mobile mt-5 flex flex-row items-center justify-between gap-3 border-t pt-4 text-sm sm:mt-10 sm:flex-row sm:gap-4 sm:pt-6">
-            <p>© {currentYear} TARUN VEMURI</p>
-
-            <motion.button
-              onClick={() => onNavClick?.('home')}
-              className="rounded-full bg-black p-1.5 text-white sm:p-2"
-              whileHover={{ y: -3 }}
-            >
-              <FiArrowUp size={12} />
-            </motion.button>
-          </div>
-        </motion.div>
-      </div>
+          <motion.button
+            onClick={() => onNavClick?.('home')}
+            className="rounded-full bg-slate-900 dark:bg-slate-100 p-2 text-white dark:text-slate-900 shadow-lg"
+            whileHover={{ y: -3 }}
+            whileTap={{ scale: 0.9 }}
+          >
+            <FiArrowUp size={14} />
+          </motion.button>
+        </div>
+      </motion.div>
     </footer>
   )
 }

@@ -38,7 +38,7 @@ const socials = [
 
 const SocialSection = () => {
   return (
-    <section id="social" className="social-3d-scope px-4 pt-4 pb-0">
+    <section id="social" className="social-3d-scope space-y-4 pb-0 pt-3">
       <style>{`
         .social-3d-scope {
           perspective: 1400px;
@@ -53,35 +53,49 @@ const SocialSection = () => {
 
         /* ================= LAYOUT ================= */
         .social-container {
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          gap: clamp(10px, 2vw, 18px);
-          flex-wrap: wrap;
+          display: grid;
+          grid-template-columns: minmax(0, 1fr);
+          gap: 14px;
           margin: 0 auto;
           width: 100%;
-          padding: 24px 4px 10px;
+          padding: 18px 16px 16px;
+        }
+
+        @media (min-width: 560px) {
+          .social-container {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 16px;
+            padding: 20px;
+          }
+        }
+
+        @media (min-width: 1024px) {
+          .social-container {
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            padding: 22px 24px 18px;
+          }
         }
 
         .cube-wrapper {
-          flex: 0 1 auto;
           display: flex;
           justify-content: center;
           align-items: center;
+          width: 100%;
         }
 
         .cube-link {
-          display: inline-flex;
+          display: flex;
           justify-content: center;
           align-items: center;
+          width: 100%;
           -webkit-tap-highlight-color: transparent;
         }
 
         /* ================= CUBE ================= */
         .cube-btn {
-          --w: clamp(150px, 20vw, 220px);
-          --h: clamp(90px, 12vw, 120px);
-          --d: clamp(16px, 2vw, 22px);
+          --w: 100%;
+          --h: clamp(108px, 12vw, 132px);
+          --d: clamp(14px, 1.8vw, 18px);
 
           position: relative;
           width: var(--w);
@@ -95,7 +109,7 @@ const SocialSection = () => {
         }
 
         .cube-link:hover .cube-btn {
-          transform: rotateX(15deg) rotateZ(0deg) translateY(-12px);
+          transform: rotateX(15deg) rotateZ(0deg) translateY(-8px);
         }
 
         .cube-link:active .cube-btn {
@@ -126,7 +140,7 @@ const SocialSection = () => {
           transform: translateZ(calc(var(--d) / 2));
           color: var(--main-text);
           font-weight: 600;
-          font-size: clamp(0.88rem, 1.15vw, 1rem);
+          font-size: clamp(0.84rem, 1.08vw, 0.96rem);
         }
 
         .cube-link:hover .front {
@@ -154,73 +168,55 @@ const SocialSection = () => {
           display: flex;
           flex-direction: column;
           align-items: center;
-          gap: clamp(6px, 1vw, 10px);
+          gap: clamp(6px, 1vw, 9px);
           letter-spacing: 0.12em;
           font-family: 'Poppins', sans-serif;
+          text-transform: uppercase;
         }
 
         .icon {
-          font-size: clamp(1.6rem, 2.5vw, 2.5rem);
+          font-size: clamp(1.35rem, 2.1vw, 2rem);
         }
 
         /* ================= MOBILE ================= */
         @media (max-width: 640px) {
-          .social-container {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 16px;
-            padding: 10px 10px 0px;
-            width: 100%;
-          }
-
-          .cube-wrapper {
-            width: 100%;
-          }
-
-          .cube-link {
-            width: 100%;
-          }
+          .social-container { padding: 16px 12px 12px; }
 
           .cube-btn {
             --w: 100%;
-            --h: 95px;
-            --d: 16px;
+            --h: 108px;
+            --d: 14px;
           }
 
-          .icon {
-            font-size: 1.6rem;
-          }
-
-          .front {
-            font-size: 0.9rem;
-          }
+          .icon { font-size: 1.35rem; }
+          .front { font-size: 0.82rem; }
         }
 
         /* ================= EXTRA SMALL ================= */
         @media (max-width: 380px) {
           .social-container {
-            gap: 12px;
-            padding: 10px 5px 0px;
+            grid-template-columns: minmax(0, 1fr);
+            gap: 10px;
+            padding: 14px 10px 10px;
           }
 
           .cube-btn {
             --w: 100%;
-            --h: 85px;
+            --h: 98px;
           }
 
-          .icon {
-            font-size: 1.4rem;
-          }
+          .icon { font-size: 1.25rem; }
         }
       `}</style>
 
-      <div className="text-center mb-2">
+      <div className="text-center">
         <h2 className="section-title text-center">
           Social Presence
         </h2>
+        <p className="section-subtitle mt-2">
+          Connect with me across platforms.
+        </p>
       </div>
-
-      <br className="block sm:hidden" />
 
       <div className="social-container pb-0">
         {socials.map(({ name, icon: Icon, url, color1, color2, text }) => (
@@ -255,7 +251,7 @@ const SocialSection = () => {
         ))}
       </div>
     </section>
-  );
-};
+  )
+}
 
-export default SocialSection;
+export default SocialSection

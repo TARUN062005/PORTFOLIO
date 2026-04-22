@@ -249,21 +249,46 @@ const ProjectStack = ({ projects }) => {
         .uiverse-stack-wrapper {
           position: relative;
           width: 100%;
-          max-width: 1000px;
+          max-width: none;
           height: auto;
           min-height: 420px;
           margin: 20px auto 0;
           display: flex;
           justify-content: center;
           align-items: center;
+          padding: 0 1rem;
+        }
+
+        @media (min-width: 1024px) {
+          .uiverse-stack-wrapper {
+            padding: 0 3rem;
+          }
+        }
+
+        @media (min-width: 1280px) {
+          .uiverse-stack-wrapper {
+            padding: 0 4rem;
+          }
         }
 
         .uiverse-stack-wrapper .stack-area {
           position: relative;
           width: 100%;
-          max-width: 900px;
+          max-width: 100%;
           height: 380px;
           margin: 0 auto;
+        }
+
+        @media (min-width: 768px) {
+          .uiverse-stack-wrapper .stack-area {
+            max-width: 1100px;
+          }
+        }
+
+        @media (min-width: 1024px) {
+          .uiverse-stack-wrapper .stack-area {
+            max-width: 1200px;
+          }
         }
 
         .uiverse-stack-wrapper .project-card {

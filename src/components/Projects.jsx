@@ -168,7 +168,7 @@ const Projects = () => {
         ))}
       </motion.div>
 
-      <div className="mt-8 grid gap-6 md:grid-cols-2 xl:grid-cols-3">
+      <div className="mt-8 grid gap-6 md:grid-cols-2 lg:gap-8 xl:grid-cols-3 max-w-none">
         {filteredProjects.map((project, index) => (
           <motion.article
             key={project.title}
