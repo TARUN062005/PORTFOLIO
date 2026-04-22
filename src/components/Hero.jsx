@@ -38,7 +38,7 @@ const Hero = ({ onNavClick }) => {
     <section
       id="home"
       ref={elementRef}
-      className={`section-fade flex flex-col gap-10 lg:flex-row lg:items-center ${
+      className={`section-fade flex min-h-[calc(100vh-8.5rem)] flex-col justify-center gap-10 lg:flex-row lg:items-center ${
         isVisible ? 'translate-y-0 opacity-100' : 'translate-y-8 opacity-0'
       }`}
     >
@@ -93,7 +93,9 @@ const Hero = ({ onNavClick }) => {
           height: 40px;
           border-radius: 10px;
           color: #0f172a;
-          text-decoration: none;
+          border: 0;
+          background: transparent;
+          cursor: pointer;
           transition: all 0.25s ease;
         }
 
@@ -267,17 +269,16 @@ const Hero = ({ onNavClick }) => {
             {heroSocials.map((item) => {
               const Icon = item.icon
               return (
-                <a
+                <button
                   key={item.name}
+                  type="button"
                   className="hero-social-link"
-                  href={item.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
                   aria-label={item.name}
                   title={item.name}
+                  onClick={() => onNavClick('tech-stack')}
                 >
                   <Icon size={18} />
-                </a>
+                </button>
               )
             })}
           </div>

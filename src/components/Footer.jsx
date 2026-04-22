@@ -261,7 +261,7 @@ const Footer = ({ onNavClick }) => {
 
         {/* COPYRIGHT & BACK TO TOP */}
         <div className="footer-bottom-mobile mt-5 flex flex-row items-center justify-between gap-3 border-t border-slate-200 dark:border-slate-700 pt-4 text-xs font-medium text-slate-500 sm:mt-10 sm:pt-6">
-          <p>© {currentYear} TARUN VEMURI</p>
+          <p><h1>© {currentYear} TARUN VEMURI</h1></p>
 
           <motion.button
             onClick={() => onNavClick?.('home')}

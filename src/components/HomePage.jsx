@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from 'react'
+import { FiChevronDown } from 'react-icons/fi'
 import Navbar from './Navbar'
 import Hero from './Hero'
 import AboutSection from './AboutSection'
@@ -21,6 +22,7 @@ const HomePage = ({ isDarkMode, onToggleTheme }) => {
   )
 
   const [activeSection, setActiveSection] = useState('home')
+  const [hideScrollCue, setHideScrollCue] = useState(() => sessionStorage.getItem('home-scroll-cue-hidden') === 'true')
 
   useEffect(() => {
     window.scrollTo({ top: 0, left: 0, behavior: 'auto' })
@@ -70,10 +72,37 @@ const HomePage = ({ isDarkMode, onToggleTheme }) => {
     }
   }, [sections])
 
+  useEffect(() => {
+    if (hideScrollCue) {
+      return
+    }
+
+    const dismissScrollCue = () => {
+      if (window.scrollY > 24) {
+        setHideScrollCue(true)
+        sessionStorage.setItem('home-scroll-cue-hidden', 'true')
+      }
+    }
+
+    window.addEventListener('scroll', dismissScrollCue, { passive: true })
+    return () => {
+      window.removeEventListener('scroll', dismissScrollCue)
+    }
+  }, [hideScrollCue])
+
   const handleNavClick = (sectionId) => {
     const section = document.getElementById(sectionId)
     if (section) {
-      section.scrollIntoView({ behavior: 'smooth', block: 'start' })
+      const navHeader = document.querySelector('header')
+      const navHeight = navHeader ? navHeader.getBoundingClientRect().height : 72
+      const extraGap = 18
+      const offset = navHeight + extraGap
+      const targetTop = section.getBoundingClientRect().top + window.scrollY - offset
+
+      window.scrollTo({
+        top: Math.max(targetTop, 0),
+        behavior: 'smooth',
+      })
     }
   }
 
@@ -100,10 +129,19 @@ const HomePage = ({ isDarkMode, onToggleTheme }) => {
         </div>
         <TechStackSlider />
         <ProjectsSection />
-        <SocialSection />
+        <SocialSection onSocialClick={() => handleNavClick('tech-stack')} />
         <Contact />
         <Footer onNavClick={handleNavClick} />
       </main>
+
+      {!hideScrollCue && activeSection === 'home' && (
+        <div className="pointer-events-none fixed bottom-5 left-1/2 z-[9998] -translate-x-1/2">
+          <div className="flex animate-bounce items-center gap-1 rounded-full border border-white/35 bg-white/10 px-3 py-1.5 text-xs font-semibold tracking-wide text-slate-900 backdrop-blur-md dark:border-white/20 dark:bg-white/5 dark:text-slate-100">
+            Scroll
+            <FiChevronDown size={14} />
+          </div>
+        </div>
+      )}
     </div>
   )
 }

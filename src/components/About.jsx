@@ -1,6 +1,6 @@
 import { motion } from 'framer-motion'
 import useRevealOnScroll from '../hooks/useRevealOnScroll'
-import { FiUser, FiCode, FiHeart } from 'react-icons/fi'
+import { FiUser, FiCode, FiHeart, FiCoffee, FiTrendingUp } from 'react-icons/fi'
 
 const About = () => {
   const { elementRef, isVisible } = useRevealOnScroll()
@@ -10,20 +10,28 @@ const About = () => {
     visible: {
       opacity: 1,
       transition: {
-        staggerChildren: 0.15,
+        staggerChildren: 0.1,
         delayChildren: 0.1,
       },
     },
   }
 
   const itemVariants = {
-    hidden: { opacity: 0, y: 30 },
+    hidden: { opacity: 0, y: 20 },
     visible: { 
       opacity: 1, 
       y: 0,
-      transition: { duration: 0.6, ease: [0.22, 1, 0.36, 1] }
+      transition: { duration: 0.5, ease: [0.22, 1, 0.36, 1] }
     },
   }
+
+  const skills = [
+    { name: 'React & Next.js', level: 90 },
+    { name: 'Node.js & Express', level: 85 },
+    { name: 'Python & AI/ML', level: 80 },
+    { name: 'Database Design', level: 85 },
+    { name: 'Cloud & DevOps', level: 75 },
+  ]
 
   return (
     <section
@@ -84,7 +92,7 @@ const About = () => {
             .
           </motion.h3>
           
-          <motion.div variants={itemVariants} className="mt-6 flex justify-center gap-4">
+          <motion.div variants={itemVariants} className="mt-6 flex flex-wrap justify-center gap-4">
             <div className="flex items-center gap-2 rounded-full bg-cyan-500/10 px-3 py-1">
               <FiCode className="h-3 w-3 text-cyan-500" />
               <span className="text-sm font-medium text-cyan-700 dark:text-cyan-300">Clean Code</span>
@@ -96,6 +104,10 @@ const About = () => {
             <div className="flex items-center gap-2 rounded-full bg-purple-500/10 px-3 py-1">
               <FiUser className="h-3 w-3 text-purple-500" />
               <span className="text-sm font-medium text-purple-700 dark:text-purple-300">Team Player</span>
+            </div>
+            <div className="flex items-center gap-2 rounded-full bg-amber-500/10 px-3 py-1">
+              <FiTrendingUp className="h-3 w-3 text-amber-500" />
+              <span className="text-sm font-medium text-amber-700 dark:text-amber-300">Growth Mindset</span>
             </div>
           </motion.div>
 
@@ -116,6 +128,33 @@ const About = () => {
             where performance and usability were equally important. I care deeply about writing code that scales with 
             both users and teams.
           </motion.p>
+
+          {/* Skills Progress Bars */}
+          <motion.div 
+            variants={itemVariants}
+            className="mt-8 space-y-4"
+          >
+            <h4 className="mb-4 flex items-center gap-2 text-lg font-semibold text-slate-800 dark:text-white">
+              <FiCoffee className="text-amber-500" />
+              Technical Expertise
+            </h4>
+            {skills.map((skill) => (
+              <div key={skill.name} className="space-y-1">
+                <div className="flex justify-between text-sm">
+                  <span className="font-medium text-slate-700 dark:text-slate-300">{skill.name}</span>
+                  <span className="text-cyan-600 dark:text-cyan-400">{skill.level}%</span>
+                </div>
+                <div className="h-2 overflow-hidden rounded-full bg-slate-200 dark:bg-slate-700">
+                  <motion.div
+                    initial={{ width: 0 }}
+                    animate={isVisible ? { width: `${skill.level}%` } : { width: 0 }}
+                    transition={{ duration: 1, ease: "easeOut" }}
+                    className="h-full rounded-full bg-gradient-to-r from-cyan-500 to-emerald-500"
+                  />
+                </div>
+              </div>
+            ))}
+          </motion.div>
 
           {/* Stats */}
           <motion.div 
