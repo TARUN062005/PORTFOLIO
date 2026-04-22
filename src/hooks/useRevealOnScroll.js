@@ -4,32 +4,31 @@ const useRevealOnScroll = (options = {}) => {
   const elementRef = useRef(null)
   const [isVisible, setIsVisible] = useState(false)
 
-  const defaultOptions = {
-    threshold: 0.2,
-    rootMargin: '0px 0px -10% 0px',
-    ...options,
-  }
+  const { threshold = 0.15, rootMargin = '0px 0px -10% 0px' } = options
 
   useEffect(() => {
+    const element = elementRef.current
+    if (!element) {
+      return undefined
+    }
+
     const observer = new IntersectionObserver(
       ([entry]) => {
-        // ✅ Always toggle both ways
-        setIsVisible(entry.intersectionRatio > 0.15)
+        setIsVisible(entry.intersectionRatio >= threshold)
       },
       {
-        threshold: [0, 0.1, 0.2, 0.4, 0.6],
-        rootMargin: defaultOptions.rootMargin,
+        threshold,
+        rootMargin,
       }
     )
 
-    const el = elementRef.current
-    if (el) observer.observe(el)
+    observer.observe(element)
 
     return () => {
-      if (el) observer.unobserve(el)
+      observer.unobserve(element)
       observer.disconnect()
     }
-  }, [defaultOptions.rootMargin])
+  }, [rootMargin, threshold])
 
   return { elementRef, isVisible }
 }

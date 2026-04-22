@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef } from 'react'
+import { memo, useEffect, useMemo, useRef } from 'react'
 import { Link } from 'react-router-dom'
 import { motion, useScroll, useTransform, useSpring } from 'framer-motion'
 import ReactMarkdown from 'react-markdown'
@@ -659,4 +659,4 @@ function TextCard({ mobile = false }) {
   )
 }
 
-export default AboutSection
+export default memo(AboutSection)

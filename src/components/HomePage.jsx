@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 import { FiChevronDown } from 'react-icons/fi'
 import Navbar from './Navbar'
 import Hero from './Hero'
@@ -22,7 +22,9 @@ const HomePage = ({ isDarkMode, onToggleTheme }) => {
   )
 
   const [activeSection, setActiveSection] = useState('home')
-  const [hideScrollCue, setHideScrollCue] = useState(() => sessionStorage.getItem('home-scroll-cue-hidden') === 'true')
+  const [hideScrollCue, setHideScrollCue] = useState(
+    () => sessionStorage.getItem('home-scroll-cue-hidden') === 'true',
+  )
 
   useEffect(() => {
     window.scrollTo({ top: 0, left: 0, behavior: 'auto' })
@@ -31,14 +33,14 @@ const HomePage = ({ isDarkMode, onToggleTheme }) => {
   useEffect(() => {
     let rafId = 0
 
-    const updateActiveSection = () => {
+    const updateScrollState = () => {
       const marker = window.scrollY + 140
       let currentSection = 'home'
 
-      sections.forEach(({ id }) => {
+      for (const { id } of sections) {
         const section = document.getElementById(id)
         if (!section) {
-          return
+          continue
         }
 
         const sectionTop = section.offsetTop
@@ -47,19 +49,25 @@ const HomePage = ({ isDarkMode, onToggleTheme }) => {
         if (marker >= sectionTop && marker < sectionBottom) {
           currentSection = id
         }
-      })
+      }
 
       setActiveSection((previous) => (previous === currentSection ? previous : currentSection))
+
+      if (!hideScrollCue && window.scrollY > 24) {
+        setHideScrollCue(true)
+        sessionStorage.setItem('home-scroll-cue-hidden', 'true')
+      }
+
       rafId = 0
     }
 
     const handleScroll = () => {
       if (!rafId) {
-        rafId = window.requestAnimationFrame(updateActiveSection)
+        rafId = window.requestAnimationFrame(updateScrollState)
       }
     }
 
-    updateActiveSection()
+    updateScrollState()
     window.addEventListener('scroll', handleScroll, { passive: true })
     window.addEventListener('resize', handleScroll)
 
@@ -70,27 +78,9 @@ const HomePage = ({ isDarkMode, onToggleTheme }) => {
         window.cancelAnimationFrame(rafId)
       }
     }
-  }, [sections])
+  }, [hideScrollCue, sections])
 
-  useEffect(() => {
-    if (hideScrollCue) {
-      return
-    }
-
-    const dismissScrollCue = () => {
-      if (window.scrollY > 24) {
-        setHideScrollCue(true)
-        sessionStorage.setItem('home-scroll-cue-hidden', 'true')
-      }
-    }
-
-    window.addEventListener('scroll', dismissScrollCue, { passive: true })
-    return () => {
-      window.removeEventListener('scroll', dismissScrollCue)
-    }
-  }, [hideScrollCue])
-
-  const handleNavClick = (sectionId) => {
+  const handleNavClick = useCallback((sectionId) => {
     const section = document.getElementById(sectionId)
     if (section) {
       const navHeader = document.querySelector('header')
@@ -104,7 +94,7 @@ const HomePage = ({ isDarkMode, onToggleTheme }) => {
         behavior: 'smooth',
       })
     }
-  }
+  }, [])
 
   return (
     <div className="relative min-h-screen bg-stone-100 text-slate-900 transition-colors duration-300 dark:bg-slate-950 dark:text-slate-100">
@@ -123,7 +113,6 @@ const HomePage = ({ isDarkMode, onToggleTheme }) => {
 
       <main className="relative flex w-full flex-col gap-12 px-5 pb-20 pt-28 sm:px-8 lg:px-12 xl:px-16">
         <Hero onNavClick={handleNavClick} />
-        {/* About: sticky animation — compact spacing */}
         <div className="lg:contents">
           <AboutSection />
         </div>

@@ -1,5 +1,5 @@
+import { memo, useState } from 'react'
 import { motion } from 'framer-motion'
-import { useState } from 'react'
 import { FiExternalLink, FiGithub } from 'react-icons/fi'
 
 const ProjectCard = ({ project, index }) => {
@@ -251,4 +251,4 @@ const ProjectCard = ({ project, index }) => {
   )
 }
 
-export default ProjectCard
+export default memo(ProjectCard)

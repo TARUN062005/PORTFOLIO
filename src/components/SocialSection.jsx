@@ -1,3 +1,4 @@
+import { memo } from 'react'
 import { FaDiscord, FaGithub, FaLinkedin } from 'react-icons/fa'
 import { FaXTwitter } from 'react-icons/fa6'
 
@@ -254,4 +255,4 @@ const SocialSection = () => {
   )
 }
 
-export default SocialSection
+export default memo(SocialSection)

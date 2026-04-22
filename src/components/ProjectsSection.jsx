@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom'
+import { memo } from 'react'
 import { projects } from '../data/portfolioData'
 import ProjectStack from './ProjectStack'
 import useRevealOnScroll from '../hooks/useRevealOnScroll'
@@ -169,4 +170,4 @@ const ProjectsSection = ({ showAllLink = true }) => {
   )
 }
 
-export default ProjectsSection
+export default memo(ProjectsSection)

@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react'
+import { memo, useMemo, useState } from 'react'
 import { FiMail, FiMapPin, FiPhone, FiSend } from 'react-icons/fi'
 import useRevealOnScroll from '../hooks/useRevealOnScroll'
 
@@ -227,4 +227,4 @@ const Contact = () => {
   )
 }
 
-export default Contact
+export default memo(Contact)

@@ -13,88 +13,44 @@ const Loader = ({ onComplete }) => {
 
   useEffect(() => {
     let isMounted = true
+    let completionTimer = null
 
-    const loadAssets = async () => {
-      try {
-        const { projects } = await import('../data/portfolioData.js')
-        
-        // 1. ONLY PRELOAD CRITICAL INITIAL ASSETS
-        const imagesToPreload = [
-          '/profile-avatar.svg',
-          ...projects.slice(0, 2).map((p) => p.image).filter(Boolean)
-        ]
+    const criticalAssets = ['/profile-avatar.svg']
+    criticalAssets.forEach((src) => {
+      const img = new Image()
+      img.src = src
+    })
 
-        const routeModulesToPreload = [
-          import('./ProjectsPage')
-        ]
+    void import('./ProjectsPage')
 
-        const totalTasks = imagesToPreload.length + routeModulesToPreload.length
-        let completedTasks = 0
+    const start = window.performance.now()
+    const duration = 900
 
-        const minLoadTimePromise = new Promise(resolve => setTimeout(resolve, 3500))
-
-        const updateProgress = () => {
-          if (!isMounted) return
-          completedTasks++
-          const percentage = Math.floor((completedTasks / totalTasks) * 100)
-          
-          // 3. PREVENT JITTER
-          setProgress(prev => {
-            if (percentage < prev) return prev
-            return percentage
-          })
-        }
-
-        const imagePromises = imagesToPreload.map((src) => {
-          return new Promise((resolve) => {
-            const img = new Image()
-            img.src = src
-            img.onload = () => { updateProgress(); resolve(); }
-            img.onerror = () => { updateProgress(); resolve(); }
-          })
-        })
-
-        const routePromises = routeModulesToPreload.map(modulePromise => 
-          modulePromise.then(() => updateProgress()).catch(() => updateProgress())
-        )
-
-        // 2. NON-BLOCKING RACE CONDITION
-        await Promise.race([
-          Promise.all([...imagePromises, ...routePromises, minLoadTimePromise]),
-          new Promise(res => setTimeout(res, 5000))
-        ])
-
-        if (isMounted) {
-          // 5. FIX DEMO SMOOTH FINISH
-          const interval = setInterval(() => {
-            setProgress(prev => {
-              const next = prev + 2
-              if (next >= 100) {
-                clearInterval(interval)
-                if (isMounted) {
-                  setIsFadingOut(true)
-                  setTimeout(onComplete, 600)
-                }
-                return 100
-              }
-              return next
-            })
-          }, 16)
-        }
-      } catch (err) {
-        console.error("Failed to load assets:", err)
-        if (isMounted) {
-          setProgress(100)
-          setIsFadingOut(true)
-          setTimeout(onComplete, 600)
-        }
+    const tick = () => {
+      if (!isMounted) {
+        return
       }
+
+      const elapsed = window.performance.now() - start
+      const percentage = Math.min(100, Math.round((elapsed / duration) * 100))
+      setProgress((previous) => (percentage > previous ? percentage : previous))
+
+      if (elapsed >= duration) {
+        setIsFadingOut(true)
+        completionTimer = window.setTimeout(onComplete, 500)
+        return
+      }
+
+      window.requestAnimationFrame(tick)
     }
 
-    loadAssets()
+    window.requestAnimationFrame(tick)
 
     return () => {
       isMounted = false
+      if (completionTimer) {
+        window.clearTimeout(completionTimer)
+      }
     }
   // 4. FIX BUG: ONLY DEPEND ON onComplete
   }, [onComplete])

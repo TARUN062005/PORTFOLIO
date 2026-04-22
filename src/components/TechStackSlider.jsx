@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react'
+import { memo, useMemo, useState } from 'react'
 import { techStack } from '../data/portfolioData'
 import './TechStack.css'
 
@@ -80,7 +80,7 @@ const TechStackSlider = ({ items = techStack, duration = 30 }) => {
             style={{ '--duration': `${duration}s` }}
           >
             {rowOneTrack.map(({ name, icon }, index) => (
-              <TechItem key={`r1-${icon}-${index}`} name={name} iconPath={icon} />
+              <MemoTechItem key={`r1-${icon}-${index}`} name={name} iconPath={icon} />
             ))}
           </div>
 
@@ -90,7 +90,7 @@ const TechStackSlider = ({ items = techStack, duration = 30 }) => {
               style={{ '--duration': `${duration + 8}s`, animationDirection: 'reverse' }}
             >
               {rowTwoTrack.map(({ name, icon }, index) => (
-                <TechItem key={`r2-${icon}-${index}`} name={name} iconPath={icon} />
+                <MemoTechItem key={`r2-${icon}-${index}`} name={name} iconPath={icon} />
               ))}
             </div>
           )}
@@ -136,4 +136,6 @@ function TechItem({ name, iconPath }) {
   )
 }
 
-export default TechStackSlider
+const MemoTechItem = memo(TechItem)
+
+export default memo(TechStackSlider)

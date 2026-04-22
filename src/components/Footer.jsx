@@ -1,3 +1,4 @@
+import { memo } from 'react'
 import { motion } from 'framer-motion'
 import {
   FiArrowUp,
@@ -277,4 +278,4 @@ const Footer = ({ onNavClick }) => {
   )
 }
 
-export default Footer
+export default memo(Footer)

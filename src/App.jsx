@@ -1,10 +1,11 @@
-import { useEffect, useState } from 'react'
+import { lazy, Suspense, useEffect, useState } from 'react'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import HomePage from './components/HomePage'
-import ProjectsPage from './components/ProjectsPage'
 import AboutSection from './components/AboutSection'
 import Loader from './components/Loader'
 import NotFound from './components/NotFound'
+
+const ProjectsPage = lazy(() => import('./components/ProjectsPage'))
 
 function App() {
   const [isDarkMode, setIsDarkMode] = useState(() => {
@@ -26,19 +27,6 @@ function App() {
     localStorage.setItem('portfolio-theme', isDarkMode ? 'dark' : 'light')
   }, [isDarkMode])
 
-  useEffect(() => {
-    if (isAppReady) {
-      import('./data/portfolioData.js').then(({ projects }) => {
-        projects.slice(2).forEach(p => {
-          if (p.image) {
-            const img = new Image()
-            img.src = p.image
-          }
-        })
-      }).catch(console.error)
-    }
-  }, [isAppReady])
-
   return (
     <BrowserRouter>
       {!isAppReady && <Loader onComplete={() => setIsAppReady(true)} />}
@@ -53,7 +41,14 @@ function App() {
           `}</style>
           <Routes>
             <Route path="/" element={<HomePage isDarkMode={isDarkMode} onToggleTheme={() => setIsDarkMode((previous) => !previous)} />} />
-            <Route path="/projects" element={<ProjectsPage />} />
+            <Route
+              path="/projects"
+              element={
+                <Suspense fallback={<div className="min-h-screen bg-stone-100 dark:bg-slate-950" />}>
+                  <ProjectsPage />
+                </Suspense>
+              }
+            />
             <Route path="/about" element={<AboutSection variant="page" />} />
             <Route path="*" element={<NotFound />} />
           </Routes>

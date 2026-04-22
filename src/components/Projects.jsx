@@ -2,17 +2,21 @@ import { FiExternalLink, FiGithub, FiGrid } from 'react-icons/fi'
 import { projects } from '../data/portfolioData'
 import useRevealOnScroll from '../hooks/useRevealOnScroll'
 import { motion } from 'framer-motion'
-import { useState } from 'react'
+import { memo, useMemo, useState } from 'react'
 
 const Projects = () => {
   const { elementRef, isVisible } = useRevealOnScroll()
   const [filter, setFilter] = useState('all')
   
-  const techCategories = ['all', ...new Set(projects.flatMap(p => p.techStack))].slice(0, 8)
-  
-  const filteredProjects = filter === 'all' 
-    ? projects 
-    : projects.filter(p => p.techStack.includes(filter))
+  const techCategories = useMemo(
+    () => ['all', ...new Set(projects.flatMap((project) => project.techStack))].slice(0, 8),
+    [],
+  )
+
+  const filteredProjects = useMemo(
+    () => (filter === 'all' ? projects : projects.filter((project) => project.techStack.includes(filter))),
+    [filter],
+  )
 
   return (
     <section
@@ -234,4 +238,4 @@ const Projects = () => {
   )
 }
 
-export default Projects
+export default memo(Projects)

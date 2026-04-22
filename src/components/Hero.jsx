@@ -1,3 +1,4 @@
+import { memo } from 'react'
 import { FiArrowRight, FiGithub, FiLinkedin, FiMail } from 'react-icons/fi'
 import { FaDiscord } from 'react-icons/fa'
 import { FaXTwitter } from 'react-icons/fa6'
@@ -394,4 +395,4 @@ const Hero = ({ onNavClick }) => {
   )
 }
 
-export default Hero
+export default memo(Hero)

@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react'
+import { memo, useEffect, useRef, useState } from 'react'
 import { FiExternalLink, FiGithub } from 'react-icons/fi'
 
 const MobileProjectStack = ({ projects }) => {
@@ -839,4 +839,4 @@ const ProjectStack = ({ projects }) => {
   )
 }
 
-export default ProjectStack
+export default memo(ProjectStack)
