@@ -1,4 +1,4 @@
-import { memo, useMemo, useState } from 'react'
+import { memo, useCallback, useMemo, useState } from 'react'
 import { techStack } from '../data/portfolioData'
 import './TechStack.css'
 
@@ -21,6 +21,13 @@ const CATEGORY_LABELS = {
 const TechStackSlider = ({ items = techStack, duration = 30 }) => {
   const [activeCategory, setActiveCategory] = useState('all')
 
+  const handleCategoryClick = useCallback((event) => {
+    const nextCategory = event.currentTarget.dataset.category
+    if (nextCategory) {
+      setActiveCategory((previous) => (previous === nextCategory ? previous : nextCategory))
+    }
+  }, [])
+
   const filteredItems = useMemo(() => {
     if (activeCategory === 'all') {
       return items
@@ -31,11 +38,23 @@ const TechStackSlider = ({ items = techStack, duration = 30 }) => {
   }, [items, activeCategory])
 
   const useTwoRows = filteredItems.length > 15
-  const rowOneItems = useTwoRows ? filteredItems.slice(0, Math.ceil(filteredItems.length / 2)) : filteredItems
-  const rowTwoItems = useTwoRows ? filteredItems.slice(Math.ceil(filteredItems.length / 2)) : []
+
+  const [rowOneItems, rowTwoItems] = useMemo(() => {
+    if (!useTwoRows) {
+      return [filteredItems, []]
+    }
+
+    const midpoint = Math.ceil(filteredItems.length / 2)
+    return [filteredItems.slice(0, midpoint), filteredItems.slice(midpoint)]
+  }, [filteredItems, useTwoRows])
 
   const rowOneTrack = useMemo(() => [...rowOneItems, ...rowOneItems, ...rowOneItems], [rowOneItems])
   const rowTwoTrack = useMemo(() => [...rowTwoItems, ...rowTwoItems, ...rowTwoItems], [rowTwoItems])
+  const rowOneStyle = useMemo(() => ({ '--duration': `${duration}s` }), [duration])
+  const rowTwoStyle = useMemo(
+    () => ({ '--duration': `${duration + 8}s`, animationDirection: 'reverse' }),
+    [duration],
+  )
 
   return (
     <section id="tech-stack" className="space-y-10 pt-3 lg:-mb-8">
@@ -54,7 +73,8 @@ const TechStackSlider = ({ items = techStack, duration = 30 }) => {
               <button
                 key={category}
                 type="button"
-                onClick={() => setActiveCategory(category)}
+                onClick={handleCategoryClick}
+                data-category={category}
                 className={`rounded-full px-4 py-2 text-sm font-semibold transition-all duration-300 ${
                   isActive
                     ? 'bg-gradient-to-r from-cyan-500 to-emerald-500 text-slate-950 shadow-lg shadow-cyan-500/25'
@@ -77,7 +97,7 @@ const TechStackSlider = ({ items = techStack, duration = 30 }) => {
         <div className={useTwoRows ? 'space-y-5' : ''}>
           <div
             className="tech-slider-track flex w-max items-center gap-6 sm:gap-10 lg:gap-12"
-            style={{ '--duration': `${duration}s` }}
+            style={rowOneStyle}
           >
             {rowOneTrack.map(({ name, icon }, index) => (
               <MemoTechItem key={`r1-${icon}-${index}`} name={name} iconPath={icon} />
@@ -87,7 +107,7 @@ const TechStackSlider = ({ items = techStack, duration = 30 }) => {
           {useTwoRows && rowTwoTrack.length > 0 && (
             <div
               className="tech-slider-track flex w-max items-center gap-6 sm:gap-10 lg:gap-12"
-              style={{ '--duration': `${duration + 8}s`, animationDirection: 'reverse' }}
+              style={rowTwoStyle}
             >
               {rowTwoTrack.map(({ name, icon }, index) => (
                 <MemoTechItem key={`r2-${icon}-${index}`} name={name} iconPath={icon} />
@@ -103,7 +123,10 @@ const TechStackSlider = ({ items = techStack, duration = 30 }) => {
 /* ─── Single icon — no background box, just the logo ───────────────────── */
 function TechItem({ name, iconPath }) {
   const [errored, setErrored] = useState(false)
-  const src = `${DEVICON_BASE}${iconPath}`
+  const src = useMemo(() => `${DEVICON_BASE}${iconPath}`, [iconPath])
+  const handleImageError = useCallback(() => {
+    setErrored(true)
+  }, [])
 
   return (
     <div className="group flex flex-col items-center gap-2">
@@ -124,7 +147,7 @@ function TechItem({ name, iconPath }) {
             group-hover:grayscale-0 group-hover:scale-125 group-hover:drop-shadow-lg
           "
           loading="lazy"
-          onError={() => setErrored(true)}
+          onError={handleImageError}
         />
       )}
 

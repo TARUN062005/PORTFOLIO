@@ -12,9 +12,15 @@ const useRevealOnScroll = (options = {}) => {
       return undefined
     }
 
+    if (typeof IntersectionObserver === 'undefined') {
+      setIsVisible(true)
+      return undefined
+    }
+
     const observer = new IntersectionObserver(
       ([entry]) => {
-        setIsVisible(entry.intersectionRatio >= threshold)
+        const nextIsVisible = entry.intersectionRatio >= threshold
+        setIsVisible((previous) => (previous === nextIsVisible ? previous : nextIsVisible))
       },
       {
         threshold,

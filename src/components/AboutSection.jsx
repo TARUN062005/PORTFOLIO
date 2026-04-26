@@ -481,32 +481,16 @@ const AboutSection = ({ variant = 'section' }) => {
 
       {/* Mobile: Modern Bento Grid Layout */}
       <div className="space-y-4 lg:hidden">
-        <motion.div 
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          className="flex justify-center"
-        >
+        <div className="flex justify-center">
           <ImageEllipse small />
-        </motion.div>
+        </div>
 
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ delay: 0.1 }}
-        >
+        <div>
           <TextCard mobile />
-        </motion.div>
+        </div>
 
         {/* Mobile Quick Stats */}
-        <motion.div 
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ delay: 0.2 }}
-          className="grid grid-cols-2 gap-3"
-        >
+        <div className="grid grid-cols-2 gap-3">
           {stats.map((item) => (
             <div
               key={item.label}
@@ -516,16 +500,10 @@ const AboutSection = ({ variant = 'section' }) => {
               <div className="text-xs text-slate-500 dark:text-slate-400">{item.label}</div>
             </div>
           ))}
-        </motion.div>
+        </div>
 
         {/* Mobile Quick Links */}
-        <motion.div 
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ delay: 0.3 }}
-          className="flex gap-2"
-        >
+        <div className="flex gap-2">
           <Link
             to="/about"
             className="flex-1 rounded-xl bg-gradient-to-r from-cyan-500 to-emerald-500 px-4 py-3 text-center text-sm font-semibold text-white shadow-lg"
@@ -539,7 +517,7 @@ const AboutSection = ({ variant = 'section' }) => {
             <FiMail size={14} />
             Contact
           </a>
-        </motion.div>
+        </div>
       </div>
     </section>
   )

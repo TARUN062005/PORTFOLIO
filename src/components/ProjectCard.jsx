@@ -1,18 +1,18 @@
-import { memo, useState } from 'react'
+import { memo, useCallback, useMemo, useState } from 'react'
 import { motion } from 'framer-motion'
 import { FiExternalLink, FiGithub } from 'react-icons/fi'
 
-const ProjectCard = ({ project, index }) => {
+const ProjectCard = ({ project }) => {
   const [isSelected, setIsSelected] = useState(false)
 
-  return (
-    <motion.article
-      initial={{ opacity: 0, scale: 0.9 }}
-      whileInView={{ opacity: 1, scale: 1 }}
-      viewport={{ once: true }}
-      className="uiverse-container"
-    >
-      <style>{`
+  const handleToggleCard = useCallback(() => {
+    setIsSelected((previous) => !previous)
+  }, [])
+
+  const cardClassName = useMemo(() => `card three ${isSelected ? 'open' : ''}`, [isSelected])
+
+  const cardStyles = useMemo(
+    () => `
         .uiverse-container {
           --card-border-color: rgba(15, 23, 42, 0.45);
           --card-edge-highlight: rgba(2, 6, 23, 0.3);
@@ -222,12 +222,23 @@ const ProjectCard = ({ project, index }) => {
             line-height: 1.32;
           }
         }
-      `}</style>
+      `,
+    [project.image],
+  )
 
-      <div className="cards" onClick={() => setIsSelected((previous) => !previous)}>
+  return (
+    <motion.article
+      initial={{ opacity: 0, scale: 0.9 }}
+      whileInView={{ opacity: 1, scale: 1 }}
+      viewport={{ once: true }}
+      className="uiverse-container"
+    >
+      <style>{cardStyles}</style>
+
+      <div className="cards" onClick={handleToggleCard}>
         <div className="card one" />
         <div className="card two" />
-        <div className={`card three ${isSelected ? 'open' : ''}`}>
+        <div className={cardClassName}>
           <div className="cardDetails">
             <div className="flex flex-col">
               <span className="cardDetailsHeader">{project.title}</span>

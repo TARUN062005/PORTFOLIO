@@ -1,4 +1,4 @@
-import { memo, useEffect, useRef, useState } from 'react'
+import { memo, useCallback, useEffect, useRef, useState } from 'react'
 import { FiExternalLink, FiGithub } from 'react-icons/fi'
 
 const MobileProjectStack = ({ projects }) => {
@@ -212,6 +212,7 @@ const MobileProjectStack = ({ projects }) => {
 const ProjectStack = ({ projects }) => {
   const [hoveredIndex, setHoveredIndex] = useState(0)
   const hoverTimerRef = useRef(null)
+  const resizeRafRef = useRef(0)
   const [isMobile, setIsMobile] = useState(() => {
     if (typeof window === 'undefined') {
       return false
@@ -220,16 +221,75 @@ const ProjectStack = ({ projects }) => {
     return window.innerWidth <= 768
   })
 
+  const clearHoverTimer = useCallback(() => {
+    if (hoverTimerRef.current) {
+      window.clearTimeout(hoverTimerRef.current)
+      hoverTimerRef.current = null
+    }
+  }, [])
+
+  const updateHoveredIndex = useCallback((nextIndex) => {
+    setHoveredIndex((previous) => (previous !== nextIndex ? nextIndex : previous))
+  }, [])
+
+  const handleCardMouseEnter = useCallback(
+    (event) => {
+      const sourceIndex = Number(event.currentTarget.dataset.sourceIndex)
+      if (Number.isNaN(sourceIndex)) {
+        return
+      }
+
+      clearHoverTimer()
+
+      hoverTimerRef.current = window.setTimeout(() => {
+        updateHoveredIndex(sourceIndex)
+      }, 950)
+    },
+    [clearHoverTimer, updateHoveredIndex],
+  )
+
+  const handleCardMouseLeave = useCallback(() => {
+    clearHoverTimer()
+  }, [clearHoverTimer])
+
+  const handleCardClick = useCallback(
+    (event) => {
+      const sourceIndex = Number(event.currentTarget.dataset.sourceIndex)
+      if (!Number.isNaN(sourceIndex)) {
+        updateHoveredIndex(sourceIndex)
+      }
+    },
+    [updateHoveredIndex],
+  )
+
   useEffect(() => {
     const updateViewport = () => {
-      setIsMobile(window.innerWidth <= 768)
+      const nextIsMobile = window.innerWidth <= 768
+      setIsMobile((previous) => (previous === nextIsMobile ? previous : nextIsMobile))
+    }
+
+    const handleResize = () => {
+      if (resizeRafRef.current) {
+        window.cancelAnimationFrame(resizeRafRef.current)
+      }
+
+      resizeRafRef.current = window.requestAnimationFrame(() => {
+        resizeRafRef.current = 0
+        updateViewport()
+      })
     }
 
     updateViewport()
-    window.addEventListener('resize', updateViewport)
+    window.addEventListener('resize', handleResize)
 
-    return () => window.removeEventListener('resize', updateViewport)
-  }, [])
+    return () => {
+      window.removeEventListener('resize', handleResize)
+      if (resizeRafRef.current) {
+        window.cancelAnimationFrame(resizeRafRef.current)
+      }
+      clearHoverTimer()
+    }
+  }, [clearHoverTimer])
 
   if (!projects || projects.length < 2) return null
 
@@ -769,24 +829,11 @@ const ProjectStack = ({ projects }) => {
           <div
             key={project.title}
             data-index={index}
+            data-source-index={sourceIndex}
             className={`project-card ${index === 0 ? 'active' : ''}`}
-            onMouseEnter={() => {
-              if (hoverTimerRef.current) {
-                window.clearTimeout(hoverTimerRef.current)
-              }
-
-              hoverTimerRef.current = window.setTimeout(() => {
-                setHoveredIndex((previous) => (previous !== sourceIndex ? sourceIndex : previous))
-              }, 950)
-            }}
-            onMouseLeave={() => {
-              if (hoverTimerRef.current) {
-                window.clearTimeout(hoverTimerRef.current)
-              }
-            }}
-            onClick={() => {
-              setHoveredIndex((previous) => (previous !== sourceIndex ? sourceIndex : previous))
-            }}
+            onMouseEnter={handleCardMouseEnter}
+            onMouseLeave={handleCardMouseLeave}
+            onClick={handleCardClick}
           >
             <div className="card-layout">
               <div className="card-details">

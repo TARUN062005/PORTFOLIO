@@ -24,7 +24,7 @@ const Loader = ({ onComplete }) => {
     void import('./ProjectsPage')
 
     const start = window.performance.now()
-    const duration = 900
+    const duration = 4000
 
     const tick = () => {
       if (!isMounted) {

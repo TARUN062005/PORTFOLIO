@@ -1,27 +1,43 @@
+import { memo, useCallback, useMemo } from 'react'
 import { FiFolder, FiGithub, FiHome, FiLinkedin, FiMail, FiMoon, FiSun, FiUser } from 'react-icons/fi'
 
-const Navbar = ({ sections, activeSection, onNavClick, isDarkMode, onToggleTheme }) => {
-  const navIcons = {
-    home: FiHome,
-    about: FiUser,
-    projects: FiFolder,
-    contact: FiMail,
-  }
+const NAV_ICONS = {
+  home: FiHome,
+  about: FiUser,
+  projects: FiFolder,
+  contact: FiMail,
+}
 
-  const navItems = sections.filter((section) => navIcons[section.id])
+const Navbar = ({ sections, activeSection, onNavClick, isDarkMode, onToggleTheme }) => {
+  const navItems = useMemo(() => sections.filter((section) => NAV_ICONS[section.id]), [sections])
+
+  const handleNavItemClick = useCallback(
+    (event) => {
+      const sectionId = event.currentTarget.dataset.sectionId
+      if (sectionId) {
+        onNavClick(sectionId)
+      }
+    },
+    [onNavClick],
+  )
+
+  const handleThemeToggle = useCallback(() => {
+    onToggleTheme()
+  }, [onToggleTheme])
 
   return (
     <header className="fixed inset-x-0 top-4 z-[9999] flex justify-center px-3 sm:top-5">
       <nav className="menu portfolio-menu">
         {navItems.map((section) => {
-          const Icon = navIcons[section.id]
+          const Icon = NAV_ICONS[section.id]
           const isActive = activeSection === section.id
 
           return (
             <button
               key={section.id}
               type="button"
-              onClick={() => onNavClick(section.id)}
+              onClick={handleNavItemClick}
+              data-section-id={section.id}
               aria-label={section.label}
               className={`menu-link ${isActive ? 'is-selected' : ''}`}
             >
@@ -61,7 +77,7 @@ const Navbar = ({ sections, activeSection, onNavClick, isDarkMode, onToggleTheme
 
         <button
           type="button"
-          onClick={onToggleTheme}
+          onClick={handleThemeToggle}
           aria-label="Toggle theme"
           className="menu-link"
         >
@@ -75,4 +91,4 @@ const Navbar = ({ sections, activeSection, onNavClick, isDarkMode, onToggleTheme
   )
 }
 
-export default Navbar
+export default memo(Navbar)

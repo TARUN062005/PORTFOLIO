@@ -2,11 +2,18 @@ import { FiExternalLink, FiGithub, FiGrid } from 'react-icons/fi'
 import { projects } from '../data/portfolioData'
 import useRevealOnScroll from '../hooks/useRevealOnScroll'
 import { motion } from 'framer-motion'
-import { memo, useMemo, useState } from 'react'
+import { memo, useCallback, useMemo, useState } from 'react'
 
 const Projects = () => {
   const { elementRef, isVisible } = useRevealOnScroll()
   const [filter, setFilter] = useState('all')
+
+  const handleFilterClick = useCallback((event) => {
+    const nextFilter = event.currentTarget.dataset.filter
+    if (nextFilter) {
+      setFilter((previous) => (previous === nextFilter ? previous : nextFilter))
+    }
+  }, [])
   
   const techCategories = useMemo(
     () => ['all', ...new Set(projects.flatMap((project) => project.techStack))].slice(0, 8),
@@ -160,7 +167,8 @@ const Projects = () => {
         {techCategories.map((tech) => (
           <button
             key={tech}
-            onClick={() => setFilter(tech)}
+            onClick={handleFilterClick}
+            data-filter={tech}
             className={`rounded-full px-2.5 py-1.5 text-xs font-semibold transition-all duration-300 sm:px-4 sm:py-2 sm:text-sm ${
               filter === tech
                 ? 'bg-gradient-to-r from-cyan-500 to-emerald-500 text-slate-950 shadow-lg shadow-cyan-500/25'
@@ -187,6 +195,8 @@ const Projects = () => {
               <img
                 src={project.image}
                 alt={project.title}
+                loading="lazy"
+                decoding="async"
                 className="h-full w-full object-cover transition duration-500 group-hover:scale-110"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-slate-900/80 to-transparent" />

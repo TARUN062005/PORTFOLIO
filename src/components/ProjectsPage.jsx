@@ -1,399 +1,493 @@
-import { useState, useRef } from 'react'
-import { motion, AnimatePresence, useInView } from 'framer-motion'
-import { projects } from '../data/portfolioData'
+import { useState, useMemo, useEffect, useRef } from "react"
+import { motion, AnimatePresence } from "framer-motion"
+import { projects } from "../data/portfolioData"
 import { 
-  FiExternalLink, 
+  FiSearch, 
+  FiX, 
   FiGithub, 
-  FiArrowRight, 
-  FiCode, 
-  FiLayers,
-  FiZap,
-  FiCalendar,
-  FiUsers
-} from 'react-icons/fi'
+  FiArrowUpRight, 
+  FiLayers, 
+  FiFilter,
+  FiChevronDown,
+  FiGrid,
+  FiList
+} from "react-icons/fi"
 
-const ProjectsPage = () => {
-  const [activeIndex, setActiveIndex] = useState(null)
-  const [hoveredIndex, setHoveredIndex] = useState(null)
-  const heroRef = useRef(null)
-  const isHeroInView = useInView(heroRef, { once: true })
-
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.1,
-        delayChildren: 0.2,
-      },
-    },
-  }
-
-  const itemVariants = {
-    hidden: { opacity: 0, y: 20 },
-    visible: { 
-      opacity: 1, 
-      y: 0,
-      transition: { duration: 0.5, ease: [0.22, 1, 0.36, 1] }
-    },
-  }
-
+/**
+ * Modern Project Card Component - Fully Responsive
+ */
+const ProjectCard = ({ project, index, viewMode }) => {
+  const isGrid = viewMode === "grid"
+  
   return (
-    <main className="relative min-h-screen overflow-x-hidden bg-slate-950 text-white">
-      {/* Animated Background Gradient */}
-      <div className="pointer-events-none fixed inset-0 z-0">
-        <div className="absolute inset-0 bg-gradient-to-br from-cyan-500/5 via-transparent to-emerald-500/5" />
-        <motion.div
-          animate={{
-            scale: [1, 1.2, 1],
-            opacity: [0.3, 0.5, 0.3],
-          }}
-          transition={{ duration: 8, repeat: Infinity, ease: "linear" }}
-          className="absolute -left-32 top-20 h-96 w-96 rounded-full bg-cyan-500/10 blur-[120px]"
+    <motion.div
+      layout
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, scale: 0.95 }}
+      transition={{ duration: 0.4, delay: index * 0.05 }}
+      className={`group relative flex overflow-hidden rounded-2xl sm:rounded-3xl border border-slate-200/60 bg-white transition-all hover:shadow-2xl hover:shadow-cyan-500/10 dark:border-white/10 dark:bg-slate-900/50 ${
+        isGrid ? 'flex-col' : 'flex-col sm:flex-row'
+      }`}
+    >
+      {/* Image Container */}
+      <div className={`relative overflow-hidden ${isGrid ? 'aspect-video' : 'aspect-video sm:aspect-auto sm:w-48 md:w-56 lg:w-64 sm:shrink-0'}`}>
+        <img
+          src={project.image || "/api/placeholder/800/450"}
+          alt={project.title}
+          className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110"
         />
-        <motion.div
-          animate={{
-            scale: [1.2, 1, 1.2],
-            opacity: [0.3, 0.5, 0.3],
-          }}
-          transition={{ duration: 10, repeat: Infinity, ease: "linear" }}
-          className="absolute -right-32 bottom-20 h-96 w-96 rounded-full bg-emerald-500/10 blur-[120px]"
-        />
-        <div className="absolute inset-0 bg-[linear-gradient(to_right,#94a3b808_1px,transparent_1px),linear-gradient(to_bottom,#94a3b808_1px,transparent_1px)] bg-[size:32px_32px]" />
+        <div className="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-transparent to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
+        
+        {/* Hover Actions */}
+        <div className="absolute bottom-4 left-4 right-4 flex translate-y-4 gap-2 opacity-0 transition-all duration-300 group-hover:translate-y-0 group-hover:opacity-100">
+          {project.liveUrl && (
+            <a 
+              href={project.liveUrl} 
+              target="_blank" 
+              rel="noreferrer" 
+              className="flex-1 rounded-xl bg-white py-2 sm:py-2.5 text-center text-xs sm:text-sm font-bold text-slate-900 backdrop-blur-md transition-all hover:bg-cyan-50 active:scale-95"
+            >
+              Live Demo
+            </a>
+          )}
+          {project.github && (
+            <a 
+              href={project.github} 
+              target="_blank" 
+              rel="noreferrer"
+              className="rounded-xl bg-slate-900/80 p-2 sm:p-2.5 text-white backdrop-blur-md transition-all hover:bg-slate-800 active:scale-95"
+              aria-label="View GitHub"
+            >
+              <FiGithub className="h-4 w-4 sm:h-5 sm:w-5" />
+            </a>
+          )}
+        </div>
+        
+        {/* Featured Badge */}
+        {project.featured && (
+          <div className="absolute left-3 top-3 sm:left-4 sm:top-4 rounded-full bg-amber-400 px-2 sm:px-3 py-0.5 sm:py-1 text-[10px] sm:text-xs font-bold text-slate-900 shadow-lg">
+            ★ Featured
+          </div>
+        )}
       </div>
 
-      <div className="relative z-10">
-        {/* HERO SECTION */}
-        <section ref={heroRef} className="w-full px-6 pb-20 pt-32 lg:px-12 xl:px-16">
-          <motion.div
-            initial="hidden"
-            animate={isHeroInView ? "visible" : "hidden"}
-            variants={containerVariants}
-            className="mx-auto max-w-7xl"
+      {/* Content */}
+      <div className="flex flex-1 flex-col p-4 sm:p-5 md:p-6">
+        <div className="mb-2 sm:mb-3 flex flex-wrap gap-1 sm:gap-1.5">
+          {project.tags?.slice(0, 3).map(tag => (
+            <span 
+              key={tag} 
+              className="text-[9px] sm:text-[10px] font-bold uppercase tracking-wider text-cyan-600 dark:text-cyan-400"
+            >
+              #{tag}
+            </span>
+          ))}
+          {project.tags?.length > 3 && (
+            <span className="text-[9px] sm:text-[10px] font-medium text-slate-400">
+              +{project.tags.length - 3}
+            </span>
+          )}
+        </div>
+        
+        <h3 className="mb-1.5 sm:mb-2 text-base sm:text-lg md:text-xl font-bold text-slate-900 dark:text-white line-clamp-2">
+          {project.title}
+        </h3>
+        
+        <p className="line-clamp-2 text-xs sm:text-sm leading-relaxed text-slate-600 dark:text-slate-400">
+          {project.description}
+        </p>
+        
+        <div className="mt-auto flex items-center justify-between pt-3 sm:pt-4">
+          <span className="text-[10px] sm:text-xs font-medium text-slate-400">
+            {project.date || "2024"}
+          </span>
+          <FiArrowUpRight className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-slate-300 transition-colors group-hover:text-cyan-500" />
+        </div>
+      </div>
+    </motion.div>
+  )
+}
+
+/**
+ * Category Filter Button Component
+ */
+const CategoryButton = ({ tag, isActive, onClick, count }) => (
+  <button
+    onClick={onClick}
+    className={`group relative rounded-full px-3 sm:px-4 md:px-5 py-1.5 sm:py-2 text-xs sm:text-sm font-semibold transition-all duration-300 ${
+      isActive
+        ? "bg-slate-950 text-white shadow-lg shadow-slate-950/20 dark:bg-white dark:text-slate-950 dark:shadow-white/20"
+        : "bg-white text-slate-600 hover:bg-slate-100 dark:bg-slate-900 dark:text-slate-400 dark:hover:bg-slate-800"
+    }`}
+  >
+    <span className="relative z-10">{tag}</span>
+    {count > 0 && tag !== "All" && (
+      <span className={`ml-1.5 text-[10px] sm:text-xs ${
+        isActive 
+          ? "text-slate-400 dark:text-slate-500" 
+          : "text-slate-400"
+      }`}>
+        {count}
+      </span>
+    )}
+    {isActive && (
+      <motion.div
+        layoutId="activeCategory"
+        className="absolute inset-0 rounded-full bg-slate-950 dark:bg-white"
+        transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
+      />
+    )}
+  </button>
+)
+
+const ProjectsPage = () => {
+  const [activeTag, setActiveTag] = useState("All")
+  const [searchQuery, setSearchQuery] = useState("")
+  const [viewMode, setViewMode] = useState("grid")
+  const [showMobileFilters, setShowMobileFilters] = useState(false)
+  const [isScrolled, setIsScrolled] = useState(false)
+  const scrollRafRef = useRef(0)
+
+  // Handle scroll for sticky header effects
+  useEffect(() => {
+    const updateScrollState = () => {
+      scrollRafRef.current = 0
+      const nextIsScrolled = window.scrollY > 10
+      setIsScrolled((previous) => (previous === nextIsScrolled ? previous : nextIsScrolled))
+    }
+
+    const handleScroll = () => {
+      if (!scrollRafRef.current) {
+        scrollRafRef.current = window.requestAnimationFrame(updateScrollState)
+      }
+    }
+
+    updateScrollState()
+    window.addEventListener("scroll", handleScroll, { passive: true })
+    return () => {
+      window.removeEventListener("scroll", handleScroll)
+      if (scrollRafRef.current) {
+        window.cancelAnimationFrame(scrollRafRef.current)
+      }
+    }
+  }, [])
+
+  // Normalize data once
+  const allProjects = useMemo(() => projects.map(p => ({
+    ...p,
+    tags: p.tags || p.techStack || [],
+    github: p.github || p.githubUrl || ""
+  })), [])
+
+  // Derived unique tags with counts
+  const categories = useMemo(() => {
+    const tagCounts = {}
+    allProjects.forEach(p => {
+      p.tags.forEach(tag => {
+        tagCounts[tag] = (tagCounts[tag] || 0) + 1
+      })
+    })
+    
+    return [
+      { name: "All", count: allProjects.length },
+      ...Object.entries(tagCounts)
+        .sort((a, b) => b[1] - a[1])
+        .map(([name, count]) => ({ name, count }))
+    ]
+  }, [allProjects])
+
+  // Combined Filter Logic
+  const filteredProjects = useMemo(() => {
+    return allProjects.filter(project => {
+      const matchesTag = activeTag === "All" || project.tags.includes(activeTag)
+      const matchesSearch = searchQuery === "" || 
+        project.title.toLowerCase().includes(searchQuery.toLowerCase()) || 
+        project.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        project.tags.some(tag => tag.toLowerCase().includes(searchQuery.toLowerCase()))
+      return matchesTag && matchesSearch
+    })
+  }, [allProjects, activeTag, searchQuery])
+
+  // Clear search
+  const clearSearch = () => setSearchQuery("")
+
+  return (
+    <main className="min-h-screen bg-gradient-to-b from-[#fafafa] to-white dark:from-[#020617] dark:to-[#0a0f1f] selection:bg-cyan-100 dark:selection:bg-cyan-900/30">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-12 sm:py-16 lg:py-20">
+        
+        {/* Header Section */}
+        <header className="mb-8 sm:mb-12 lg:mb-16 max-w-3xl">
+          <motion.div 
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+            className="flex items-center gap-2 text-cyan-600 dark:text-cyan-400"
           >
-            <motion.div variants={itemVariants} className="mb-6">
-              <span className="inline-flex items-center gap-2 rounded-full border border-cyan-400/30 bg-cyan-500/10 px-4 py-2 text-sm font-semibold text-cyan-300">
-                <FiZap className="h-4 w-4" />
-                Featured Work
-              </span>
-            </motion.div>
-
-            <motion.h1 
-              variants={itemVariants}
-              className="text-5xl font-black leading-tight sm:text-7xl lg:text-8xl"
-            >
-              Selected
-              <span className="bg-gradient-to-r from-cyan-300 via-emerald-300 to-amber-200 bg-clip-text text-transparent"> Work</span>
-            </motion.h1>
-
-            <motion.p 
-              variants={itemVariants}
-              className="mt-6 max-w-2xl text-lg text-slate-400"
-            >
-              A curated collection of projects focused on performance, user experience, and scalable architecture. Each project represents a unique challenge and innovative solution.
-            </motion.p>
-
-            {/* Stats */}
-            <motion.div 
-              variants={itemVariants}
-              className="mt-12 grid grid-cols-1 gap-6 sm:grid-cols-3"
-            >
-              <div className="flex items-center gap-4 rounded-2xl border border-white/10 bg-white/5 p-4 backdrop-blur-sm">
-                <div className="rounded-xl bg-cyan-500/20 p-3">
-                  <FiLayers className="h-6 w-6 text-cyan-400" />
-                </div>
-                <div>
-                  <div className="text-2xl font-bold text-white">{projects.length}+</div>
-                  <div className="text-sm text-slate-400">Projects Completed</div>
-                </div>
-              </div>
-              <div className="flex items-center gap-4 rounded-2xl border border-white/10 bg-white/5 p-4 backdrop-blur-sm">
-                <div className="rounded-xl bg-emerald-500/20 p-3">
-                  <FiCode className="h-6 w-6 text-emerald-400" />
-                </div>
-                <div>
-                  <div className="text-2xl font-bold text-white">10+</div>
-                  <div className="text-sm text-slate-400">Technologies Used</div>
-                </div>
-              </div>
-              <div className="flex items-center gap-4 rounded-2xl border border-white/10 bg-white/5 p-4 backdrop-blur-sm">
-                <div className="rounded-xl bg-amber-500/20 p-3">
-                  <FiCalendar className="h-6 w-6 text-amber-400" />
-                </div>
-                <div>
-                  <div className="text-2xl font-bold text-white">2024</div>
-                  <div className="text-sm text-slate-400">Latest Update</div>
-                </div>
-              </div>
-            </motion.div>
+            <FiLayers className="h-4 w-4 sm:h-5 sm:w-5" />
+            <span className="text-xs sm:text-sm font-bold uppercase tracking-widest">Portfolio</span>
           </motion.div>
-        </section>
+          
+          <motion.h1 
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.1 }}
+            className="mt-3 sm:mt-4 text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black tracking-tight text-slate-950 dark:text-white"
+          >
+            Crafting Digital <br /> 
+            <span className="text-slate-400">Experiences.</span>
+          </motion.h1>
+          
+          <motion.p
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.2 }}
+            className="mt-3 sm:mt-4 text-sm sm:text-base text-slate-500 dark:text-slate-400 max-w-2xl"
+          >
+            A curated collection of {allProjects.length}+ projects showcasing my journey in web development, 
+            from responsive designs to full-stack applications.
+          </motion.p>
+        </header>
 
-        {/* PROJECTS GRID */}
-        <section className="px-6 pb-32 lg:px-12 xl:px-16">
-          <div className="mx-auto max-w-7xl">
-            <div className="mb-12">
-              <h2 className="text-3xl font-bold text-white">Featured Projects</h2>
-              <p className="mt-2 text-slate-400">Click on any project to explore details</p>
+        {/* Sticky Controls Bar */}
+        <div className={`sticky top-0 z-20 -mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8 py-3 sm:py-4 transition-all duration-300 ${
+          isScrolled 
+            ? "bg-white/80 backdrop-blur-lg shadow-sm dark:bg-slate-950/80" 
+            : ""
+        }`}>
+          {/* Mobile Filter Toggle */}
+          <div className="flex items-center justify-between gap-3 lg:hidden">
+            <button
+              onClick={() => setShowMobileFilters(!showMobileFilters)}
+              className="flex flex-1 items-center justify-between rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-sm font-medium dark:border-slate-800 dark:bg-slate-900"
+            >
+              <span className="flex items-center gap-2">
+                <FiFilter className="h-4 w-4" />
+                {activeTag === "All" ? "All Projects" : activeTag}
+              </span>
+              <FiChevronDown className={`h-4 w-4 transition-transform ${showMobileFilters ? 'rotate-180' : ''}`} />
+            </button>
+            
+            <div className="flex items-center gap-1 rounded-xl border border-slate-200 bg-white p-1 dark:border-slate-800 dark:bg-slate-900">
+              <button
+                onClick={() => setViewMode("grid")}
+                className={`rounded-lg p-2 transition-colors ${
+                  viewMode === "grid" 
+                    ? "bg-slate-100 text-slate-900 dark:bg-slate-800 dark:text-white" 
+                    : "text-slate-400 hover:text-slate-600 dark:hover:text-slate-300"
+                }`}
+                aria-label="Grid view"
+              >
+                <FiGrid className="h-4 w-4" />
+              </button>
+              <button
+                onClick={() => setViewMode("list")}
+                className={`rounded-lg p-2 transition-colors ${
+                  viewMode === "list" 
+                    ? "bg-slate-100 text-slate-900 dark:bg-slate-800 dark:text-white" 
+                    : "text-slate-400 hover:text-slate-600 dark:hover:text-slate-300"
+                }`}
+                aria-label="List view"
+              >
+                <FiList className="h-4 w-4" />
+              </button>
+            </div>
+          </div>
+
+          {/* Mobile Filters Dropdown */}
+          <AnimatePresence>
+            {showMobileFilters && (
+              <motion.div
+                initial={{ opacity: 0, height: 0 }}
+                animate={{ opacity: 1, height: "auto" }}
+                exit={{ opacity: 0, height: 0 }}
+                className="mt-3 overflow-hidden lg:hidden"
+              >
+                <div className="flex flex-wrap gap-1.5 rounded-xl border border-slate-200 bg-white p-3 dark:border-slate-800 dark:bg-slate-900">
+                  {categories.slice(0, 8).map(({ name, count }) => (
+                    <CategoryButton
+                      key={name}
+                      tag={name}
+                      count={count}
+                      isActive={activeTag === name}
+                      onClick={() => {
+                        setActiveTag(name)
+                        setShowMobileFilters(false)
+                      }}
+                    />
+                  ))}
+                  {categories.length > 8 && (
+                    <span className="rounded-full px-3 py-1.5 text-xs text-slate-400">
+                      +{categories.length - 8} more
+                    </span>
+                  )}
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
+
+          {/* Desktop Controls */}
+          <div className="hidden lg:flex lg:items-center lg:justify-between lg:gap-6">
+            <div className="flex flex-wrap gap-2">
+              {categories.slice(0, 8).map(({ name, count }) => (
+                <CategoryButton
+                  key={name}
+                  tag={name}
+                  count={count}
+                  isActive={activeTag === name}
+                  onClick={() => setActiveTag(name)}
+                />
+              ))}
+              {categories.length > 8 && (
+                <div className="relative group">
+                  <button className="rounded-full bg-white px-4 py-2 text-sm font-medium text-slate-600 hover:bg-slate-100 dark:bg-slate-900 dark:text-slate-400 dark:hover:bg-slate-800">
+                    +{categories.length - 8} more
+                  </button>
+                </div>
+              )}
             </div>
 
-            <motion.div
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true, margin: "-50px" }}
-              variants={containerVariants}
-              className="space-y-6"
-            >
-              {projects.map((project, index) => {
-                const isActive = activeIndex === index
-                const isHovered = hoveredIndex === index
-
-                return (
-                  <motion.div
-                    key={project.title}
-                    variants={itemVariants}
-                    onClick={() => setActiveIndex(isActive ? null : index)}
-                    onMouseEnter={() => setHoveredIndex(index)}
-                    onMouseLeave={() => setHoveredIndex(null)}
-                    className="group relative cursor-pointer"
-                  >
-                    {/* Card Container */}
-                    <div className="relative overflow-hidden rounded-3xl border border-white/10 bg-gradient-to-br from-slate-900/90 to-slate-950/90 backdrop-blur-xl transition-all duration-500 hover:border-cyan-400/30">
-                      {/* Background Image with Parallax Effect */}
-                      <motion.div
-                        className="absolute inset-0 z-0"
-                        animate={{
-                          scale: isHovered ? 1.05 : 1,
-                        }}
-                        transition={{ duration: 0.6 }}
-                      >
-                        <div
-                          className="h-full w-full"
-                          style={{
-                            backgroundImage: `url(${project.image})`,
-                            backgroundSize: 'cover',
-                            backgroundPosition: 'center',
-                            filter: isActive ? 'brightness(0.3)' : 'brightness(0.2)',
-                            transition: 'filter 0.4s ease',
-                          }}
-                        />
-                        <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/60 to-transparent" />
-                      </motion.div>
-
-                      {/* Content */}
-                      <div className="relative z-10 p-8 lg:p-12">
-                        <div className="flex flex-col gap-6 lg:flex-row lg:items-start lg:justify-between">
-                          <div className="flex-1">
-                            {/* Project Number */}
-                            <div className="mb-4 flex items-center gap-3">
-                              <span className="font-mono text-sm text-cyan-400">
-                                {String(index + 1).padStart(2, '0')}
-                              </span>
-                              <div className="h-px w-8 bg-gradient-to-r from-cyan-400/50 to-transparent" />
-                            </div>
-
-                            {/* Title */}
-                            <motion.h3
-                              layout
-                              className="text-3xl font-bold text-white sm:text-4xl lg:text-5xl"
-                            >
-                              {project.title}
-                            </motion.h3>
-
-                            {/* Description */}
-                            <motion.p
-                              layout
-                              className="mt-4 max-w-2xl text-slate-300"
-                            >
-                              {project.description}
-                            </motion.p>
-
-                            {/* Tech Stack - Always Visible */}
-                            <div className="mt-6 flex flex-wrap gap-2">
-                              {project.techStack.slice(0, 4).map((tech) => (
-                                <span
-                                  key={tech}
-                                  className="rounded-full border border-white/20 bg-white/5 px-3 py-1 text-xs font-medium text-slate-300 backdrop-blur-sm"
-                                >
-                                  {tech}
-                                </span>
-                              ))}
-                              {project.techStack.length > 4 && (
-                                <span className="rounded-full border border-white/20 bg-white/5 px-3 py-1 text-xs font-medium text-cyan-400 backdrop-blur-sm">
-                                  +{project.techStack.length - 4} more
-                                </span>
-                              )}
-                            </div>
-                          </div>
-
-                          {/* Action Button */}
-                          <motion.div
-                            animate={{ rotate: isActive ? 90 : 0 }}
-                            transition={{ duration: 0.3 }}
-                            className="flex h-12 w-12 items-center justify-center rounded-full border border-white/20 bg-white/5 backdrop-blur-sm transition-colors group-hover:border-cyan-400/50 group-hover:bg-cyan-500/10"
-                          >
-                            <FiArrowRight className="h-5 w-5 text-white transition-colors group-hover:text-cyan-400" />
-                          </motion.div>
-                        </div>
-
-                        {/* Expandable Content */}
-                        <AnimatePresence>
-                          {isActive && (
-                            <motion.div
-                              initial={{ opacity: 0, height: 0 }}
-                              animate={{ opacity: 1, height: 'auto' }}
-                              exit={{ opacity: 0, height: 0 }}
-                              transition={{ duration: 0.3 }}
-                              className="overflow-hidden"
-                            >
-                              <div className="mt-8 border-t border-white/10 pt-8">
-                                <div className="grid gap-8 lg:grid-cols-2">
-                                  {/* Left Column - Details */}
-                                  <div className="space-y-6">
-                                    <div>
-                                      <h4 className="mb-3 flex items-center gap-2 text-lg font-semibold text-white">
-                                        <FiZap className="text-cyan-400" />
-                                        Key Features
-                                      </h4>
-                                      <ul className="space-y-2">
-                                        {project.features?.map((feature, i) => (
-                                          <li key={i} className="flex items-start gap-2 text-slate-300">
-                                            <span className="mt-1.5 h-1.5 w-1.5 rounded-full bg-cyan-400" />
-                                            <span>{feature}</span>
-                                          </li>
-                                        ))}
-                                      </ul>
-                                    </div>
-
-                                    <div>
-                                      <h4 className="mb-3 flex items-center gap-2 text-lg font-semibold text-white">
-                                        <FiCode className="text-emerald-400" />
-                                        Full Tech Stack
-                                      </h4>
-                                      <div className="flex flex-wrap gap-2">
-                                        {project.techStack.map((tech) => (
-                                          <span
-                                            key={tech}
-                                            className="rounded-lg border border-white/20 bg-white/5 px-3 py-1.5 text-sm text-slate-300 backdrop-blur-sm"
-                                          >
-                                            {tech}
-                                          </span>
-                                        ))}
-                                      </div>
-                                    </div>
-                                  </div>
-
-                                  {/* Right Column - Links & Info */}
-                                  <div className="space-y-6">
-                                    <div>
-                                      <h4 className="mb-3 flex items-center gap-2 text-lg font-semibold text-white">
-                                        <FiUsers className="text-amber-400" />
-                                        Project Links
-                                      </h4>
-                                      <div className="flex flex-wrap gap-4">
-                                        <a
-                                          href={project.githubUrl}
-                                          target="_blank"
-                                          rel="noopener noreferrer"
-                                          onClick={(e) => e.stopPropagation()}
-                                          className="group flex items-center gap-3 rounded-xl border border-white/20 bg-white/5 px-5 py-3 backdrop-blur-sm transition-all hover:border-cyan-400/50 hover:bg-cyan-500/10"
-                                        >
-                                          <FiGithub className="h-5 w-5 transition-colors group-hover:text-cyan-400" />
-                                          <span className="font-medium">View Source</span>
-                                          <FiArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
-                                        </a>
-
-                                        {project.liveUrl && (
-                                          <a
-                                            href={project.liveUrl}
-                                            target="_blank"
-                                            rel="noopener noreferrer"
-                                            onClick={(e) => e.stopPropagation()}
-                                            className="group flex items-center gap-3 rounded-xl bg-gradient-to-r from-cyan-500 to-emerald-500 px-5 py-3 font-semibold text-black shadow-lg shadow-cyan-500/25 transition-all hover:scale-[1.02] hover:shadow-xl hover:shadow-cyan-500/40"
-                                          >
-                                            <FiExternalLink className="h-5 w-5" />
-                                            <span>Live Demo</span>
-                                            <FiArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
-                                          </a>
-                                        )}
-                                      </div>
-                                    </div>
-
-                                    {/* Project Stats */}
-                                    {project.stats && (
-                                      <div>
-                                        <h4 className="mb-3 text-lg font-semibold text-white">Impact</h4>
-                                        <div className="grid grid-cols-2 gap-3">
-                                          {project.stats.map((stat, i) => (
-                                            <div key={i} className="rounded-lg border border-white/10 bg-white/5 p-3 backdrop-blur-sm">
-                                              <div className="text-xl font-bold text-cyan-400">{stat.value}</div>
-                                              <div className="text-xs text-slate-400">{stat.label}</div>
-                                            </div>
-                                          ))}
-                                        </div>
-                                      </div>
-                                    )}
-                                  </div>
-                                </div>
-                              </div>
-                            </motion.div>
-                          )}
-                        </AnimatePresence>
-                      </div>
-
-                      {/* Hover Indicator */}
-                      <motion.div
-                        className="absolute bottom-0 left-0 h-1 bg-gradient-to-r from-cyan-500 to-emerald-500"
-                        initial={{ width: '0%' }}
-                        animate={{ width: isActive ? '100%' : isHovered ? '100%' : '0%' }}
-                        transition={{ duration: 0.3 }}
-                      />
-                    </div>
-                  </motion.div>
-                )
-              })}
-            </motion.div>
-
-            {/* CTA Section */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: 0.3 }}
-              className="mt-16 text-center"
-            >
-              <div className="relative overflow-hidden rounded-3xl border border-white/10 bg-gradient-to-br from-slate-900 to-slate-950 p-12">
-                <div className="pointer-events-none absolute -right-20 -top-20 h-40 w-40 rounded-full bg-cyan-500/10 blur-3xl" />
-                <div className="pointer-events-none absolute -bottom-20 -left-20 h-40 w-40 rounded-full bg-emerald-500/10 blur-3xl" />
-                
-                <h3 className="text-2xl font-bold text-white sm:text-3xl">
-                  Interested in collaborating?
-                </h3>
-                <p className="mx-auto mt-4 max-w-xl text-slate-300">
-                  I'm always open to discussing new projects, creative ideas, or opportunities to be part of your vision.
-                </p>
-                <div className="mt-8 flex justify-center gap-4">
-                  <a
-                    href="mailto:princetarunvemuri@gmail.com"
-                    className="group inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-cyan-500 to-emerald-500 px-6 py-3 text-sm font-bold text-black shadow-lg shadow-cyan-500/25 transition-all hover:scale-[1.05] hover:shadow-xl hover:shadow-cyan-500/40"
-                  >
-                    Get in Touch
-                    <FiArrowRight className="transition-transform group-hover:translate-x-1" />
-                  </a>
-                  <a
-                    href="https://github.com"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/5 px-6 py-3 text-sm font-bold text-white backdrop-blur-sm transition-all hover:border-cyan-400/40 hover:bg-white/10"
-                  >
-                    <FiGithub size={16} />
-                    GitHub
-                  </a>
-                </div>
+            <div className="flex items-center gap-3">
+              {/* View Toggle */}
+              <div className="flex items-center gap-1 rounded-xl border border-slate-200 bg-white p-1 dark:border-slate-800 dark:bg-slate-900">
+                <button
+                  onClick={() => setViewMode("grid")}
+                  className={`rounded-lg p-2 transition-colors ${
+                    viewMode === "grid" 
+                      ? "bg-slate-100 text-slate-900 dark:bg-slate-800 dark:text-white" 
+                      : "text-slate-400 hover:text-slate-600 dark:hover:text-slate-300"
+                  }`}
+                  aria-label="Grid view"
+                >
+                  <FiGrid className="h-4 w-4" />
+                </button>
+                <button
+                  onClick={() => setViewMode("list")}
+                  className={`rounded-lg p-2 transition-colors ${
+                    viewMode === "list" 
+                      ? "bg-slate-100 text-slate-900 dark:bg-slate-800 dark:text-white" 
+                      : "text-slate-400 hover:text-slate-600 dark:hover:text-slate-300"
+                  }`}
+                  aria-label="List view"
+                >
+                  <FiList className="h-4 w-4" />
+                </button>
               </div>
-            </motion.div>
+
+              {/* Search */}
+              <div className="relative w-64 xl:w-72">
+                <FiSearch className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" />
+                <input
+                  type="text"
+                  placeholder="Search projects..."
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  className="w-full rounded-xl border border-slate-200 bg-white py-2.5 pl-10 pr-9 text-sm outline-none transition-all focus:border-cyan-400 focus:ring-2 focus:ring-cyan-500/20 dark:border-slate-800 dark:bg-slate-900 dark:text-white dark:placeholder:text-slate-600"
+                />
+                {searchQuery && (
+                  <button
+                    onClick={clearSearch}
+                    className="absolute right-3 top-1/2 -translate-y-1/2 rounded-full p-0.5 text-slate-400 hover:text-slate-600 dark:hover:text-slate-300"
+                  >
+                    <FiX className="h-4 w-4" />
+                  </button>
+                )}
+              </div>
+            </div>
           </div>
-        </section>
+
+          {/* Mobile Search */}
+          <div className="mt-3 lg:hidden">
+            <div className="relative">
+              <FiSearch className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" />
+              <input
+                type="text"
+                placeholder="Search projects..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="w-full rounded-xl border border-slate-200 bg-white py-2.5 pl-10 pr-9 text-sm outline-none transition-all focus:border-cyan-400 focus:ring-2 focus:ring-cyan-500/20 dark:border-slate-800 dark:bg-slate-900 dark:text-white"
+              />
+              {searchQuery && (
+                <button
+                  onClick={clearSearch}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 rounded-full p-0.5 text-slate-400 hover:text-slate-600 dark:hover:text-slate-300"
+                >
+                  <FiX className="h-4 w-4" />
+                </button>
+              )}
+            </div>
+          </div>
+        </div>
+
+        {/* Active Filters Display */}
+        {activeTag !== "All" && (
+          <div className="mt-4 flex items-center gap-2">
+            <span className="text-xs sm:text-sm text-slate-500 dark:text-slate-400">Active filter:</span>
+            <span className="inline-flex items-center gap-1.5 rounded-full bg-cyan-100 px-3 py-1 text-xs sm:text-sm font-medium text-cyan-700 dark:bg-cyan-900/30 dark:text-cyan-300">
+              {activeTag}
+              <button onClick={() => setActiveTag("All")} className="hover:text-cyan-900 dark:hover:text-cyan-100">
+                <FiX className="h-3 w-3 sm:h-3.5 sm:w-3.5" />
+              </button>
+            </span>
+          </div>
+        )}
+
+        {/* Results Count */}
+        <div className="mb-4 sm:mb-6 mt-4 sm:mt-6">
+          <p className="text-xs sm:text-sm font-medium text-slate-500 dark:text-slate-400">
+            Showing <span className="font-bold text-slate-700 dark:text-slate-300">{filteredProjects.length}</span> {filteredProjects.length === 1 ? 'project' : 'projects'}
+            {searchQuery && (
+              <span> matching <span className="font-medium text-slate-700 dark:text-slate-300">"{searchQuery}"</span></span>
+            )}
+          </p>
+        </div>
+
+        {/* Projects Grid/List */}
+        <AnimatePresence mode="popLayout">
+          {filteredProjects.length > 0 ? (
+            <motion.div 
+              layout
+              className={`grid gap-4 sm:gap-5 md:gap-6 ${
+                viewMode === "grid" 
+                  ? "grid-cols-1 sm:grid-cols-2 lg:grid-cols-3" 
+                  : "grid-cols-1"
+              }`}
+            >
+              {filteredProjects.map((project, idx) => (
+                <ProjectCard 
+                  key={project.title} 
+                  project={project} 
+                  index={idx} 
+                  viewMode={viewMode}
+                />
+              ))}
+            </motion.div>
+          ) : (
+            <motion.div 
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              className="flex flex-col items-center justify-center rounded-2xl sm:rounded-3xl border border-slate-200 bg-white py-12 sm:py-16 lg:py-20 text-center dark:border-slate-800 dark:bg-slate-900/50"
+            >
+              <div className="rounded-full bg-slate-100 p-4 sm:p-6 dark:bg-slate-800">
+                <FiSearch className="h-6 w-6 sm:h-8 sm:w-8 text-slate-400" />
+              </div>
+              <h3 className="mt-4 sm:mt-6 text-base sm:text-lg font-bold text-slate-900 dark:text-white">
+                No projects found
+              </h3>
+              <p className="mt-1 sm:mt-2 text-xs sm:text-sm text-slate-500 dark:text-slate-400 max-w-md px-4">
+                We couldn't find any projects matching your criteria. Try adjusting your filters or search terms.
+              </p>
+              <button
+                onClick={() => {
+                  setActiveTag("All")
+                  setSearchQuery("")
+                }}
+                className="mt-4 sm:mt-6 rounded-full bg-slate-900 px-4 sm:px-6 py-2 sm:py-2.5 text-xs sm:text-sm font-medium text-white transition-all hover:bg-slate-800 active:scale-95 dark:bg-white dark:text-slate-900 dark:hover:bg-slate-200"
+              >
+                Clear all filters
+              </button>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </div>
     </main>
   )

@@ -1,4 +1,4 @@
-import { lazy, Suspense, useEffect, useState } from 'react'
+import { lazy, Suspense, useCallback, useEffect, useState } from 'react'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import HomePage from './components/HomePage'
 import AboutSection from './components/AboutSection'
@@ -27,9 +27,17 @@ function App() {
     localStorage.setItem('portfolio-theme', isDarkMode ? 'dark' : 'light')
   }, [isDarkMode])
 
+  const handleLoaderComplete = useCallback(() => {
+    setIsAppReady(true)
+  }, [])
+
+  const handleToggleTheme = useCallback(() => {
+    setIsDarkMode((previous) => !previous)
+  }, [])
+
   return (
     <BrowserRouter>
-      {!isAppReady && <Loader onComplete={() => setIsAppReady(true)} />}
+      {!isAppReady && <Loader onComplete={handleLoaderComplete} />}
       
       {isAppReady && (
         <div className="animate-[fadeIn_0.5s_ease-out_forwards]">
@@ -40,7 +48,7 @@ function App() {
             }
           `}</style>
           <Routes>
-            <Route path="/" element={<HomePage isDarkMode={isDarkMode} onToggleTheme={() => setIsDarkMode((previous) => !previous)} />} />
+            <Route path="/" element={<HomePage isDarkMode={isDarkMode} onToggleTheme={handleToggleTheme} />} />
             <Route
               path="/projects"
               element={

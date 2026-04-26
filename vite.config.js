@@ -65,7 +65,7 @@ export default defineConfig({
     })
   ],
   server: {
-    host: '127.0.0.1',
+    host: 'localhost',
     hmr: {
       protocol: 'ws',
       host: '127.0.0.1',

@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useState } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { FiChevronDown } from 'react-icons/fi'
 import Navbar from './Navbar'
 import Hero from './Hero'
@@ -25,6 +25,11 @@ const HomePage = ({ isDarkMode, onToggleTheme }) => {
   const [hideScrollCue, setHideScrollCue] = useState(
     () => sessionStorage.getItem('home-scroll-cue-hidden') === 'true',
   )
+  const hideScrollCueRef = useRef(hideScrollCue)
+
+  useEffect(() => {
+    hideScrollCueRef.current = hideScrollCue
+  }, [hideScrollCue])
 
   useEffect(() => {
     window.scrollTo({ top: 0, left: 0, behavior: 'auto' })
@@ -53,7 +58,8 @@ const HomePage = ({ isDarkMode, onToggleTheme }) => {
 
       setActiveSection((previous) => (previous === currentSection ? previous : currentSection))
 
-      if (!hideScrollCue && window.scrollY > 24) {
+      if (!hideScrollCueRef.current && window.scrollY > 24) {
+        hideScrollCueRef.current = true
         setHideScrollCue(true)
         sessionStorage.setItem('home-scroll-cue-hidden', 'true')
       }
@@ -78,7 +84,7 @@ const HomePage = ({ isDarkMode, onToggleTheme }) => {
         window.cancelAnimationFrame(rafId)
       }
     }
-  }, [hideScrollCue, sections])
+  }, [sections])
 
   const handleNavClick = useCallback((sectionId) => {
     const section = document.getElementById(sectionId)
@@ -118,7 +124,7 @@ const HomePage = ({ isDarkMode, onToggleTheme }) => {
         </div>
         <TechStackSlider />
         <ProjectsSection />
-        <SocialSection onSocialClick={() => handleNavClick('tech-stack')} />
+        <SocialSection />
         <Contact />
         <Footer onNavClick={handleNavClick} />
       </main>

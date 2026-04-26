@@ -1,4 +1,4 @@
-import { memo } from 'react'
+import { memo, useCallback, useMemo } from 'react'
 import { motion } from 'framer-motion'
 import {
   FiArrowUp,
@@ -9,64 +9,82 @@ import {
 import { FaDiscord, FaGithub, FaLinkedin } from 'react-icons/fa'
 import { FaXTwitter } from 'react-icons/fa6'
 
+const socialLinks = [
+  {
+    name: 'GitHub',
+    icon: FaGithub,
+    href: 'https://github.com/TARUN062005',
+  },
+  {
+    name: 'LinkedIn',
+    icon: FaLinkedin,
+    href: 'https://linkedin.com/in/tarunvemuri',
+  },
+  {
+    name: 'X',
+    icon: FaXTwitter,
+    href: 'https://x.com/TARUNVEMURI',
+  },
+  {
+    name: 'Discord',
+    icon: FaDiscord,
+    href: 'https://discordapp.com/users/896411007797325824/',
+  },
+]
+
+const quickLinks = [
+  { name: 'Home', id: 'home' },
+  { name: 'About', id: 'about' },
+  { name: 'Projects', id: 'projects' },
+  { name: 'Contact', id: 'contact' },
+]
+
+const contactInfo = [
+  { icon: FiMail, text: 'princetarunvemuri@gmail.com', href: 'mailto:princetarunvemuri@gmail.com' },
+  { icon: FiPhone, text: '+91 9550186473', href: 'tel:+919550186473' },
+  { icon: FiMapPin, text: 'Vijayawada, India', href: '' },
+]
+
+const containerVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.1,
+      delayChildren: 0.15,
+    },
+  },
+}
+
+const itemVariants = {
+  hidden: { y: 18, opacity: 0 },
+  visible: {
+    y: 0,
+    opacity: 1,
+    transition: { duration: 0.45 },
+  },
+}
+
 const Footer = ({ onNavClick }) => {
-  const currentYear = new Date().getFullYear()
+  const currentYear = useMemo(() => new Date().getFullYear(), [])
 
-  const socialLinks = [
-    {
-      name: 'GitHub',
-      icon: FaGithub,
-      href: 'https://github.com/TARUN062005',
+  const handleQuickLinkClick = useCallback(
+    (event) => {
+      const sectionId = event.currentTarget.dataset.sectionId
+      if (sectionId) {
+        onNavClick?.(sectionId)
+      }
     },
-    {
-      name: 'LinkedIn',
-      icon: FaLinkedin,
-      href: 'https://linkedin.com/in/tarunvemuri',
-    },
-    {
-      name: 'X',
-      icon: FaXTwitter,
-      href: 'https://x.com/TARUNVEMURI',
-    },
-    {
-      name: 'Discord',
-      icon: FaDiscord,
-      href: 'https://discordapp.com/users/896411007797325824/',
-    },
-  ]
+    [onNavClick],
+  )
 
-  const quickLinks = [
-    { name: 'Home', id: 'home' },
-    { name: 'About', id: 'about' },
-    { name: 'Projects', id: 'projects' },
-    { name: 'Contact', id: 'contact' },
-  ]
+  const handleBackToTop = useCallback(() => {
+    onNavClick?.('home')
+  }, [onNavClick])
 
-  const contactInfo = [
-    { icon: <FiMail size={16} />, text: 'princetarunvemuri@gmail.com', href: 'mailto:princetarunvemuri@gmail.com' },
-    { icon: <FiPhone size={16} />, text: '+91 9550186473', href: 'tel:+919550186473' },
-    { icon: <FiMapPin size={16} />, text: 'Vijayawada, India', href: '' },
-  ]
-
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.1,
-        delayChildren: 0.15,
-      },
-    },
-  }
-
-  const itemVariants = {
-    hidden: { y: 18, opacity: 0 },
-    visible: {
-      y: 0,
-      opacity: 1,
-      transition: { duration: 0.45 },
-    },
-  }
+  const handleNewsletterSubmit = useCallback((event) => {
+    event.preventDefault()
+  }, [])
 
   return (
     <footer className="mt-6 pb-5 sm:mt-8 sm:pb-8">
@@ -211,7 +229,8 @@ const Footer = ({ onNavClick }) => {
               {quickLinks.map((link) => (
                 <motion.li key={link.name} whileHover={{ x: 2 }}>
                   <button
-                    onClick={() => onNavClick?.(link.id)}
+                    onClick={handleQuickLinkClick}
+                    data-section-id={link.id}
                     className="text-sm text-slate-600 hover:text-cyan-700 dark:text-slate-300 dark:hover:text-cyan-300"
                   >
                     {link.name}
@@ -227,9 +246,12 @@ const Footer = ({ onNavClick }) => {
               Contact
             </h4>
             <ul className="space-y-2.5 sm:space-y-3">
-              {contactInfo.map((info, index) => (
-                <motion.li key={index} className="flex gap-2.5 text-sm sm:gap-3">
-                  <span className="mt-0.5 text-slate-500">{info.icon}</span>
+              {contactInfo.map((info) => {
+                const Icon = info.icon
+
+                return (
+                <motion.li key={info.text} className="flex gap-2.5 text-sm sm:gap-3">
+                  <span className="mt-0.5 text-slate-500"><Icon size={16} /></span>
                   {info.href ? (
                     <a href={info.href} className="text-slate-600 dark:text-slate-300 hover:text-cyan-600 transition-colors">
                       {info.text}
@@ -238,7 +260,8 @@ const Footer = ({ onNavClick }) => {
                     <span className="text-slate-600 dark:text-slate-300">{info.text}</span>
                   )}
                 </motion.li>
-              ))}
+                )
+              })}
             </ul>
           </motion.div>
 
@@ -247,7 +270,7 @@ const Footer = ({ onNavClick }) => {
             <h4 className="text-xs font-bold uppercase tracking-widest text-slate-500 mb-4">
               Newsletter
             </h4>
-            <form className="space-y-3" onSubmit={(e) => e.preventDefault()}>
+            <form className="space-y-3" onSubmit={handleNewsletterSubmit}>
               <input
                 type="email"
                 placeholder="Your email"
@@ -265,7 +288,7 @@ const Footer = ({ onNavClick }) => {
           <p><h1>© {currentYear} TARUN VEMURI</h1></p>
 
           <motion.button
-            onClick={() => onNavClick?.('home')}
+            onClick={handleBackToTop}
             className="rounded-full bg-slate-900 dark:bg-slate-100 p-2 text-white dark:text-slate-900 shadow-lg"
             whileHover={{ y: -3 }}
             whileTap={{ scale: 0.9 }}
