@@ -1,7 +1,7 @@
 import { lazy, Suspense, useCallback, useEffect, useState } from 'react'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import HomePage from './components/HomePage'
-import AboutSection from './components/AboutSection'
+import About from './components/About'
 import Loader from './components/Loader'
 import NotFound from './components/NotFound'
 
@@ -57,7 +57,7 @@ function App() {
                 </Suspense>
               }
             />
-            <Route path="/about" element={<AboutSection variant="page" />} />
+            <Route path="/about" element={<About />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </div>

@@ -10,171 +10,128 @@ const About = () => {
     visible: {
       opacity: 1,
       transition: {
-        staggerChildren: 0.1,
+        staggerChildren: 0.08,
         delayChildren: 0.1,
       },
     },
   }
 
   const itemVariants = {
-    hidden: { opacity: 0, y: 20 },
-    visible: { 
-      opacity: 1, 
+    hidden: { opacity: 0, y: 25 },
+    visible: {
+      opacity: 1,
       y: 0,
-      transition: { duration: 0.5, ease: [0.22, 1, 0.36, 1] }
+      transition: { duration: 0.45, ease: [0.22, 1, 0.36, 1] },
     },
   }
 
-  const skills = [
-    { name: 'React & Next.js', level: 90 },
-    { name: 'Node.js & Express', level: 85 },
-    { name: 'Python & AI/ML', level: 80 },
-    { name: 'Database Design', level: 85 },
-    { name: 'Cloud & DevOps', level: 75 },
+  const highlights = [
+    { icon: FiCode, label: 'Clean Code', color: 'cyan' },
+    { icon: FiHeart, label: 'User First', color: 'emerald' },
+    { icon: FiUser, label: 'Team Player', color: 'purple' },
+    { icon: FiTrendingUp, label: 'Growth Mindset', color: 'amber' },
   ]
 
   return (
     <section
       id="about"
       ref={elementRef}
-      className={`section-fade ${isVisible ? 'translate-y-0 opacity-100' : 'translate-y-8 opacity-0'}`}
+      className={`w-full py-20 px-6 md:px-12 lg:px-20 transition-all duration-700 ${
+        isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
+      }`}
     >
-      <div className="flex justify-center">
+      {/* HEADER */}
+      <div className="max-w-4xl mx-auto text-center">
         <motion.div
-          initial={{ scale: 0.9, opacity: 0 }}
+          initial={{ scale: 0.95, opacity: 0 }}
           animate={isVisible ? { scale: 1, opacity: 1 } : {}}
           transition={{ duration: 0.5 }}
         >
-          <div className="mb-2 flex justify-center">
-            <span className="section-kicker">
-              Who I Am
-            </span>
-          </div>
-          <h2 className="section-title text-center">
-            About Me
-          </h2>
+          <span className="section-kicker">Who I Am</span>
+          <h2 className="section-title mt-2">About Me</h2>
         </motion.div>
       </div>
 
+      {/* MAIN CONTAINER */}
       <motion.div
         variants={containerVariants}
         initial="hidden"
-        animate={isVisible ? "visible" : "hidden"}
-        className="glass-panel relative overflow-hidden p-6 sm:p-8"
+        animate={isVisible ? 'visible' : 'hidden'}
+        className="mt-10 max-w-6xl mx-auto rounded-2xl border border-slate-200 dark:border-white/10 bg-white/60 dark:bg-white/[0.04] backdrop-blur-md p-6 sm:p-10"
       >
-        {/* Animated background gradient */}
+        {/* TITLE */}
+        <motion.h3
+          variants={itemVariants}
+          className="text-center text-xl sm:text-2xl font-semibold text-slate-800 dark:text-white"
+        >
+          Crafting digital products with{' '}
+          <span className="bg-gradient-to-r from-cyan-500 to-emerald-500 bg-clip-text text-transparent">
+            intention
+          </span>
+        </motion.h3>
+
+        {/* HIGHLIGHTS */}
         <motion.div
-          className="absolute -right-32 -top-32 h-64 w-64 rounded-full bg-cyan-500/10 blur-3xl"
-          animate={{
-            scale: [1, 1.2, 1],
-            opacity: [0.3, 0.5, 0.3],
-          }}
-          transition={{ duration: 8, repeat: Infinity }}
-        />
+          variants={itemVariants}
+          className="mt-6 flex flex-wrap justify-center gap-3"
+        >
+          {highlights.map((item, i) => (
+            <div
+              key={i}
+              className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-slate-100 dark:bg-white/5 border border-slate-200 dark:border-white/10"
+            >
+              <item.icon className="w-3.5 h-3.5 text-cyan-500" />
+              <span className="text-xs sm:text-sm text-slate-700 dark:text-slate-300 font-medium">
+                {item.label}
+              </span>
+            </div>
+          ))}
+        </motion.div>
+
+        {/* CONTENT */}
         <motion.div
-          className="absolute -bottom-32 -left-32 h-64 w-64 rounded-full bg-emerald-500/10 blur-3xl"
-          animate={{
-            scale: [1.2, 1, 1.2],
-            opacity: [0.3, 0.5, 0.3],
-          }}
-          transition={{ duration: 10, repeat: Infinity }}
-        />
+          variants={itemVariants}
+          className="mt-8 grid grid-cols-1 lg:grid-cols-2 gap-10 items-start"
+        >
+          {/* LEFT TEXT */}
+          <div className="space-y-5 text-sm sm:text-base text-slate-600 dark:text-slate-300 leading-relaxed">
+            <p>
+              I am a <span className="font-semibold text-cyan-600 dark:text-cyan-400">Full Stack Developer</span> focused on building scalable,
+              maintainable, and high-performance systems.
+            </p>
 
-        <div className="relative">
-          <motion.h3 
-            variants={itemVariants}
-            className="section-title text-center"
-          >
-            Crafting digital products with{' '}
-            <span className="bg-gradient-to-r from-cyan-600 to-emerald-600 bg-clip-text text-transparent">
-              intention
-            </span>
-            .
-          </motion.h3>
-          
-          <motion.div variants={itemVariants} className="mt-6 flex flex-wrap justify-center gap-4">
-            <div className="flex items-center gap-2 rounded-full bg-cyan-500/10 px-3 py-1">
-              <FiCode className="h-3 w-3 text-cyan-500" />
-              <span className="text-sm font-medium text-cyan-700 dark:text-cyan-300">Clean Code</span>
-            </div>
-            <div className="flex items-center gap-2 rounded-full bg-emerald-500/10 px-3 py-1">
-              <FiHeart className="h-3 w-3 text-emerald-500" />
-              <span className="text-sm font-medium text-emerald-700 dark:text-emerald-300">User First</span>
-            </div>
-            <div className="flex items-center gap-2 rounded-full bg-purple-500/10 px-3 py-1">
-              <FiUser className="h-3 w-3 text-purple-500" />
-              <span className="text-sm font-medium text-purple-700 dark:text-purple-300">Team Player</span>
-            </div>
-            <div className="flex items-center gap-2 rounded-full bg-amber-500/10 px-3 py-1">
-              <FiTrendingUp className="h-3 w-3 text-amber-500" />
-              <span className="text-sm font-medium text-amber-700 dark:text-amber-300">Growth Mindset</span>
-            </div>
-          </motion.div>
+            <p>
+              I design clean architectures, build efficient APIs, and create responsive interfaces
+              that deliver reliable user experiences across platforms.
+            </p>
 
-          <motion.p 
-            variants={itemVariants}
-            className="section-body mt-6 max-w-4xl"
-          >
-            I am a <span className="font-semibold text-cyan-600 dark:text-cyan-400">Full Stack Developer</span> with a strong focus on clean architecture and resilient systems. 
-            I enjoy translating business requirements into intuitive user interfaces and maintainable codebases. 
-            My process blends product thinking, collaboration, and careful attention to quality so teams can ship confidently.
-          </motion.p>
-          
-          <motion.p 
-            variants={itemVariants}
-            className="section-body mt-4 max-w-4xl"
-          >
-            Over the last few years, I have worked on dashboards, workflow platforms, and customer-facing applications 
-            where performance and usability were equally important. I care deeply about writing code that scales with 
-            both users and teams.
-          </motion.p>
+            <p>
+              My approach combines system design, performance optimization, and
+              practical product thinking to build solutions that scale.
+            </p>
+          </div>
 
-          {/* Skills Progress Bars */}
-          <motion.div 
-            variants={itemVariants}
-            className="mt-8 space-y-4"
-          >
-            <h4 className="mb-4 flex items-center gap-2 text-lg font-semibold text-slate-800 dark:text-white">
-              <FiCoffee className="text-amber-500" />
-              Technical Expertise
-            </h4>
-            {skills.map((skill) => (
-              <div key={skill.name} className="space-y-1">
-                <div className="flex justify-between text-sm">
-                  <span className="font-medium text-slate-700 dark:text-slate-300">{skill.name}</span>
-                  <span className="text-cyan-600 dark:text-cyan-400">{skill.level}%</span>
-                </div>
-                <div className="h-2 overflow-hidden rounded-full bg-slate-200 dark:bg-slate-700">
-                  <motion.div
-                    initial={{ width: 0 }}
-                    animate={isVisible ? { width: `${skill.level}%` } : { width: 0 }}
-                    transition={{ duration: 1, ease: "easeOut" }}
-                    className="h-full rounded-full bg-gradient-to-r from-cyan-500 to-emerald-500"
-                  />
-                </div>
+          {/* RIGHT STATS */}
+          <div className="grid grid-cols-2 gap-5">
+            {[
+              { value: '3+', label: 'Years Experience' },
+              { value: '15+', label: 'Projects Built' },
+              { value: '10+', label: 'Technologies' },
+              { value: '100%', label: 'Commitment' },
+            ].map((item, i) => (
+              <div
+                key={i}
+                className="rounded-xl border border-slate-200 dark:border-white/10 p-5 text-center bg-white dark:bg-white/[0.03]"
+              >
+                <p className="text-2xl font-bold text-cyan-500">{item.value}</p>
+                <p className="text-xs sm:text-sm text-slate-500 mt-1">{item.label}</p>
               </div>
             ))}
-          </motion.div>
+          </div>
+        </motion.div>
 
-          {/* Stats */}
-          <motion.div 
-            variants={itemVariants}
-            className="mt-8 flex flex-wrap justify-center gap-6 border-t border-slate-200 pt-6 dark:border-slate-700"
-          >
-            <div className="text-center">
-              <p className="text-2xl font-bold text-cyan-600 dark:text-cyan-400">3+</p>
-              <p className="text-sm text-slate-500">Years Experience</p>
-            </div>
-            <div className="text-center">
-              <p className="text-2xl font-bold text-cyan-600 dark:text-cyan-400">15+</p>
-              <p className="text-sm text-slate-500">Projects Completed</p>
-            </div>
-            <div className="text-center">
-              <p className="text-2xl font-bold text-cyan-600 dark:text-cyan-400">10+</p>
-              <p className="text-sm text-slate-500">Happy Clients</p>
-            </div>
-          </motion.div>
-        </div>
+        {/* REMOVED: Skills Progress Bars (bad UX here) */}
+
       </motion.div>
     </section>
   )

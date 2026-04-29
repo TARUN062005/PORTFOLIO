@@ -43,7 +43,7 @@ const TechStack = () => {
       id="tech-stack"
       ref={elementRef}
       aria-labelledby="tech-stack-title"
-      className="py-16 sm:py-24"
+      className="pt-16 sm:pt-20 pb-8 sm:pb-12"
     >
       {/* Header Section */}
       <header className={`transition-transform duration-500 ease-out ${
