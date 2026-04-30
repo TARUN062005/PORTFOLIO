@@ -1,140 +1,253 @@
+import { memo, useCallback, useMemo } from 'react'
+import { Link, useNavigate } from 'react-router-dom'
 import { motion } from 'framer-motion'
-import useRevealOnScroll from '../hooks/useRevealOnScroll'
-import { FiUser, FiCode, FiHeart, FiCoffee, FiTrendingUp } from 'react-icons/fi'
+import {
+  FiArrowLeft,
+  FiDownload,
+  FiMail,
+  FiMapPin,
+  FiPhone,
+  FiGithub,
+  FiLinkedin,
+  FiExternalLink,
+  FiCode,
+  FiTerminal,
+  FiCpu,
+  FiCloud,
+} from 'react-icons/fi'
+import Navbar from './Navbar'
 
-const About = () => {
-  const { elementRef, isVisible } = useRevealOnScroll()
+// --- Data Constants ---
+const CONTACT_ITEMS = [
+  { icon: FiMapPin, label: 'Andhra Pradesh', sub: 'India' },
+  { icon: FiPhone, label: '+91 9550186473', href: 'tel:+919550186473', sub: 'Work' },
+  { icon: FiMail, label: 'princetarunvemuri@gmail.com', href: 'mailto:princetarunvemuri@gmail.com', sub: 'Personal' },
+]
 
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.08,
-        delayChildren: 0.1,
-      },
-    },
-  }
+const EXPERTISE = [
+  { 
+    title: 'Frontend', 
+    icon: FiCode, 
+    items: ['React', 'Next.js', 'TypeScript', 'Tailwind'],
+    color: 'from-blue-500/20 to-cyan-500/20'
+  },
+  { 
+    title: 'Backend', 
+    icon: FiTerminal, 
+    items: ['Node.js', 'Express', 'MongoDB', 'Python'],
+    color: 'from-emerald-500/20 to-teal-500/20'
+  },
+  { 
+    title: 'Cloud & Infra', 
+    icon: FiCloud, 
+    items: ['AWS', 'Azure', 'Docker', 'Vercel'],
+    color: 'from-purple-500/20 to-pink-500/20'
+  },
+  { 
+    title: 'Systems', 
+    icon: FiCpu, 
+    items: ['Java', 'C', 'Salesforce Apex', 'ML'],
+    color: 'from-orange-500/20 to-red-500/20'
+  },
+]
 
-  const itemVariants = {
-    hidden: { opacity: 0, y: 25 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: { duration: 0.45, ease: [0.22, 1, 0.36, 1] },
-    },
-  }
+const TIMELINE = [
+  {
+    date: '2025',
+    title: 'Full-Stack Intern',
+    company: 'TheSmartBridge',
+    desc: 'Engineered MERN applications with real-time sync.',
+  },
+  {
+    date: '2024 - Present',
+    title: 'B.Tech CSE',
+    company: 'LBRCE',
+    desc: 'Focusing on Distributed Systems & AI. Current CGPA: 9.2',
+  },
+  {
+    date: '2023',
+    title: 'Industrial Trainee',
+    company: 'MSME-CITD',
+    desc: 'Lower-level systems and product design workflows.',
+  },
+  {
+    date: '2021 - 2023',
+    title: 'Diploma CE',
+    company: 'AANM & VVRSR',
+    desc: 'Foundation in Computer Engineering. 93.67% Aggregate.',
+  },
+]
 
-  const highlights = [
-    { icon: FiCode, label: 'Clean Code', color: 'cyan' },
-    { icon: FiHeart, label: 'User First', color: 'emerald' },
-    { icon: FiUser, label: 'Team Player', color: 'purple' },
-    { icon: FiTrendingUp, label: 'Growth Mindset', color: 'amber' },
-  ]
+// --- Sub-Components for Modern UI ---
+
+const GlassCard = ({ children, className = "" }) => (
+  <motion.div 
+    initial={{ opacity: 0, y: 20 }}
+    whileInView={{ opacity: 1, y: 0 }}
+    viewport={{ once: true }}
+    className={`rounded-3xl border border-white/10 bg-white/40 p-6 backdrop-blur-md transition-all hover:bg-white/60 dark:bg-white/[0.03] dark:hover:bg-white/[0.06] ${className}`}
+  >
+    {children}
+  </motion.div>
+)
+
+const SectionHeader = ({ title, subtitle }) => (
+  <div className="mb-10">
+    <h2 className="text-3xl font-bold tracking-tight text-slate-900 dark:text-white sm:text-4xl">
+      {title}
+    </h2>
+    <div className="mt-2 h-1.5 w-12 rounded-full bg-cyan-500" />
+    {subtitle && <p className="mt-4 text-slate-600 dark:text-slate-400">{subtitle}</p>}
+  </div>
+)
+
+const About = ({ isDarkMode, onToggleTheme }) => {
+  const navigate = useNavigate()
+  const sections = useMemo(() => [{ id: 'home', label: 'Home' }, { id: 'about', label: 'About' }], [])
+
+  const handleNavClick = useCallback((id) => {
+    id === 'home' ? navigate('/') : document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' })
+  }, [navigate])
 
   return (
-    <section
-      id="about"
-      ref={elementRef}
-      className={`w-full py-20 px-6 md:px-12 lg:px-20 transition-all duration-700 ${
-        isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
-      }`}
-    >
-      {/* HEADER */}
-      <div className="max-w-4xl mx-auto text-center">
-        <motion.div
-          initial={{ scale: 0.95, opacity: 0 }}
-          animate={isVisible ? { scale: 1, opacity: 1 } : {}}
-          transition={{ duration: 0.5 }}
-        >
-          <span className="section-kicker">Who I Am</span>
-          <h2 className="section-title mt-2">About Me</h2>
-        </motion.div>
+    <div className="relative min-h-screen bg-[#f8fafc] text-slate-900 transition-colors duration-500 dark:bg-[#020617] dark:text-slate-100">
+      {/* Dynamic Background */}
+      <div className="fixed inset-0 z-0 overflow-hidden">
+        <div className="absolute -top-[10%] -left-[10%] h-[40%] w-[40%] rounded-full bg-cyan-400/10 blur-[120px] dark:bg-cyan-600/10" />
+        <div className="absolute top-[40%] -right-[10%] h-[40%] w-[40%] rounded-full bg-emerald-400/10 blur-[120px] dark:bg-emerald-500/10" />
       </div>
 
-      {/* MAIN CONTAINER */}
-      <motion.div
-        variants={containerVariants}
-        initial="hidden"
-        animate={isVisible ? 'visible' : 'hidden'}
-        className="mt-10 max-w-6xl mx-auto rounded-2xl border border-slate-200 dark:border-white/10 bg-white/60 dark:bg-white/[0.04] backdrop-blur-md p-6 sm:p-10"
-      >
-        {/* TITLE */}
-        <motion.h3
-          variants={itemVariants}
-          className="text-center text-xl sm:text-2xl font-semibold text-slate-800 dark:text-white"
-        >
-          Crafting digital products with{' '}
-          <span className="bg-gradient-to-r from-cyan-500 to-emerald-500 bg-clip-text text-transparent">
-            intention
-          </span>
-        </motion.h3>
+      <Navbar 
+        sections={sections} 
+        activeSection="about" 
+        onNavClick={handleNavClick} 
+        isDarkMode={isDarkMode} 
+        onToggleTheme={onToggleTheme} 
+      />
 
-        {/* HIGHLIGHTS */}
-        <motion.div
-          variants={itemVariants}
-          className="mt-6 flex flex-wrap justify-center gap-3"
-        >
-          {highlights.map((item, i) => (
-            <div
-              key={i}
-              className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-slate-100 dark:bg-white/5 border border-slate-200 dark:border-white/10"
+      <main className="relative z-10 mx-auto max-w-7xl px-6 pb-24 pt-32 lg:px-8">
+        
+        {/* Hero Section - The "Bento" Header */}
+        <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
+          <GlassCard className="lg:col-span-2 flex flex-col justify-center py-10 lg:px-10">
+            <motion.span 
+              initial={{ opacity: 0 }} 
+              animate={{ opacity: 1 }}
+              className="mb-4 inline-block text-sm font-bold uppercase tracking-widest text-cyan-600 dark:text-cyan-400"
             >
-              <item.icon className="w-3.5 h-3.5 text-cyan-500" />
-              <span className="text-xs sm:text-sm text-slate-700 dark:text-slate-300 font-medium">
-                {item.label}
-              </span>
+              Full-Stack Developer
+            </motion.span>
+            <h1 className="text-4xl font-extrabold text-slate-900 dark:text-white sm:text-6xl">
+              Vemuri Prince Tarun<span className="text-cyan-500">.</span>
+            </h1>
+            <p className="mt-6 max-w-xl text-lg leading-relaxed text-slate-600 dark:text-slate-300">
+              Transforming complex problems into elegant, scalable digital experiences. 
+              Currently specializing in <span className="font-semibold text-slate-900 dark:text-white">Cloud Architecture</span> and 
+              the <span className="font-semibold text-slate-900 dark:text-white">MERN Stack</span>.
+            </p>
+            <div className="mt-10 flex flex-wrap gap-4">
+              <a href="/resume.pdf" className="group flex items-center gap-2 rounded-full bg-slate-900 px-6 py-3 text-sm font-bold text-white transition hover:bg-cyan-500 dark:bg-white dark:text-slate-950 dark:hover:bg-cyan-400">
+                <FiDownload className="transition group-hover:-translate-y-1" />
+                Resume
+              </a>
+              <Link to="/" className="flex items-center gap-2 rounded-full border border-slate-200 px-6 py-3 text-sm font-bold transition hover:border-cyan-500 dark:border-white/10">
+                <FiArrowLeft />
+                Home
+              </Link>
             </div>
-          ))}
-        </motion.div>
+          </GlassCard>
 
-        {/* CONTENT */}
-        <motion.div
-          variants={itemVariants}
-          className="mt-8 grid grid-cols-1 lg:grid-cols-2 gap-10 items-start"
-        >
-          {/* LEFT TEXT */}
-          <div className="space-y-5 text-sm sm:text-base text-slate-600 dark:text-slate-300 leading-relaxed">
-            <p>
-              I am a <span className="font-semibold text-cyan-600 dark:text-cyan-400">Full Stack Developer</span> focused on building scalable,
-              maintainable, and high-performance systems.
-            </p>
+          <GlassCard className="flex flex-col justify-between">
+            <div className="space-y-6">
+              <h3 className="text-sm font-bold uppercase tracking-tighter text-slate-400">Reach Me</h3>
+              {CONTACT_ITEMS.map((item) => (
+                <a key={item.label} href={item.href} className="group flex items-center gap-4">
+                  <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-cyan-500/10 text-cyan-600 group-hover:bg-cyan-500 group-hover:text-white transition-all">
+                    <item.icon size={20} />
+                  </div>
+                  <div>
+                    <p className="text-xs font-medium text-slate-500">{item.sub}</p>
+                    <p className="text-sm font-semibold">{item.label}</p>
+                  </div>
+                </a>
+              ))}
+            </div>
+            <div className="mt-8 flex gap-4 pt-6 border-t border-slate-200 dark:border-white/5">
+              <a href="#" className="p-2 text-slate-400 hover:text-cyan-500 transition-colors"><FiGithub size={20}/></a>
+              <a href="#" className="p-2 text-slate-400 hover:text-cyan-500 transition-colors"><FiLinkedin size={20}/></a>
+            </div>
+          </GlassCard>
+        </div>
 
-            <p>
-              I design clean architectures, build efficient APIs, and create responsive interfaces
-              that deliver reliable user experiences across platforms.
-            </p>
-
-            <p>
-              My approach combines system design, performance optimization, and
-              practical product thinking to build solutions that scale.
-            </p>
+        {/* Expertise Section */}
+        <section className="mt-24">
+          <SectionHeader title="Technical Arsenal" subtitle="Technologies I use to bring ideas to life." />
+          <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
+            {EXPERTISE.map((skill) => (
+              <GlassCard key={skill.title} className={`group overflow-hidden relative border-none bg-gradient-to-br ${skill.color}`}>
+                <div className="relative z-10">
+                  <skill.icon size={24} className="mb-4 text-slate-700 dark:text-slate-200" />
+                  <h3 className="text-xl font-bold mb-4">{skill.title}</h3>
+                  <div className="flex flex-wrap gap-2">
+                    {skill.items.map(i => (
+                      <span key={i} className="text-xs font-medium px-2 py-1 bg-white/50 dark:bg-black/20 rounded-md">
+                        {i}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+                <div className="absolute -right-4 -bottom-4 opacity-10 transition-transform group-hover:scale-110">
+                  <skill.icon size={100} />
+                </div>
+              </GlassCard>
+            ))}
           </div>
+        </section>
 
-          {/* RIGHT STATS */}
-          <div className="grid grid-cols-2 gap-5">
-            {[
-              { value: '3+', label: 'Years Experience' },
-              { value: '15+', label: 'Projects Built' },
-              { value: '10+', label: 'Technologies' },
-              { value: '100%', label: 'Commitment' },
-            ].map((item, i) => (
-              <div
-                key={i}
-                className="rounded-xl border border-slate-200 dark:border-white/10 p-5 text-center bg-white dark:bg-white/[0.03]"
-              >
-                <p className="text-2xl font-bold text-cyan-500">{item.value}</p>
-                <p className="text-xs sm:text-sm text-slate-500 mt-1">{item.label}</p>
+        {/* Journey Timeline */}
+        <section className="mt-24">
+          <SectionHeader title="Professional Path" />
+          <div className="relative space-y-8 before:absolute before:inset-0 before:ml-5 before:h-full before:w-0.5 before:bg-gradient-to-b before:from-transparent before:via-slate-300 before:to-transparent dark:before:via-slate-800 md:before:mx-auto md:before:translate-x-0">
+            {TIMELINE.map((item, idx) => (
+              <div key={idx} className={`relative flex items-center justify-between md:justify-normal md:odd:flex-row-reverse group`}>
+                <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-white bg-slate-100 text-cyan-600 shadow-xl dark:border-slate-900 dark:bg-slate-800 md:order-1 md:group-odd:-translate-x-1/2 md:group-even:translate-x-1/2">
+                  <div className="h-2 w-2 rounded-full bg-current" />
+                </div>
+                <GlassCard className="w-[calc(100%-3rem)] md:w-[calc(50%-2.5rem)]">
+                  <div className="flex items-center justify-between mb-1">
+                    <span className="text-xs font-bold text-cyan-600 dark:text-cyan-400 uppercase tracking-widest">{item.date}</span>
+                  </div>
+                  <h4 className="text-lg font-bold text-slate-900 dark:text-white">{item.title}</h4>
+                  <p className="text-sm font-medium text-slate-500 mb-2">{item.company}</p>
+                  <p className="text-sm text-slate-600 dark:text-slate-400">{item.desc}</p>
+                </GlassCard>
               </div>
             ))}
           </div>
-        </motion.div>
+        </section>
 
-        {/* REMOVED: Skills Progress Bars (bad UX here) */}
-
-      </motion.div>
-    </section>
+        {/* Call to Action */}
+        <motion.section 
+          whileHover={{ scale: 1.01 }}
+          className="mt-24 overflow-hidden rounded-[2.5rem] bg-slate-900 px-8 py-16 text-center text-white dark:bg-cyan-950/30 dark:border dark:border-cyan-500/20"
+        >
+          <h2 className="text-3xl font-bold sm:text-5xl">Have a project in mind?</h2>
+          <p className="mx-auto mt-6 max-w-2xl text-slate-400">
+            I’m currently looking for new opportunities and collaborations. 
+            Whether you have a question or just want to say hi, my inbox is always open.
+          </p>
+          <div className="mt-10 flex flex-wrap justify-center gap-6">
+            <a href="mailto:princetarunvemuri@gmail.com" className="flex items-center gap-2 rounded-full bg-cyan-500 px-8 py-4 font-bold text-slate-950 transition hover:bg-cyan-400">
+              <FiMail /> Say Hello
+            </a>
+            <a href="https://linkedin.com/in/tarunvemuri" target="_blank" rel="noreferrer" className="flex items-center gap-2 rounded-full bg-white/10 px-8 py-4 font-bold backdrop-blur-sm transition hover:bg-white/20">
+              <FiLinkedin /> LinkedIn <FiExternalLink size={14}/>
+            </a>
+          </div>
+        </motion.section>
+      </main>
+    </div>
   )
 }
 
-export default About
+export default memo(About)

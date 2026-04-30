@@ -57,7 +57,7 @@ function App() {
                 </Suspense>
               }
             />
-            <Route path="/about" element={<About />} />
+            <Route path="/about" element={<About isDarkMode={isDarkMode} onToggleTheme={handleToggleTheme} />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </div>

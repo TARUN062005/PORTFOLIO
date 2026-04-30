@@ -1,6 +1,6 @@
 import { memo, useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { motion } from 'framer-motion'
+import { motion, useInView } from 'framer-motion'
 
 const WELCOME_LINES = [
   '  ████████╗  █████╗  ██████╗  ██╗   ██╗ ███╗   ██╗',
@@ -28,6 +28,8 @@ const THEME_CONFIG = {
 const AboutSection = ({ variant = 'section' }) => {
   const isPage = variant === 'page'
   const navigate = useNavigate()
+  const sectionRef = useRef(null)
+  const isInView = useInView(sectionRef, { amount: 0.35 })
   const [history, setHistory] = useState([
     { type: 'command', content: 'startup' },
     ...WELCOME_LINES.map((line) => ({ type: 'output', content: line })),
@@ -36,6 +38,8 @@ const AboutSection = ({ variant = 'section' }) => {
   const inputRef = useRef(null)
   const outputRef = useRef(null)
   const inputValueRef = useRef('')
+  const commandHistoryRef = useRef([])
+  const historyIndexRef = useRef(-1)
 
   // Strictly matched height for symmetry
   const CONTAINER_HEIGHT = 'h-[360px] md:h-[420px] lg:h-[460px]'
@@ -97,6 +101,9 @@ const AboutSection = ({ variant = 'section' }) => {
     if (!trimmed) return
     const [base, ...args] = trimmed.toLowerCase().split(' ')
     const next = [{ type: 'command', content: trimmed }]
+
+    commandHistoryRef.current.push(trimmed)
+    historyIndexRef.current = commandHistoryRef.current.length
     
     if (base === 'clear') {
       setHistory([])
@@ -128,8 +135,43 @@ const AboutSection = ({ variant = 'section' }) => {
 
   const currentTheme = THEME_CONFIG[theme] || THEME_CONFIG.dark
 
+  const handleKeyDown = (event) => {
+    if (event.key === 'Enter') {
+      handleCommand(inputValueRef.current)
+      event.target.value = ''
+      inputValueRef.current = ''
+      return
+    }
+
+    if (event.key === 'ArrowUp') {
+      event.preventDefault()
+      if (!commandHistoryRef.current.length) return
+      historyIndexRef.current = Math.max(historyIndexRef.current - 1, 0)
+      const value = commandHistoryRef.current[historyIndexRef.current] || ''
+      if (inputRef.current) {
+        inputRef.current.value = value
+      }
+      inputValueRef.current = value
+      return
+    }
+
+    if (event.key === 'ArrowDown') {
+      event.preventDefault()
+      if (!commandHistoryRef.current.length) return
+      historyIndexRef.current = Math.min(
+        historyIndexRef.current + 1,
+        commandHistoryRef.current.length
+      )
+      const value = commandHistoryRef.current[historyIndexRef.current] || ''
+      if (inputRef.current) {
+        inputRef.current.value = value
+      }
+      inputValueRef.current = value
+    }
+  }
+
   return (
-    <section id="about" className={`relative w-full overflow-hidden flex flex-col items-center justify-center ${isPage ? 'pt-24 pb-14' : 'py-10 md:py-16'}`}>
+    <section ref={sectionRef} id="about" className={`relative w-full overflow-hidden flex flex-col items-center justify-center ${isPage ? 'pt-24 pb-14' : 'py-10 md:py-16'}`}>
       <style>{`
         .custom-terminal-scroll::-webkit-scrollbar { width: 3px; }
         .custom-terminal-scroll::-webkit-scrollbar-track { background: transparent; }
@@ -152,8 +194,9 @@ const AboutSection = ({ variant = 'section' }) => {
           
           {/* TERMINAL INTERFACE */}
           <motion.div 
-            initial={{ opacity: 0, x: -30 }}
-            whileInView={{ opacity: 1, x: 0 }}
+            initial={false}
+            animate={isInView ? { opacity: 1, x: 0 } : { opacity: 0, x: -40 }}
+            transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
             className={`relative flex flex-col overflow-hidden rounded-2xl border ${CONTAINER_HEIGHT} shadow-[0_20px_50px_rgba(0,0,0,0.5)] backdrop-blur-md transition-colors duration-300`}
             style={{ backgroundColor: currentTheme.bg, borderColor: currentTheme.border }}
           >
@@ -192,13 +235,7 @@ const AboutSection = ({ variant = 'section' }) => {
                 <input
                   ref={inputRef}
                   onChange={(e) => (inputValueRef.current = e.target.value)}
-                  onKeyDown={(e) => {
-                    if (e.key === 'Enter') {
-                      handleCommand(inputValueRef.current)
-                      e.target.value = ''
-                      inputValueRef.current = ''
-                    }
-                  }}
+                  onKeyDown={handleKeyDown}
                   className="flex-1 bg-transparent border-none outline-none text-white focus:ring-0"
                   autoComplete="off"
                   spellCheck={false}
@@ -209,8 +246,9 @@ const AboutSection = ({ variant = 'section' }) => {
 
           {/* IMAGE BOX - SYMMETRICAL HEIGHT */}
           <motion.div 
-            initial={{ opacity: 0, x: 30 }}
-            whileInView={{ opacity: 1, x: 0 }}
+            initial={false}
+            animate={isInView ? { opacity: 1, x: 0 } : { opacity: 0, x: 40 }}
+            transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
             className={`relative group overflow-hidden rounded-2xl border border-white/10 ${CONTAINER_HEIGHT} shadow-[0_20px_50px_rgba(0,0,0,0.5)]`}
           >
             <img 

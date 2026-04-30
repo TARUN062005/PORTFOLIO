@@ -57,7 +57,7 @@ const TechStackSlider = ({ items = techStack, duration = 30 }) => {
   )
 
   return (
-    <section id="tech-stack" className="space-y-10 pt-3 lg:-mb-8">
+    <section id="tech-stack" className="-mt-4 space-y-8 pt-1 lg:-mb-8">
       {/* Heading */}
       <div className="space-y-4">
         <div className="flex justify-center">

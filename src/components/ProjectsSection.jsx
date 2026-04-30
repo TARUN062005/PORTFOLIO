@@ -147,7 +147,7 @@ const ProjectsSection = ({ showAllLink = true }) => {
             </div>
           </div>
         </div>
-        <br /><br /><br /><br/>
+        <br /><br /><br /><br/><br/>
         <div className="stack-boundary">
           <div className="projects-stack-wrap mt-1 sm:mt-6 w-full">
             <ProjectStack projects={stackProjects} />
