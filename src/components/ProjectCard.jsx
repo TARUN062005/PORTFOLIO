@@ -4,9 +4,9 @@ import { FiExternalLink, FiGithub } from 'react-icons/fi'
 
 const ProjectCard = ({ project }) => {
   const [isSelected, setIsSelected] = useState(false)
-}
 
-export default memo(ProjectCard)
+  const handleToggleCard = useCallback(() => {
+    setIsSelected((previous) => !previous)
   }, [])
 
   const cardClassName = useMemo(() => `card three ${isSelected ? 'open' : ''}`, [isSelected])
@@ -244,7 +244,7 @@ export default memo(ProjectCard)
               <span className="cardDetailsHeader">{project.title}</span>
               <p className="cardDesc">{project.description}</p>
             </div>
-            
+
             <div className="cardActions">
               <a href={project.githubUrl} target="_blank" rel="noreferrer" className="cardDetailsButton">
                 <FiGithub size={12}/> GitHub

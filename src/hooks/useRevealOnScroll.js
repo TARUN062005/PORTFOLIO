@@ -13,7 +13,7 @@ const useRevealOnScroll = (options = {}) => {
     }
 
     if (typeof IntersectionObserver === 'undefined') {
-      setIsVisible(true)
+      setIsVisible((previous) => (previous ? previous : true))
       return undefined
     }
 

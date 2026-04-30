@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom'
-import { memo } from 'react'
+import { memo, useMemo } from 'react'
 import { projects } from '../data/portfolioData'
 import ProjectStack from './ProjectStack'
 import useRevealOnScroll from '../hooks/useRevealOnScroll'
@@ -9,7 +9,7 @@ const ProjectsSection = ({ showAllLink = true }) => {
     threshold: 0.08,
     rootMargin: '0px 0px -10% 0px',
   })
-  const stackProjects = projects.slice(0, 3)
+  const stackProjects = useMemo(() => projects.slice(0, 3), [])
 
   return (
     <section
