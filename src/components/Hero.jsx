@@ -250,7 +250,7 @@ const Hero = ({ onNavClick }) => {
           <button
             type="button"
             onClick={() => onNavClick('projects')}
-            className="inline-flex items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-cyan-500 to-emerald-500 px-6 py-3 text-sm font-semibold text-white shadow-lg shadow-cyan-500/30 transition-all hover:scale-[1.02] hover:shadow-cyan-500/40 active:scale-[0.98]"
+            className="inline-flex items-center justify-center gap-2 rounded-xl bg-cyan-500 px-6 py-3 text-sm font-semibold text-slate-950 shadow-lg shadow-cyan-500/30 transition-all hover:scale-[1.02] hover:bg-cyan-400 hover:shadow-cyan-500/40 active:scale-[0.98]"
           >
             View Projects
             <FiArrowRight size={16} />

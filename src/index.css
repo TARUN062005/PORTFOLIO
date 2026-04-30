@@ -66,11 +66,11 @@
   }
 
   .section-subtitle {
-    @apply text-sm text-slate-600 dark:text-slate-300;
+    @apply text-sm text-slate-800 dark:text-slate-200;
   }
 
   .section-body {
-    @apply text-sm leading-relaxed text-slate-600 dark:text-slate-300;
+    @apply text-sm leading-relaxed text-slate-800 dark:text-slate-200;
   }
 
   .card-title {
@@ -78,11 +78,11 @@
   }
 
   .card-text {
-    @apply text-sm leading-relaxed text-slate-600 dark:text-slate-300;
+    @apply text-sm leading-relaxed text-slate-800 dark:text-slate-200;
   }
 
   .small-label {
-    @apply text-xs font-semibold uppercase tracking-[0.18em] text-slate-500 dark:text-slate-400;
+    @apply text-xs font-semibold uppercase tracking-[0.18em] text-slate-700 dark:text-slate-300;
   }
 
   .glass-panel {

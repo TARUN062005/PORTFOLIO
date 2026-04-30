@@ -77,7 +77,7 @@ const TechStackSlider = ({ items = techStack, duration = 30 }) => {
                 data-category={category}
                 className={`rounded-full px-4 py-2 text-sm font-semibold transition-all duration-300 ${
                   isActive
-                    ? 'bg-gradient-to-r from-cyan-500 to-emerald-500 text-slate-950 shadow-lg shadow-cyan-500/25'
+                    ? 'bg-cyan-500 text-slate-950 shadow-lg shadow-cyan-500/25 hover:bg-cyan-400'
                     : 'border border-slate-300 bg-white/70 text-slate-700 hover:border-cyan-500 hover:text-cyan-700 dark:border-slate-700 dark:bg-slate-900/60 dark:text-slate-200 dark:hover:border-cyan-400 dark:hover:text-cyan-300'
                 }`}
               >
