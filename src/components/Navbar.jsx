@@ -50,7 +50,7 @@ const Navbar = ({ sections, activeSection, onNavClick, isDarkMode, onToggleTheme
         })}
 
         <a
-          href="https://linkedin.com/in/tarunvemuri/"
+          href="https://www.linkedin.com/in/vemuri-prince-tarun-9b8821326"
           target="_blank"
           rel="noreferrer"
           aria-label="LinkedIn"

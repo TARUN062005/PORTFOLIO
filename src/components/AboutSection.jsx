@@ -72,7 +72,14 @@ const AboutSection = ({ variant = 'section' }) => {
       'welcome        - display hero section',
       'whoami         - about current user'
     ),
-    about: (out) => out.push('Vemuri Prince Tarun: Full Stack Developer & AI enthusiast.', 'Focus: Scalable systems and intelligent interfaces.'),
+    about: (out) => out.push(
+      'Hello, I am VEMURI PRINCE TARUN!.',
+      "I'm a passionate Full-Stack Developer, Tech Enthusiast, and aspiring Cloud Engineer from Andhra Pradesh.",
+      'My journey in tech began during my diploma studies when I discovered my love for building things that solve real-world problems.',
+      "Currently pursuing my B.Tech in Computer Science Engineering with a CGPA of 9.20%, I've gained hands-on experience in Salesforce development and full-stack web applications through internships and personal projects.",
+      'I specialize in building scalable applications using modern technologies like React.js, Node.js, MongoDB, and Salesforce.',
+      'My approach combines technical expertise with a user-focused mindset to create efficient and innovative solutions.'
+    ),
     home: (out) => { out.push('Loading home...', 'Loaded.'); scrollToSection('home') },
     'tech-stack': (out) => { out.push('Loading tech stack...', 'Loaded.'); scrollToSection('tech-stack') },
     projects: (out) => { out.push('Loading projects...', 'Loaded.'); scrollToSection('projects') },
@@ -91,7 +98,7 @@ const AboutSection = ({ variant = 'section' }) => {
       items.forEach((item, index) => out.push(`${index + 1}. ${item}`))
     },
     whoami: (out) => out.push('visitor'),
-    education: (out) => out.push('LBRCE - B.Tech in CSE (Expected 2027)', 'Diploma in Computer Engineering - AANM & VVRSR'),
+    education: (out) => out.push('B.Tech in Computer Science and Engineering - LBRCE (2024 - 2027)', 'Diploma in Computer Engineering - AANM & VVRSR (2021 - 2024)'),
     echo: (out, args) => out.push(args || ''),
     clear: () => {},
   }), [history, navigate, scrollToSection])

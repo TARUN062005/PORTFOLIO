@@ -173,8 +173,8 @@ const About = ({ isDarkMode, onToggleTheme }) => {
               ))}
             </div>
             <div className="mt-8 flex gap-4 pt-6 border-t border-slate-200 dark:border-white/5">
-              <a href="#" className="p-2 text-slate-400 hover:text-cyan-500 transition-colors"><FiGithub size={20}/></a>
-              <a href="#" className="p-2 text-slate-400 hover:text-cyan-500 transition-colors"><FiLinkedin size={20}/></a>
+              <a href="https://github.com/TARUN062005" target="_blank" rel="noreferrer" className="p-2 text-slate-400 hover:text-cyan-500 transition-colors"><FiGithub size={20}/></a>
+              <a href="https://www.linkedin.com/in/vemuri-prince-tarun-9b8821326" target="_blank" rel="noreferrer" className="p-2 text-slate-400 hover:text-cyan-500 transition-colors"><FiLinkedin size={20}/></a>
             </div>
           </GlassCard>
         </div>
@@ -240,7 +240,7 @@ const About = ({ isDarkMode, onToggleTheme }) => {
             <a href="mailto:princetarunvemuri@gmail.com" className="flex items-center gap-2 rounded-full bg-cyan-500 px-8 py-4 font-bold text-slate-950 transition hover:bg-cyan-400">
               <FiMail /> Say Hello
             </a>
-            <a href="https://linkedin.com/in/tarunvemuri" target="_blank" rel="noreferrer" className="flex items-center gap-2 rounded-full bg-white/10 px-8 py-4 font-bold backdrop-blur-sm transition hover:bg-white/20">
+            <a href="https://www.linkedin.com/in/vemuri-prince-tarun-9b8821326" target="_blank" rel="noreferrer" className="flex items-center gap-2 rounded-full bg-white/10 px-8 py-4 font-bold backdrop-blur-sm transition hover:bg-white/20">
               <FiLinkedin /> LinkedIn <FiExternalLink size={14}/>
             </a>
           </div>

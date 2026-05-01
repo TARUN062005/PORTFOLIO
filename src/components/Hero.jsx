@@ -1,7 +1,7 @@
 import { memo } from 'react'
 import { FiArrowRight, FiGithub, FiLinkedin, FiMail } from 'react-icons/fi'
-import { FaDiscord } from 'react-icons/fa'
 import { FaXTwitter } from 'react-icons/fa6'
+import { SiLeetcode } from 'react-icons/si'
 import useRevealOnScroll from '../hooks/useRevealOnScroll'
 
 const heroSocials = [
@@ -13,17 +13,17 @@ const heroSocials = [
   {
     name: 'LinkedIn',
     icon: FiLinkedin,
-    href: 'https://linkedin.com/in/tarunvemuri/',
+    href: 'https://www.linkedin.com/in/vemuri-prince-tarun-9b8821326',
   },
   {
     name: 'X',
     icon: FaXTwitter,
-    href: 'https://x.com/TARUNVEMURI',
+    href: 'https://x.com/princet40578627',
   },
   {
-    name: 'Discord',
-    icon: FaDiscord,
-    href: 'https://discordapp.com/users/896411007797325824/',
+    name: 'LeetCode',
+    icon: SiLeetcode,
+    href: 'https://leetcode.com/u/TARUN06_/',
   },
   {
     name: 'Email',

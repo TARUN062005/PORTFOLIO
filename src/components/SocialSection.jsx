@@ -1,12 +1,13 @@
 import { memo } from 'react'
-import { FaDiscord, FaGithub, FaLinkedin } from 'react-icons/fa'
+import { FaGithub, FaLinkedin } from 'react-icons/fa'
 import { FaXTwitter } from 'react-icons/fa6'
+import { SiLeetcode } from 'react-icons/si'
 
 const socials = [
   {
     name: 'LinkedIn',
     icon: FaLinkedin,
-    url: 'https://linkedin.com/in/tarunvemuri/',
+    url: 'https://www.linkedin.com/in/vemuri-prince-tarun-9b8821326',
     color1: '#0A66C2',
     color2: '#004182',
     text: '#FFFFFF',
@@ -20,17 +21,17 @@ const socials = [
     text: '#FFFFFF',
   },
   {
-    name: 'Discord',
-    icon: FaDiscord,
-    url: 'https://discordapp.com/users/896411007797325824/',
-    color1: '#5865F2',
-    color2: '#4752C4',
-    text: '#FFFFFF',
+    name: 'LeetCode',
+    icon: SiLeetcode,
+    url: 'https://leetcode.com/u/TARUN06_/',
+    color1: '#FFA116',
+    color2: '#FFB84D',
+    text: '#0f172a',
   },
   {
     name: 'Twitter',
     icon: FaXTwitter,
-    url: 'https://x.com/TARUNVEMURI',
+    url: 'https://x.com/princet40578627',
     color1: '#000000',
     color2: '#222222',
     text: '#FFFFFF',
