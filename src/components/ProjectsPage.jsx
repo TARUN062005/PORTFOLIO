@@ -1,16 +1,17 @@
 import { useState, useMemo, useEffect, useRef } from "react"
 import { motion, AnimatePresence } from "framer-motion"
 import { projects } from "../data/portfolioData"
+import Navbar from "./Navbar"
 import { 
   FiSearch, 
   FiX, 
   FiGithub, 
   FiArrowUpRight, 
-  FiLayers, 
   FiFilter,
   FiChevronDown,
   FiGrid,
-  FiList
+  FiList,
+  FiArrowLeft
 } from "react-icons/fi"
 
 /**
@@ -26,7 +27,7 @@ const ProjectCard = ({ project, index, viewMode }) => {
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, scale: 0.95 }}
       transition={{ duration: 0.4, delay: index * 0.05 }}
-      className={`group relative flex overflow-hidden rounded-2xl sm:rounded-3xl border border-slate-200/60 bg-white transition-all hover:shadow-2xl hover:shadow-cyan-500/10 dark:border-white/10 dark:bg-slate-900/50 ${
+      className={`group relative flex overflow-hidden rounded-2xl sm:rounded-3xl border border-slate-200/80 bg-white/95 shadow-[0_14px_40px_-28px_rgba(15,23,42,0.35)] ring-1 ring-slate-200/60 transition-all hover:-translate-y-0.5 hover:border-cyan-200 hover:shadow-2xl hover:shadow-cyan-500/10 dark:border-slate-700/70 dark:bg-slate-900/70 dark:ring-slate-700/40 ${
         isGrid ? 'flex-col' : 'flex-col sm:flex-row'
       }`}
     >
@@ -118,7 +119,7 @@ const CategoryButton = ({ tag, isActive, onClick, count }) => (
     className={`group relative rounded-full px-3 sm:px-4 md:px-5 py-1.5 sm:py-2 text-xs sm:text-sm font-semibold transition-all duration-300 ${
       isActive
         ? "bg-slate-950 text-white shadow-lg shadow-slate-950/20 dark:bg-white dark:text-slate-950 dark:shadow-white/20"
-        : "bg-white text-slate-600 hover:bg-slate-100 dark:bg-slate-900 dark:text-slate-400 dark:hover:bg-slate-800"
+        : "border border-slate-200/80 bg-white text-slate-600 hover:bg-slate-100 dark:border-slate-700/80 dark:bg-slate-900 dark:text-slate-400 dark:hover:bg-slate-800"
     }`}
   >
     <span className="relative z-10">{tag}</span>
@@ -141,13 +142,28 @@ const CategoryButton = ({ tag, isActive, onClick, count }) => (
   </button>
 )
 
-const ProjectsPage = () => {
+const ProjectsPage = ({ isDarkMode, onToggleTheme }) => {
   const [activeTag, setActiveTag] = useState("All")
   const [searchQuery, setSearchQuery] = useState("")
   const [viewMode, setViewMode] = useState("grid")
   const [showMobileFilters, setShowMobileFilters] = useState(false)
   const [isScrolled, setIsScrolled] = useState(false)
   const scrollRafRef = useRef(0)
+
+  const sections = useMemo(
+    () => [
+      { id: "home", label: "Home" },
+      { id: "about", label: "About" },
+      { id: "tech-stack", label: "Tech Stack" },
+      { id: "projects", label: "Projects" },
+      { id: "contact", label: "Contact" },
+    ],
+    [],
+  )
+
+  const handleNavClick = (sectionId) => {
+    window.location.href = `/#${sectionId}`
+  }
 
   // Handle scroll for sticky header effects
   useEffect(() => {
@@ -213,45 +229,35 @@ const ProjectsPage = () => {
   const clearSearch = () => setSearchQuery("")
 
   return (
-    <main className="min-h-screen bg-gradient-to-b from-[#fafafa] to-white dark:from-[#020617] dark:to-[#0a0f1f] selection:bg-cyan-100 dark:selection:bg-cyan-900/30">
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-12 sm:py-16 lg:py-20">
-        
-        {/* Header Section */}
-        <header className="mb-8 sm:mb-12 lg:mb-16 max-w-3xl">
-          <motion.div 
-            initial={{ opacity: 0, x: -20 }}
-            animate={{ opacity: 1, x: 0 }}
-            className="flex items-center gap-2 text-cyan-600 dark:text-cyan-400"
+    <main id="projects" className="relative min-h-screen overflow-hidden bg-gradient-to-b from-[#f7f9fc] via-white to-[#f9fafb] dark:from-[#020617] dark:via-[#060b19] dark:to-[#0a0f1f] selection:bg-cyan-100 dark:selection:bg-cyan-900/30">
+      <Navbar
+        sections={sections}
+        activeSection="projects"
+        onNavClick={handleNavClick}
+        isDarkMode={isDarkMode}
+        onToggleTheme={onToggleTheme}
+      />
+      <div className="pointer-events-none absolute inset-0">
+        <div className="absolute -left-24 -top-24 h-72 w-72 rounded-full bg-cyan-200/30 blur-3xl dark:bg-cyan-500/10" />
+        <div className="absolute -right-32 top-32 h-80 w-80 rounded-full bg-emerald-200/30 blur-3xl dark:bg-emerald-500/10" />
+        <div className="absolute bottom-0 left-1/2 h-72 w-72 -translate-x-1/2 rounded-full bg-slate-200/40 blur-3xl dark:bg-slate-700/20" />
+      </div>
+
+      <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pb-10 pt-28 sm:pb-14 sm:pt-32 lg:pb-16">
+        <div className="mb-10 flex items-center justify-start">
+          <a
+            href="/#projects"
+            className="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white px-3 py-2 text-xs font-semibold text-slate-700 transition hover:border-cyan-200 hover:text-slate-900 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-200"
           >
-            <FiLayers className="h-4 w-4 sm:h-5 sm:w-5" />
-            <span className="text-xs sm:text-sm font-bold uppercase tracking-widest">Portfolio</span>
-          </motion.div>
-          
-          <motion.h1 
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.1 }}
-            className="mt-3 sm:mt-4 text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black tracking-tight text-slate-950 dark:text-white"
-          >
-            Crafting Digital <br /> 
-            <span className="text-slate-400">Experiences.</span>
-          </motion.h1>
-          
-          <motion.p
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.2 }}
-            className="mt-3 sm:mt-4 text-sm sm:text-base text-slate-500 dark:text-slate-400 max-w-2xl"
-          >
-            A curated collection of {allProjects.length}+ projects showcasing my journey in web development, 
-            from responsive designs to full-stack applications.
-          </motion.p>
-        </header>
+            <FiArrowLeft className="h-4 w-4" />
+            Back to Home
+          </a>
+        </div>
 
         {/* Sticky Controls Bar */}
         <div className={`sticky top-0 z-20 -mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8 py-3 sm:py-4 transition-all duration-300 ${
           isScrolled 
-            ? "bg-white/80 backdrop-blur-lg shadow-sm dark:bg-slate-950/80" 
+            ? "bg-white/85 backdrop-blur-lg shadow-md shadow-slate-900/5 dark:bg-slate-950/80" 
             : ""
         }`}>
           {/* Mobile Filter Toggle */}

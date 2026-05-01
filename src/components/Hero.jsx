@@ -276,7 +276,7 @@ const Hero = ({ onNavClick }) => {
                   className="hero-social-link"
                   aria-label={item.name}
                   title={item.name}
-                  onClick={() => onNavClick('tech-stack')}
+                  onClick={() => window.open(item.href, '_blank', 'noopener,noreferrer')}
                 >
                   <Icon size={18} />
                 </button>

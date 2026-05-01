@@ -53,7 +53,7 @@ function App() {
               path="/projects"
               element={
                 <Suspense fallback={<div className="min-h-screen bg-stone-100 dark:bg-slate-950" />}>
-                  <ProjectsPage />
+                  <ProjectsPage isDarkMode={isDarkMode} onToggleTheme={handleToggleTheme} />
                 </Suspense>
               }
             />

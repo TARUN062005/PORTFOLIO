@@ -42,7 +42,7 @@ const AboutSection = ({ variant = 'section' }) => {
   const historyIndexRef = useRef(-1)
 
   // Strictly matched height for symmetry
-  const CONTAINER_HEIGHT = 'h-[360px] md:h-[420px] lg:h-[460px]'
+  const CONTAINER_HEIGHT = 'h-[320px] sm:h-[360px] md:h-[420px] lg:h-[460px]'
 
   useEffect(() => {
     if (outputRef.current) {
@@ -213,15 +213,15 @@ const AboutSection = ({ variant = 'section' }) => {
             {/* Scrollable Output */}
             <div 
               ref={outputRef}
-              className="custom-terminal-scroll flex-1 overflow-y-auto p-6 font-mono text-[13px] sm:text-[14px]"
+              className="custom-terminal-scroll flex-1 overflow-y-auto overflow-x-hidden p-5 sm:p-6 font-mono text-[11px] sm:text-[14px] leading-relaxed"
               style={{ color: currentTheme.text }}
             >
               {history.map((line, i) => (
-                <div key={`${line.type}-${i}`} className="mb-2">
+                <div key={`${line.type}-${i}`} className="mb-2 break-words">
                   {line.type === 'command' ? (
-                    <div className="flex items-center gap-2">
-                      <span style={{ color: currentTheme.accent }} className="font-bold">visitor@terminal.tarun.dev:~$</span>
-                      <span className="opacity-100 font-medium">{line.content}</span>
+                    <div className="flex flex-wrap items-start gap-2">
+                      <span style={{ color: currentTheme.accent }} className="font-bold break-all text-[10px] sm:text-[13px]">visitor@terminal.tarun.dev:~$</span>
+                      <span className="min-w-0 break-words font-medium text-[11px] sm:text-[14px]">{line.content}</span>
                     </div>
                   ) : (
                     <div className="opacity-80 whitespace-pre-wrap leading-relaxed">{line.content}</div>
@@ -230,13 +230,13 @@ const AboutSection = ({ variant = 'section' }) => {
               ))}
 
               {/* Input Prompt */}
-              <div className="flex items-center gap-2 mt-3">
-                <span style={{ color: currentTheme.accent }} className="font-bold">visitor@terminal.tarun.dev:~$</span>
+              <div className="mt-3 flex flex-wrap items-start gap-2">
+                <span style={{ color: currentTheme.accent }} className="font-bold break-all text-[10px] sm:text-[13px]">visitor@terminal.tarun.dev:~$</span>
                 <input
                   ref={inputRef}
                   onChange={(e) => (inputValueRef.current = e.target.value)}
                   onKeyDown={handleKeyDown}
-                  className="flex-1 bg-transparent border-none outline-none text-white focus:ring-0"
+                  className="min-w-0 flex-1 bg-transparent border-none text-[11px] sm:text-[14px] text-white outline-none focus:ring-0"
                   autoComplete="off"
                   spellCheck={false}
                 />

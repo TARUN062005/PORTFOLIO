@@ -146,7 +146,7 @@ const About = ({ isDarkMode, onToggleTheme }) => {
               the <span className="font-semibold text-slate-900 dark:text-white">MERN Stack</span>.
             </p>
             <div className="mt-10 flex flex-wrap gap-4">
-              <a href="/resume.pdf" className="group flex items-center gap-2 rounded-full bg-slate-900 px-6 py-3 text-sm font-bold text-white transition hover:bg-cyan-500 dark:bg-white dark:text-slate-950 dark:hover:bg-cyan-400">
+              <a href="/VEMURI_PRINCE_TARUN.pdf" className="group flex items-center gap-2 rounded-full bg-slate-900 px-6 py-3 text-sm font-bold text-white transition hover:bg-cyan-500 dark:bg-white dark:text-slate-950 dark:hover:bg-cyan-400">
                 <FiDownload className="transition group-hover:-translate-y-1" />
                 Resume
               </a>
