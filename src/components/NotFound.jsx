@@ -1,7 +1,11 @@
-import React from 'react';
+import { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 
 const NotFound = () => {
+  useEffect(() => {
+    document.title = 'VEMURI PRINCE TARUN - NOT FOUND'
+  }, [])
+
   return (
     <div className="not-found-container" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', minHeight: '100vh', backgroundColor: '#0f172a', color: 'white', fontFamily: 'system-ui, sans-serif', overflow: 'hidden' }}>
       <style>{`

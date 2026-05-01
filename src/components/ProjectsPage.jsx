@@ -191,6 +191,10 @@ const ProjectsPage = ({ isDarkMode, onToggleTheme }) => {
     }
   }, [])
 
+  useEffect(() => {
+    document.title = 'VEMURI PRINCE TARUN - PROJECTS'
+  }, [])
+
   // Normalize data once
   const allProjects = useMemo(() => projects.map(p => ({
     ...p,

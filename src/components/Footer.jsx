@@ -42,7 +42,6 @@ const quickLinks = [
 
 const contactInfo = [
   { icon: FiMail, text: 'princetarunvemuri@gmail.com', href: 'mailto:princetarunvemuri@gmail.com' },
-  { icon: FiPhone, text: '+91 9550186473', href: 'tel:+919550186473' },
   { icon: FiMapPin, text: 'Vijayawada, India', href: '' },
 ]
 

@@ -1,4 +1,4 @@
-import { memo, useCallback, useMemo } from 'react'
+import { memo, useCallback, useEffect, useMemo } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import {
@@ -20,7 +20,6 @@ import Navbar from './Navbar'
 // --- Data Constants ---
 const CONTACT_ITEMS = [
   { icon: FiMapPin, label: 'Andhra Pradesh', sub: 'India' },
-  { icon: FiPhone, label: '+91 9550186473', href: 'tel:+919550186473', sub: 'Work' },
   { icon: FiMail, label: 'princetarunvemuri@gmail.com', href: 'mailto:princetarunvemuri@gmail.com', sub: 'Personal' },
 ]
 
@@ -104,6 +103,10 @@ const SectionHeader = ({ title, subtitle }) => (
 const About = ({ isDarkMode, onToggleTheme }) => {
   const navigate = useNavigate()
   const sections = useMemo(() => [{ id: 'home', label: 'Home' }, { id: 'about', label: 'About' }], [])
+
+  useEffect(() => {
+    document.title = 'VEMURI PRINCE TARUN - ABOUT'
+  }, [])
 
   const handleNavClick = useCallback((id) => {
     id === 'home' ? navigate('/') : document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' })

@@ -18,7 +18,6 @@ const Contact = () => {
   const contactItems = useMemo(
     () => [
       { label: 'Email', value: 'princetarunvemuri@gmail.com', icon: FiMail },
-      { label: 'Phone', value: '+91 9550186473', icon: FiPhone },
       { label: 'Location', value: 'Vijayawada, India', icon: FiMapPin },
     ],
     [],
