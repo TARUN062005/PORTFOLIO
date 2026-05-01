@@ -27,8 +27,10 @@ export const techStack = [
   { name: 'Postman',     icon: 'postman/postman-original.svg' },
   { name: 'AWS',         icon: 'amazonwebservices/amazonwebservices-plain-wordmark.svg' },
   { name: 'Java',        icon: 'java/java-original.svg' },
-  { name: 'Flask',       icon: 'flask/flask-original.svg' },
   { name: 'Linux',       icon: 'linux/linux-original.svg' },
+  { name: 'Salesforce',  icon: 'salesforce/salesforce-original.svg' },
+  { name: 'SQL',          icon: 'mysql/mysql-original.svg' },
+  { name: 'prisma',       icon: 'prisma/prisma-original.svg' },
 ]
 
 export const projects = [

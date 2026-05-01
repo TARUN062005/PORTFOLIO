@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import { useLocation } from 'react-router-dom'
 import { FiChevronDown } from 'react-icons/fi'
 import Navbar from './Navbar'
 import Hero from './Hero'
@@ -10,6 +11,7 @@ import Contact from './Contact'
 import Footer from './Footer'
 
 const HomePage = ({ isDarkMode, onToggleTheme }) => {
+  const location = useLocation()
   const sections = useMemo(
     () => [
       { id: 'home', label: 'Home' },
@@ -34,6 +36,26 @@ const HomePage = ({ isDarkMode, onToggleTheme }) => {
   useEffect(() => {
     window.scrollTo({ top: 0, left: 0, behavior: 'auto' })
   }, [])
+
+  useEffect(() => {
+    const target = location.hash?.replace('#', '')
+    if (!target) return
+    const section = document.getElementById(target)
+    if (!section) return
+
+    requestAnimationFrame(() => {
+      const navHeader = document.querySelector('header')
+      const navHeight = navHeader ? navHeader.getBoundingClientRect().height : 72
+      const extraGap = 18
+      const offset = navHeight + extraGap
+      const targetTop = section.getBoundingClientRect().top + window.scrollY - offset
+
+      window.scrollTo({
+        top: Math.max(targetTop, 0),
+        behavior: 'smooth',
+      })
+    })
+  }, [location.hash])
 
   useEffect(() => {
     let rafId = 0

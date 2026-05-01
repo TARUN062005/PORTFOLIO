@@ -1,4 +1,5 @@
 import { useState, useMemo, useEffect, useRef } from "react"
+import { Link, useNavigate } from "react-router-dom"
 import { motion, AnimatePresence } from "framer-motion"
 import { projects } from "../data/portfolioData"
 import Navbar from "./Navbar"
@@ -143,6 +144,7 @@ const CategoryButton = ({ tag, isActive, onClick, count }) => (
 )
 
 const ProjectsPage = ({ isDarkMode, onToggleTheme }) => {
+  const navigate = useNavigate()
   const [activeTag, setActiveTag] = useState("All")
   const [searchQuery, setSearchQuery] = useState("")
   const [viewMode, setViewMode] = useState("grid")
@@ -162,7 +164,7 @@ const ProjectsPage = ({ isDarkMode, onToggleTheme }) => {
   )
 
   const handleNavClick = (sectionId) => {
-    window.location.href = `/#${sectionId}`
+    navigate(`/#${sectionId}`)
   }
 
   // Handle scroll for sticky header effects
@@ -245,13 +247,13 @@ const ProjectsPage = ({ isDarkMode, onToggleTheme }) => {
 
       <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pb-10 pt-28 sm:pb-14 sm:pt-32 lg:pb-16">
         <div className="mb-10 flex items-center justify-start">
-          <a
-            href="/#projects"
+          <Link
+            to="/#projects"
             className="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white px-3 py-2 text-xs font-semibold text-slate-700 transition hover:border-cyan-200 hover:text-slate-900 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-200"
           >
             <FiArrowLeft className="h-4 w-4" />
             Back to Home
-          </a>
+          </Link>
         </div>
 
         {/* Sticky Controls Bar */}
