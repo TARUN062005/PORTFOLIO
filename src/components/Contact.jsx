@@ -43,6 +43,15 @@ const Contact = () => {
     e.preventDefault()
     const errs = validate()
     if (Object.keys(errs).length) return setErrors(errs)
+    const subject = `Portfolio contact from ${formValues.name}`
+    const body = [
+      `Name: ${formValues.name}`,
+      `Email: ${formValues.email}`,
+      '',
+      'Message:',
+      formValues.message,
+    ].join('\n')
+    window.location.href = `mailto:princetarunvemuri@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`
     setIsSubmitted(true)
     setFormValues(initialFormValues)
   }
@@ -218,6 +227,11 @@ const Contact = () => {
               </span>
               <span className="contact-send-text">Send Message</span>
             </button>
+            {isSubmitted && (
+              <p className="text-xs font-semibold text-emerald-600">
+                Mail client opened. Your message is ready to send.
+              </p>
+            )}
           </form>
 
         </div>

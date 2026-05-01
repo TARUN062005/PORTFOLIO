@@ -1,4 +1,4 @@
-import { memo, useCallback, useMemo } from 'react'
+import { memo, useCallback, useMemo, useState } from 'react'
 import { motion } from 'framer-motion'
 import {
   FiArrowUp,
@@ -67,6 +67,9 @@ const itemVariants = {
 
 const Footer = ({ onNavClick }) => {
   const currentYear = useMemo(() => new Date().getFullYear(), [])
+  const [newsletterEmail, setNewsletterEmail] = useState('')
+  const [newsletterError, setNewsletterError] = useState('')
+  const [newsletterSent, setNewsletterSent] = useState(false)
 
   const handleQuickLinkClick = useCallback(
     (event) => {
@@ -84,7 +87,24 @@ const Footer = ({ onNavClick }) => {
 
   const handleNewsletterSubmit = useCallback((event) => {
     event.preventDefault()
-  }, [])
+    const trimmed = newsletterEmail.trim()
+    if (!trimmed) {
+      setNewsletterError('Please enter your email.')
+      setNewsletterSent(false)
+      return
+    }
+    if (!/^\S+@\S+\.\S+$/.test(trimmed)) {
+      setNewsletterError('Enter a valid email.')
+      setNewsletterSent(false)
+      return
+    }
+    const subject = 'Newsletter subscription request'
+    const body = `Please subscribe this email: ${trimmed}`
+    window.location.href = `mailto:princetarunvemuri@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`
+    setNewsletterError('')
+    setNewsletterSent(true)
+    setNewsletterEmail('')
+  }, [newsletterEmail])
 
   return (
     <footer className="mt-6 pb-5 sm:mt-8 sm:pb-8">
@@ -274,11 +294,27 @@ const Footer = ({ onNavClick }) => {
               <input
                 type="email"
                 placeholder="Your email"
+                value={newsletterEmail}
+                onChange={(event) => {
+                  setNewsletterEmail(event.target.value)
+                  if (newsletterError) setNewsletterError('')
+                  if (newsletterSent) setNewsletterSent(false)
+                }}
                 className="w-full rounded-lg border border-slate-200 dark:border-slate-700 bg-white/50 dark:bg-slate-800/50 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-cyan-500"
               />
               <button className="w-full rounded-lg bg-cyan-500 py-2 text-sm font-semibold text-slate-950 hover:bg-cyan-400 transition-colors">
                 Subscribe
               </button>
+              {newsletterError && (
+                <p className="text-xs font-semibold text-rose-600">
+                  {newsletterError}
+                </p>
+              )}
+              {newsletterSent && !newsletterError && (
+                <p className="text-xs font-semibold text-emerald-600">
+                  Mail client opened. Subscription request ready to send.
+                </p>
+              )}
             </form>
           </motion.div>
         </div>
