@@ -42,7 +42,7 @@ const AboutSection = ({ variant = 'section' }) => {
   const historyIndexRef = useRef(-1)
 
   // Strictly matched height for symmetry
-  const CONTAINER_HEIGHT = 'h-[320px] sm:h-[360px] md:h-[420px] lg:h-[460px]'
+  const CONTAINER_HEIGHT = 'min-h-[280px] sm:h-[360px] md:h-[420px] lg:h-[460px]'
 
   useEffect(() => {
     if (outputRef.current) {
@@ -267,16 +267,16 @@ const AboutSection = ({ variant = 'section' }) => {
             <div className="absolute inset-0 bg-gradient-to-t from-[#020617] via-[#020617]/10 to-transparent opacity-95" />
             
             {/* Branding Info */}
-            <div className="absolute bottom-8 left-8">
+            <div className="absolute bottom-6 left-6 sm:bottom-8 sm:left-8">
               <div className="h-1 w-12 bg-cyan-500 mb-4" />
               <p className="font-mono text-[10px] text-cyan-400/80 tracking-widest mb-1 italic">DEVELOPER_PROFILE</p>
-              <h3 className="font-mono text-2xl md:text-3xl font-bold text-white tracking-tighter uppercase">
+              <h3 className="font-mono text-xl sm:text-2xl md:text-3xl font-bold text-white tracking-tighter uppercase">
                 Vemuri Prince Tarun
               </h3>
             </div>
 
             {/* Micro-Interaction status */}
-            <div className="absolute top-6 right-6 flex items-center gap-2 bg-black/40 backdrop-blur-md px-3 py-1.5 rounded-full border border-white/10">
+            <div className="absolute top-4 right-4 sm:top-6 sm:right-6 flex items-center gap-2 bg-black/40 backdrop-blur-md px-3 py-1.5 rounded-full border border-white/10">
               <div className="h-1.5 w-1.5 rounded-full bg-cyan-500 shadow-[0_0_8px_rgba(6,182,212,0.8)]" />
               <span className="font-mono text-[9px] text-white/60 tracking-wider">SYSTEM_READY</span>
             </div>

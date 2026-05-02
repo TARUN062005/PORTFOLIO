@@ -97,11 +97,13 @@ const ProjectsSection = ({ showAllLink = true }) => {
             pointer-events: none;
           }
 
-         .sticky-header-bg {
-  background: rgba(2, 6, 23, 0.85); /* semi-transparent instead of solid */
-  backdrop-filter: blur(6px);       /* optional, improves blending */
-  padding: 10px 0;
-}
+          .sticky-header-bg {
+            background: transparent;
+            border: none;
+            box-shadow: none;
+            backdrop-filter: none;
+            padding: 10px 0;
+          }
           .sticky-header-bg > * {
             pointer-events: auto;
           }
@@ -132,7 +134,7 @@ const ProjectsSection = ({ showAllLink = true }) => {
         <div className="header-boundary">
           <div className="sticky-header-wrapper projects-section__heading mx-auto w-full px-4">
             <div className="sticky-header-bg flex w-full items-center justify-center">
-              <h2 className="section-title text-center text-white">
+              <h2 className="section-title text-center text-slate-900 dark:text-white">
                 Projects
               </h2>
 
