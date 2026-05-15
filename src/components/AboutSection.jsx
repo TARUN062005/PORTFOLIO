@@ -16,6 +16,8 @@ const WELCOME_LINES = [
   '------------------------------------------------',
 ]
 
+const WELCOME_ART_LINE_COUNT = 6
+
 const THEME_CONFIG = {
   dark: { bg: 'rgba(10, 15, 25, 0.92)', text: '#f8fafc', accent: '#38bdf8', border: 'rgba(56, 189, 248, 0.2)' },
   light: { bg: 'rgba(240, 244, 248, 0.92)', text: '#0f172a', accent: '#0284c7', border: 'rgba(14, 116, 144, 0.25)' },
@@ -187,6 +189,17 @@ const AboutSection = ({ variant = 'section' }) => {
           border-radius: 4px; 
         }
         .custom-terminal-scroll:hover::-webkit-scrollbar-thumb { background: ${currentTheme.accent}60; }
+        .terminal-welcome-line {
+          font-size: clamp(6px, 1.65vw, 14px);
+          line-height: 1.15;
+          white-space: pre;
+        }
+        @media (min-width: 640px) {
+          .terminal-welcome-line {
+            font-size: 14px;
+            line-height: 1.625;
+          }
+        }
       `}</style>
 
       <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 w-full">
@@ -220,10 +233,13 @@ const AboutSection = ({ variant = 'section' }) => {
             {/* Scrollable Output */}
             <div 
               ref={outputRef}
-              className="custom-terminal-scroll flex-1 overflow-y-auto overflow-x-hidden p-5 sm:p-6 font-mono text-[11px] sm:text-[14px] leading-relaxed"
+              className="custom-terminal-scroll flex-1 overflow-y-auto overflow-x-hidden p-4 sm:p-6 font-mono text-[11px] sm:text-[14px] leading-relaxed"
               style={{ color: currentTheme.text }}
             >
-              {history.map((line, i) => (
+              {history.map((line, i) => {
+                const isWelcomeArt = line.type === 'output' && WELCOME_LINES.slice(0, WELCOME_ART_LINE_COUNT).includes(line.content)
+
+                return (
                 <div key={`${line.type}-${i}`} className="mb-2 break-words">
                   {line.type === 'command' ? (
                     <div className="flex flex-wrap items-start gap-2">
@@ -231,10 +247,11 @@ const AboutSection = ({ variant = 'section' }) => {
                       <span className="min-w-0 break-words font-medium text-[11px] sm:text-[14px]">{line.content}</span>
                     </div>
                   ) : (
-                    <div className="opacity-80 whitespace-pre-wrap leading-relaxed">{line.content}</div>
+                    <div className={isWelcomeArt ? 'terminal-welcome-line opacity-80' : 'opacity-80 whitespace-pre-wrap leading-relaxed'}>{line.content}</div>
                   )}
                 </div>
-              ))}
+                )
+              })}
 
               {/* Input Prompt */}
               <div className="mt-3 flex flex-wrap items-start gap-2">
