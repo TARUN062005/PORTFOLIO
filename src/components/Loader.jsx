@@ -62,52 +62,242 @@ const Loader = ({ onComplete }) => {
       }`}
     >
       <style>{`
-        .loader-container {
+        .wrapper-grid {
+          --animation-duration: 2.1s;
+          --cube-color: #0000;
+          --highlight-color: #00cc44;
+          --cube-width: 48px;
+          --cube-height: 48px;
+          --font-size: 1.8em;
+
           position: relative;
-          height: 180px;
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          margin-top: 0;
+          inset: 0;
+
+          display: grid;
+          grid-template-columns: repeat(7, var(--cube-width));
+          grid-template-rows: auto;
+          grid-gap: 0;
+
+          width: calc(7 * var(--cube-width));
+          height: var(--cube-height);
+          perspective: 350px;
+
+          font-family: "Poppins", sans-serif;
+          font-size: var(--font-size);
+          font-weight: 800;
+          color: transparent;
         }
 
-        .loader-item {
-          position: absolute;
-          background-color: transparent;
-          width: calc(var(--i) * 2.5vmin);
-          aspect-ratio: 1;
-          border-radius: 50%;
-          border: .9vmin solid rgb(0, 200, 255);
+        .cube {
+          position: relative;
           transform-style: preserve-3d;
-          transform: rotateX(70deg) translateZ(50px);
-          animation: my-move 3s ease-in-out calc(var(--i) * 0.08s) infinite;
-          box-shadow: 0px 0px 15px rgba(124, 124, 124, 0.4),
-            inset 0px 0px 15px rgba(124, 124, 124, 0.4);
         }
 
-        @keyframes my-move {
-          0%,
-          100% {
-            transform: rotateX(70deg) translateZ(50px) translateY(0px);
-            filter: hue-rotate(0deg);
-          }
+        .face {
+          position: absolute;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          width: var(--cube-width);
+          height: var(--cube-height);
+          background-color: var(--cube-color);
+        }
+        .face-left,
+        .face-right,
+        .face-back,
+        .face-front {
+          box-shadow:
+            inset 0 0 2px 1px #0001,
+            inset 0 0 12px 1px #fff1;
+        }
+        .face-front {
+          transform: rotateY(0deg) translateZ(calc(var(--cube-width) / 2));
+        }
+        .face-back {
+          transform: rotateY(180deg) translateZ(calc(var(--cube-width) / 2));
+          opacity: 0.6;
+        }
+        .face-left {
+          transform: rotateY(-90deg) translateZ(calc(var(--cube-width) / 2));
+          opacity: 0.6;
+        }
+        .face-right {
+          transform: rotateY(90deg) translateZ(calc(var(--cube-width) / 2));
+          opacity: 0.6;
+        }
+        .face-top {
+          height: var(--cube-width);
+          transform: rotateX(90deg) translateZ(calc(var(--cube-width) / 2));
+          opacity: 0.8;
+        }
+        .face-bottom {
+          height: var(--cube-width);
+          transform: rotateX(-90deg)
+            translateZ(calc(var(--cube-height) - var(--cube-width) * 0.5));
+          opacity: 0.8;
+        }
 
-          50% {
-            transform: rotateX(70deg) translateZ(50px) translateY(-50vmin);
-            filter: hue-rotate(180deg);
+        .cube:nth-child(1) {
+          z-index: 0;
+          animation-delay: 0s;
+        }
+        .cube:nth-child(2) {
+          z-index: 1;
+          animation-delay: 0.2s;
+        }
+        .cube:nth-child(3) {
+          z-index: 2;
+          animation-delay: 0.4s;
+        }
+        .cube:nth-child(4) {
+          z-index: 3;
+          animation-delay: 0.6s;
+        }
+        .cube:nth-child(5) {
+          z-index: 2;
+          animation-delay: 0.8s;
+        }
+        .cube:nth-child(6) {
+          z-index: 1;
+          animation-delay: 1s;
+        }
+        .cube:nth-child(7) {
+          z-index: 0;
+          animation-delay: 1.2s;
+        }
+
+        .cube {
+          animation: translate-z var(--animation-duration) ease-in-out infinite;
+        }
+        .cube .face {
+          animation:
+            face-color var(--animation-duration) ease-in-out infinite,
+            /* face-glow var(--animation-duration) ease-in-out infinite, */ edge-glow
+              var(--animation-duration) ease-in-out infinite;
+          animation-delay: inherit;
+        }
+        .cube .face.face-front {
+          animation:
+            face-color var(--animation-duration) ease-in-out infinite,
+            face-glow var(--animation-duration) ease-in-out infinite,
+            edge-glow var(--animation-duration) ease-in-out infinite;
+          animation-delay: inherit;
+        }
+
+        @keyframes translate-z {
+          0%,
+          40%,
+          100% {
+            transform: translateZ(-2px);
+          }
+          30% {
+            transform: translateZ(16px) translateY(-1px);
+          }
+        }
+        @keyframes face-color {
+          0%,
+          50%,
+          100% {
+            background-color: var(--cube-color);
+          }
+          10% {
+            background-color: var(--highlight-color);
+          }
+        }
+        @keyframes face-glow {
+          0%,
+          50%,
+          100% {
+            color: #fff0;
+            filter: none;
+          }
+          30% {
+            color: #fff;
+            filter: drop-shadow(0 14px 10px var(--highlight-color));
+          }
+        }
+        @keyframes edge-glow {
+          0%,
+          40%,
+          100% {
+            box-shadow:
+              inset 0 0 2px 1px #0001,
+              inset 0 0 12px 1px #fff1;
+          }
+          30% {
+            box-shadow: 0 0 2px 0px var(--highlight-color);
           }
         }
       `}</style>
       
       <div className="w-full max-w-md px-6 flex flex-col items-center gap-0">
 
-        <div className="loader-container">
-          {[...Array(21)].map((_, i) => (
-            <div key={i} className="loader-item" style={{ '--i': i }}></div>
-          ))}
+        <div className="wrapper-grid -mt-6 mb-6">
+          <div className="cube">
+            <div className="face face-front">L</div>
+            <div className="face face-back"></div>
+            <div className="face face-right"></div>
+            <div className="face face-left"></div>
+            <div className="face face-top"></div>
+            <div className="face face-bottom"></div>
+          </div>
+
+          <div className="cube">
+            <div className="face face-front">O</div>
+            <div className="face face-back"></div>
+            <div className="face face-right"></div>
+            <div className="face face-left"></div>
+            <div className="face face-top"></div>
+            <div className="face face-bottom"></div>
+          </div>
+
+          <div className="cube">
+            <div className="face face-front">A</div>
+            <div className="face face-back"></div>
+            <div className="face face-right"></div>
+            <div className="face face-left"></div>
+            <div className="face face-top"></div>
+            <div className="face face-bottom"></div>
+          </div>
+
+          <div className="cube">
+            <div className="face face-front">D</div>
+            <div className="face face-back"></div>
+            <div className="face face-right"></div>
+            <div className="face face-left"></div>
+            <div className="face face-top"></div>
+            <div className="face face-bottom"></div>
+          </div>
+
+          <div className="cube">
+            <div className="face face-front">I</div>
+            <div className="face face-back"></div>
+            <div className="face face-right"></div>
+            <div className="face face-left"></div>
+            <div className="face face-top"></div>
+            <div className="face face-bottom"></div>
+          </div>
+
+          <div className="cube">
+            <div className="face face-front">N</div>
+            <div className="face face-back"></div>
+            <div className="face face-right"></div>
+            <div className="face face-left"></div>
+            <div className="face face-top"></div>
+            <div className="face face-bottom"></div>
+          </div>
+
+          <div className="cube">
+            <div className="face face-front">G</div>
+            <div className="face face-back"></div>
+            <div className="face face-right"></div>
+            <div className="face face-left"></div>
+            <div className="face face-top"></div>
+            <div className="face face-bottom"></div>
+          </div>
         </div>
         
-        <div className="text-center space-y-1 -mt-2">
+        <div className="text-center space-y-1">
           <p className="text-cyan-600 dark:text-cyan-400 font-medium tracking-wide">
             {greetingTime}, welcome to my portfolio
           </p>
