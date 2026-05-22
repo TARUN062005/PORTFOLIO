@@ -236,7 +236,7 @@ const Hero = ({ onNavClick }) => {
             Carpe diem. Seize the day.
           </p>
           <h1 className="text-4xl font-bold leading-tight tracking-tight text-slate-900 sm:text-5xl lg:text-5xl dark:text-slate-100">
-            TARUN VEMURI
+            VEMURI PRINCE TARUN
           </h1>
           <h2 className="text-xl font-semibold text-slate-700 sm:text-2xl dark:text-slate-300">
             Full Stack Developer | AI/ML Engineer

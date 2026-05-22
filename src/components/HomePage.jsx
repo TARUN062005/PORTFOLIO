@@ -38,10 +38,6 @@ const HomePage = ({ isDarkMode, onToggleTheme }) => {
   }, [])
 
   useEffect(() => {
-    document.title = 'VEMURI PRINCE TARUN'
-  }, [])
-
-  useEffect(() => {
     const target = location.hash?.replace('#', '')
     if (!target) return
     const section = document.getElementById(target)

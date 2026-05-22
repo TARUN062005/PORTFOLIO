@@ -301,9 +301,9 @@ const Loader = ({ onComplete }) => {
           <p className="text-cyan-600 dark:text-cyan-400 font-medium tracking-wide">
             {greetingTime}, welcome to my portfolio
           </p>
-          <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-slate-800 dark:text-slate-100">
+          <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-slate-800 dark:text-slate-100">
             Hi, I'm VEMURI PRINCE TARUN
-          </h1>
+          </h2>
           <p className="text-sm font-medium text-slate-500 tracking-wider uppercase opacity-80 pt-2">
             Loading experience...
           </p>
