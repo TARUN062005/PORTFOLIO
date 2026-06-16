@@ -35,6 +35,34 @@ export const techStack = [
 
 export const projects = [
   {
+    id: 'Route-Gaurdian',
+    title: 'Logistics Route Intelligence For Active Cargo Fleets',
+    description:
+      'Synthesize route optimization matrices with real-time geopolitical & weather threats. Plan shipments dynamically through our geofenced risk model.', 
+       image: '/projects/Routegaurdian.png',
+    tags: ['React.js', 'Node.js', 'Express.js', 'MongoDB', 'Socket.io', 'JWT', 'HTML', 'CSS', 'JavaScript'],
+    techStack: ['React.js', 'Node.js', 'Express.js', 'MongoDB', 'Socket.io', 'JWT', 'HTML', 'CSS', 'JavaScript'],
+    github: 'https://github.com/TARUN062005/SRM_HACKTHON',
+    githubUrl: 'https://github.com/TARUN062005/SRM_HACKTHON',
+    liveUrl: 'https://routegaurdian.vercel.app/',
+    date: '2024-10-15',
+    challenge:
+      'Develop a comprehensive logistics route intelligence platform that integrates real-time geopolitical and weather data to optimize cargo fleet routing and minimize risks.',
+    solution:
+      'Implemented a full-stack application using React.js for the frontend, Node.js and Express.js for the backend, and MongoDB for data storage. Integrated real-time data feeds for geopolitical and weather threats, developed geofencing algorithms for risk assessment, and created an intuitive user interface for dynamic route planning.',
+    results: [
+      'Multi-Transit Vectoring: Supports Sea, Air, Road and Rail routing models. Auto-geocode points and query optimal paths globally.',
+      'Tactical Risk Geofencing: Runs real-time geospatial matches against global conflict zones, maritime threat corridors, and weather fronts.',
+      'Routy AI Copilot: Plan entire shipping vectors step-by-step or via natural language commands using our conversational interface.',
+      ],
+    metrics: [
+      { label: 'Route Optimization Accuracy', value: '92%' },
+      { label: 'Real-time Threat Detection', value: '99.5%' },
+      { label: 'User Satisfaction', value: '4.9/5' },
+    ],
+    featured: true,
+  },
+  {
     id: 'college-assignment-system',
     title: 'College Assignment Management System with AI Integration',
     description:
